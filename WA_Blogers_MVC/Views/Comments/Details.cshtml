@@ -1,0 +1,58 @@
+﻿@model WA_Blogers_MVC.Models.WA_Comments
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>WA_Comments</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ContenComment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContenComment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Parent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Parent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WA_Posts.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WA_Posts.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WA_Users.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WA_Users.UserName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CommentID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

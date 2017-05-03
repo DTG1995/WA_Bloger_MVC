@@ -1,0 +1,622 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WA_BlogerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="WA_BlogPosts">
+          <Key>
+            <PropertyRef Name="BlogID" />
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="BlogID" Type="int" Nullable="false" />
+          <Property Name="PostID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WA_Blogs">
+          <Key>
+            <PropertyRef Name="BlogID" />
+          </Key>
+          <Property Name="BlogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Parent" Type="int" />
+          <Property Name="Order" Type="int" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="WA_Comments">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContenComment" Type="ntext" />
+          <Property Name="PostID" Type="int" />
+          <Property Name="Author" Type="char" MaxLength="10" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Parent" Type="int" />
+        </EntityType>
+        <EntityType Name="WA_Likes">
+          <Key>
+            <PropertyRef Name="PostID" />
+            <PropertyRef Name="Author" />
+          </Key>
+          <Property Name="PostID" Type="int" Nullable="false" />
+          <Property Name="Author" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="IsLike" Type="int" />
+        </EntityType>
+        <EntityType Name="WA_Options">
+          <Key>
+            <PropertyRef Name="Option_ID" />
+          </Key>
+          <Property Name="Option_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="ntext" />
+          <Property Name="Value" Type="ntext" />
+          <Property Name="Group" Type="ntext" />
+        </EntityType>
+        <EntityType Name="WA_Posts">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="ntext" />
+          <Property Name="Description" Type="ntext" />
+          <Property Name="ContentPost" Type="ntext" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Author" Type="char" MaxLength="10" />
+          <Property Name="Picture" Type="ntext" />
+          <Property Name="UseDescription" Type="bit" />
+          <Property Name="Seen" Type="int" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="WA_Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Description" Type="ntext" />
+        </EntityType>
+        <EntityType Name="WA_UserRoles">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="UserID" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WA_Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Avatar" Type="ntext" />
+          <Property Name="LastLogin" Type="datetime" />
+          <Property Name="IPLast" Type="varchar" MaxLength="50" />
+          <Property Name="IPCreated" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_BlogPosts_Blogs">
+          <End Role="WA_Blogs" Type="Self.WA_Blogs" Multiplicity="1" />
+          <End Role="WA_BlogPosts" Type="Self.WA_BlogPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Blogs">
+              <PropertyRef Name="BlogID" />
+            </Principal>
+            <Dependent Role="WA_BlogPosts">
+              <PropertyRef Name="BlogID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BlogPosts_Posts">
+          <End Role="WA_Posts" Type="Self.WA_Posts" Multiplicity="1" />
+          <End Role="WA_BlogPosts" Type="Self.WA_BlogPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Posts">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="WA_BlogPosts">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Posts">
+          <End Role="WA_Posts" Type="Self.WA_Posts" Multiplicity="0..1" />
+          <End Role="WA_Comments" Type="Self.WA_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Posts">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="WA_Comments">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Users">
+          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="0..1" />
+          <End Role="WA_Comments" Type="Self.WA_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="WA_Comments">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_Posts">
+          <End Role="WA_Posts" Type="Self.WA_Posts" Multiplicity="1" />
+          <End Role="WA_Likes" Type="Self.WA_Likes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Posts">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="WA_Likes">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_Users">
+          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="1" />
+          <End Role="WA_Likes" Type="Self.WA_Likes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="WA_Likes">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Posts_Users">
+          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="0..1" />
+          <End Role="WA_Posts" Type="Self.WA_Posts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="WA_Posts">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Roles">
+          <End Role="WA_Roles" Type="Self.WA_Roles" Multiplicity="1" />
+          <End Role="WA_UserRoles" Type="Self.WA_UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="WA_UserRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Users">
+          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="1" />
+          <End Role="WA_UserRoles" Type="Self.WA_UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="WA_UserRoles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WA_Blogs_WA_Blogs">
+          <End Role="WA_Blogs" Type="Self.WA_Blogs" Multiplicity="0..1" />
+          <End Role="WA_Blogs1" Type="Self.WA_Blogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Blogs">
+              <PropertyRef Name="BlogID" />
+            </Principal>
+            <Dependent Role="WA_Blogs1">
+              <PropertyRef Name="Parent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WA_BlogerModelStoreContainer">
+          <EntitySet Name="WA_BlogPosts" EntityType="Self.WA_BlogPosts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WA_Blogs" EntityType="Self.WA_Blogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WA_Comments" EntityType="Self.WA_Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WA_Likes" EntityType="Self.WA_Likes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WA_Options" EntityType="Self.WA_Options" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WA_Posts" EntityType="Self.WA_Posts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WA_Roles" EntityType="Self.WA_Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WA_UserRoles" EntityType="Self.WA_UserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WA_Users" EntityType="Self.WA_Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BlogPosts_Blogs" Association="Self.FK_BlogPosts_Blogs">
+            <End Role="WA_Blogs" EntitySet="WA_Blogs" />
+            <End Role="WA_BlogPosts" EntitySet="WA_BlogPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BlogPosts_Posts" Association="Self.FK_BlogPosts_Posts">
+            <End Role="WA_Posts" EntitySet="WA_Posts" />
+            <End Role="WA_BlogPosts" EntitySet="WA_BlogPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Posts" Association="Self.FK_Comments_Posts">
+            <End Role="WA_Posts" EntitySet="WA_Posts" />
+            <End Role="WA_Comments" EntitySet="WA_Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
+            <End Role="WA_Users" EntitySet="WA_Users" />
+            <End Role="WA_Comments" EntitySet="WA_Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_Posts" Association="Self.FK_Likes_Posts">
+            <End Role="WA_Posts" EntitySet="WA_Posts" />
+            <End Role="WA_Likes" EntitySet="WA_Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_Users" Association="Self.FK_Likes_Users">
+            <End Role="WA_Users" EntitySet="WA_Users" />
+            <End Role="WA_Likes" EntitySet="WA_Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Posts_Users" Association="Self.FK_Posts_Users">
+            <End Role="WA_Users" EntitySet="WA_Users" />
+            <End Role="WA_Posts" EntitySet="WA_Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Roles" Association="Self.FK_UserRoles_Roles">
+            <End Role="WA_Roles" EntitySet="WA_Roles" />
+            <End Role="WA_UserRoles" EntitySet="WA_UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Users" Association="Self.FK_UserRoles_Users">
+            <End Role="WA_Users" EntitySet="WA_Users" />
+            <End Role="WA_UserRoles" EntitySet="WA_UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WA_Blogs_WA_Blogs" Association="Self.FK_WA_Blogs_WA_Blogs">
+            <End Role="WA_Blogs" EntitySet="WA_Blogs" />
+            <End Role="WA_Blogs1" EntitySet="WA_Blogs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WA_BlogerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="WA_Blogs">
+          <Key>
+            <PropertyRef Name="BlogID" />
+          </Key>
+          <Property Name="BlogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Parent" Type="Int32" />
+          <Property Name="Order" Type="Int32" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="WA_Blogs1" Relationship="Self.FK_WA_Blogs_WA_Blogs" FromRole="WA_Blogs" ToRole="WA_Blogs1" />
+          <NavigationProperty Name="WA_Blogs2" Relationship="Self.FK_WA_Blogs_WA_Blogs" FromRole="WA_Blogs1" ToRole="WA_Blogs" />
+          <NavigationProperty Name="WA_Posts" Relationship="Self.WA_BlogPosts" FromRole="WA_Blogs" ToRole="WA_Posts" />
+        </EntityType>
+        <EntityType Name="WA_Comments">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContenComment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PostID" Type="Int32" />
+          <Property Name="Author" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="Parent" Type="Int32" />
+          <NavigationProperty Name="WA_Posts" Relationship="Self.FK_Comments_Posts" FromRole="WA_Comments" ToRole="WA_Posts" />
+          <NavigationProperty Name="WA_Users" Relationship="Self.FK_Comments_Users" FromRole="WA_Comments" ToRole="WA_Users" />
+        </EntityType>
+        <EntityType Name="WA_Likes">
+          <Key>
+            <PropertyRef Name="PostID" />
+            <PropertyRef Name="Author" />
+          </Key>
+          <Property Name="PostID" Type="Int32" Nullable="false" />
+          <Property Name="Author" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="IsLike" Type="Int32" />
+          <NavigationProperty Name="WA_Posts" Relationship="Self.FK_Likes_Posts" FromRole="WA_Likes" ToRole="WA_Posts" />
+          <NavigationProperty Name="WA_Users" Relationship="Self.FK_Likes_Users" FromRole="WA_Likes" ToRole="WA_Users" />
+        </EntityType>
+        <EntityType Name="WA_Options">
+          <Key>
+            <PropertyRef Name="Option_ID" />
+          </Key>
+          <Property Name="Option_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Group" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="WA_Posts">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ContentPost" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="Author" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Picture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UseDescription" Type="Boolean" />
+          <Property Name="Seen" Type="Int32" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="WA_Comments" Relationship="Self.FK_Comments_Posts" FromRole="WA_Posts" ToRole="WA_Comments" />
+          <NavigationProperty Name="WA_Likes" Relationship="Self.FK_Likes_Posts" FromRole="WA_Posts" ToRole="WA_Likes" />
+          <NavigationProperty Name="WA_Users" Relationship="Self.FK_Posts_Users" FromRole="WA_Posts" ToRole="WA_Users" />
+          <NavigationProperty Name="WA_Blogs" Relationship="Self.WA_BlogPosts" FromRole="WA_Posts" ToRole="WA_Blogs" />
+        </EntityType>
+        <EntityType Name="WA_Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="WA_Users" Relationship="Self.WA_UserRoles" FromRole="WA_Roles" ToRole="WA_Users" />
+        </EntityType>
+        <EntityType Name="WA_Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Precision="3" />
+          <Property Name="Avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastLogin" Type="DateTime" Precision="3" />
+          <Property Name="IPLast" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IPCreated" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="WA_Comments" Relationship="Self.FK_Comments_Users" FromRole="WA_Users" ToRole="WA_Comments" />
+          <NavigationProperty Name="WA_Likes" Relationship="Self.FK_Likes_Users" FromRole="WA_Users" ToRole="WA_Likes" />
+          <NavigationProperty Name="WA_Posts" Relationship="Self.FK_Posts_Users" FromRole="WA_Users" ToRole="WA_Posts" />
+          <NavigationProperty Name="WA_Roles" Relationship="Self.WA_UserRoles" FromRole="WA_Users" ToRole="WA_Roles" />
+        </EntityType>
+        <Association Name="FK_WA_Blogs_WA_Blogs">
+          <End Role="WA_Blogs" Type="Self.WA_Blogs" Multiplicity="0..1" />
+          <End Role="WA_Blogs1" Type="Self.WA_Blogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Blogs">
+              <PropertyRef Name="BlogID" />
+            </Principal>
+            <Dependent Role="WA_Blogs1">
+              <PropertyRef Name="Parent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Posts">
+          <End Role="WA_Posts" Type="Self.WA_Posts" Multiplicity="0..1" />
+          <End Role="WA_Comments" Type="Self.WA_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Posts">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="WA_Comments">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Users">
+          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="0..1" />
+          <End Role="WA_Comments" Type="Self.WA_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="WA_Comments">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_Posts">
+          <End Role="WA_Posts" Type="Self.WA_Posts" Multiplicity="1" />
+          <End Role="WA_Likes" Type="Self.WA_Likes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Posts">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="WA_Likes">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_Users">
+          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="1" />
+          <End Role="WA_Likes" Type="Self.WA_Likes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="WA_Likes">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Posts_Users">
+          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="0..1" />
+          <End Role="WA_Posts" Type="Self.WA_Posts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="WA_Posts">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="WA_BlogPosts">
+          <End Role="WA_Blogs" Type="Self.WA_Blogs" Multiplicity="*" />
+          <End Role="WA_Posts" Type="Self.WA_Posts" Multiplicity="*" />
+        </Association>
+        <Association Name="WA_UserRoles">
+          <End Role="WA_Roles" Type="Self.WA_Roles" Multiplicity="*" />
+          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="WA_BlogerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="WA_Blogs" EntityType="Self.WA_Blogs" />
+          <EntitySet Name="WA_Comments" EntityType="Self.WA_Comments" />
+          <EntitySet Name="WA_Likes" EntityType="Self.WA_Likes" />
+          <EntitySet Name="WA_Options" EntityType="Self.WA_Options" />
+          <EntitySet Name="WA_Posts" EntityType="Self.WA_Posts" />
+          <EntitySet Name="WA_Roles" EntityType="Self.WA_Roles" />
+          <EntitySet Name="WA_Users" EntityType="Self.WA_Users" />
+          <AssociationSet Name="FK_WA_Blogs_WA_Blogs" Association="Self.FK_WA_Blogs_WA_Blogs">
+            <End Role="WA_Blogs" EntitySet="WA_Blogs" />
+            <End Role="WA_Blogs1" EntitySet="WA_Blogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Posts" Association="Self.FK_Comments_Posts">
+            <End Role="WA_Posts" EntitySet="WA_Posts" />
+            <End Role="WA_Comments" EntitySet="WA_Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
+            <End Role="WA_Users" EntitySet="WA_Users" />
+            <End Role="WA_Comments" EntitySet="WA_Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_Posts" Association="Self.FK_Likes_Posts">
+            <End Role="WA_Posts" EntitySet="WA_Posts" />
+            <End Role="WA_Likes" EntitySet="WA_Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_Users" Association="Self.FK_Likes_Users">
+            <End Role="WA_Users" EntitySet="WA_Users" />
+            <End Role="WA_Likes" EntitySet="WA_Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Posts_Users" Association="Self.FK_Posts_Users">
+            <End Role="WA_Users" EntitySet="WA_Users" />
+            <End Role="WA_Posts" EntitySet="WA_Posts" />
+          </AssociationSet>
+          <AssociationSet Name="WA_BlogPosts" Association="Self.WA_BlogPosts">
+            <End Role="WA_Blogs" EntitySet="WA_Blogs" />
+            <End Role="WA_Posts" EntitySet="WA_Posts" />
+          </AssociationSet>
+          <AssociationSet Name="WA_UserRoles" Association="Self.WA_UserRoles">
+            <End Role="WA_Roles" EntitySet="WA_Roles" />
+            <End Role="WA_Users" EntitySet="WA_Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WA_BlogerModelStoreContainer" CdmEntityContainer="WA_BlogerEntities">
+          <EntitySetMapping Name="WA_Blogs">
+            <EntityTypeMapping TypeName="WA_BlogerModel.WA_Blogs">
+              <MappingFragment StoreEntitySet="WA_Blogs">
+                <ScalarProperty Name="BlogID" ColumnName="BlogID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Parent" ColumnName="Parent" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WA_Comments">
+            <EntityTypeMapping TypeName="WA_BlogerModel.WA_Comments">
+              <MappingFragment StoreEntitySet="WA_Comments">
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="ContenComment" ColumnName="ContenComment" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Parent" ColumnName="Parent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WA_Likes">
+            <EntityTypeMapping TypeName="WA_BlogerModel.WA_Likes">
+              <MappingFragment StoreEntitySet="WA_Likes">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="IsLike" ColumnName="IsLike" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WA_Options">
+            <EntityTypeMapping TypeName="WA_BlogerModel.WA_Options">
+              <MappingFragment StoreEntitySet="WA_Options">
+                <ScalarProperty Name="Option_ID" ColumnName="Option_ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WA_Posts">
+            <EntityTypeMapping TypeName="WA_BlogerModel.WA_Posts">
+              <MappingFragment StoreEntitySet="WA_Posts">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ContentPost" ColumnName="ContentPost" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="UseDescription" ColumnName="UseDescription" />
+                <ScalarProperty Name="Seen" ColumnName="Seen" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WA_Roles">
+            <EntityTypeMapping TypeName="WA_BlogerModel.WA_Roles">
+              <MappingFragment StoreEntitySet="WA_Roles">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WA_Users">
+            <EntityTypeMapping TypeName="WA_BlogerModel.WA_Users">
+              <MappingFragment StoreEntitySet="WA_Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="IPLast" ColumnName="IPLast" />
+                <ScalarProperty Name="IPCreated" ColumnName="IPCreated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="WA_BlogPosts" TypeName="WA_BlogerModel.WA_BlogPosts" StoreEntitySet="WA_BlogPosts">
+            <EndProperty Name="WA_Blogs">
+              <ScalarProperty Name="BlogID" ColumnName="BlogID" />
+            </EndProperty>
+            <EndProperty Name="WA_Posts">
+              <ScalarProperty Name="PostID" ColumnName="PostID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="WA_UserRoles" TypeName="WA_BlogerModel.WA_UserRoles" StoreEntitySet="WA_UserRoles">
+            <EndProperty Name="WA_Roles">
+              <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+            </EndProperty>
+            <EndProperty Name="WA_Users">
+              <ScalarProperty Name="UserID" ColumnName="UserID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

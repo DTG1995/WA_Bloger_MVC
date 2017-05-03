@@ -1,0 +1,167 @@
+﻿<style>
+    /* Dropdown Button */
+    .dropbtn {
+        /*background-color: #4CAF50;*/
+        /*color: white;*/
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        /*background-color: #f9f9f9;*/
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            /*color: black;*/
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            /* Change color of dropdown links on hover */
+            .dropdown-content a:hover {
+                /*background-color: #f1f1f1;*/
+            }
+
+    /* Show the dropdown menu on hover */
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown:hover .dropbtn {
+        /*background-color: #3e8e41;*/
+    }
+
+    .dropdown-submenu {
+        position: relative;
+    }
+
+        .dropdown-submenu > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -6px;
+            margin-left: -1px;
+            /*-webkit-border-radius: 0 6px 6px 6px;
+            -moz-border-radius: 0 6px 6px;
+            border-radius: 0 6px 6px 6px;*/
+        }
+
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-submenu > a:after {
+            display: block;
+            content: " ";
+            float: right;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 5px 0 5px 5px;
+            /*border-left-color: #ccc;*/
+            margin-top: 5px;
+            margin-right: -10px;
+        }
+
+        .dropdown-submenu:hover > a:after {
+            /*border-left-color: #fff;*/
+        }
+
+        .dropdown-submenu.pull-left {
+            float: none;
+        }
+
+            .dropdown-submenu.pull-left > .dropdown-menu {
+                left: -100%;
+                margin-left: 10px;
+                /*-webkit-border-radius: 6px 0 6px 6px;
+                -moz-border-radius: 6px 0 6px 6px;
+                border-radius: 6px 0 6px 6px;*/
+            }
+</style>
+@using WA_Blogers_MVC.Models;
+@model List<WA_Blogs>
+@helper RenderHtmlBlog(WA_Blogs wa_Blog, int? level)
+{
+    string nameclass = "dropdown";
+    if (level != 0)
+    {
+        nameclass = "dropdown-submenu";
+    }
+    <li class="@nameclass">
+        @*@Html.ActionLink(wa_Blog.Name+ (wa_Blog.WA_Blogs1.Count>0 && level==0?"<span class='caret'></span>":""),
+        "ViewBlogs","Blogs",wa_Blog.BlogID,
+        new {@class=(level == 0 ? "dropbtn" : ""), tabindex=(wa_Blog.WA_Blogs1.Count > 0 && level != 0 ? "-1" : "")})*@
+        <a class="@(level == 0 ? "dropbtn" : "")" tabindex="@(wa_Blog.WA_Blogs1.Count > 0 && level != 0 ? "-1" : "")"
+            href="@Url.Action("ViewBlogs","Blogs",new{id = wa_Blog.BlogID, Title= UrlEncode.ToFriendlyUrl(wa_Blog.Name)})">@wa_Blog.Name
+            @if (wa_Blog.WA_Blogs1.Count > 0)
+            {
+                if (level == 0)
+                {
+                    <span class="caret"></span>
+                }
+            }
+        </a>
+        @if (wa_Blog.WA_Blogs1.Count > 0)
+        {
+            List<WA_Blogs> listChilder = wa_Blog.WA_Blogs1.
+                Where(x => x.Active == true).OrderBy(x => x.Order).ToList();
+            <ul class="dropdown-menu @(level == 0 ? " dropdown-content multi-level " : "") ">
+                @for (int i = 0; i < listChilder.Count; i++)
+                {
+                    @RenderHtmlBlog(listChilder[i], level + 1)
+                    ;
+                }
+            </ul>
+        }
+    </li>
+}
+<ul class="nav navbar-nav">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        @RenderHtmlBlog(Model[i],0)
+    }
+</ul>
+
+@*<div class="dropdown">
+    <a class="dropbtn">
+        Dropdown <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+        <li><a href="#">Some action</a></li>
+        <li><a href="#">Some other action</a></li>
+        <li class="divider"></li>
+        <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">Hover me for more options</a>
+            <ul class="dropdown-menu">
+                <li><a tabindex="-1" href="#">Second level</a></li>
+                <li class="dropdown-submenu">
+                    <a href="#">Even More..</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">3rd level</a></li>
+                        <li><a href="#">3rd level</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Second level</a></li>
+                <li><a href="#">Second level</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>*@

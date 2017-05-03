@@ -1,0 +1,64 @@
+﻿@model WA_Blogers_MVC.Models.WA_Comments
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>WA_Comments</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ContenComment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContenComment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Parent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Parent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WA_Posts.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WA_Posts.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WA_Users.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WA_Users.UserName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

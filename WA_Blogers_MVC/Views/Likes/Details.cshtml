@@ -1,0 +1,42 @@
+﻿@model WA_Blogers_MVC.Models.WA_Likes
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>WA_Likes</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IsLike)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsLike)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WA_Posts.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WA_Posts.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WA_Users.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WA_Users.UserName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
