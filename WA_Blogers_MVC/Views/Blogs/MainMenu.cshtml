@@ -1,4 +1,5 @@
 ﻿<style>
+    @@media(min-width:768px){
     /* Dropdown Button */
     .dropbtn {
         /*background-color: #4CAF50;*/
@@ -88,13 +89,14 @@
             float: none;
         }
 
-            .dropdown-submenu.pull-left > .dropdown-menu {
-                left: -100%;
-                margin-left: 10px;
-                /*-webkit-border-radius: 6px 0 6px 6px;
-                -moz-border-radius: 6px 0 6px 6px;
-                border-radius: 6px 0 6px 6px;*/
-            }
+        .dropdown-submenu.pull-left > .dropdown-menu {
+            left: -100%;
+            margin-left: 10px;
+            /*-webkit-border-radius: 6px 0 6px 6px;
+            -moz-border-radius: 6px 0 6px 6px;
+            border-radius: 6px 0 6px 6px;*/
+        }
+    }
 </style>
 @using WA_Blogers_MVC.Models;
 @model List<WA_Blogs>
@@ -110,7 +112,7 @@
         "ViewBlogs","Blogs",wa_Blog.BlogID,
         new {@class=(level == 0 ? "dropbtn" : ""), tabindex=(wa_Blog.WA_Blogs1.Count > 0 && level != 0 ? "-1" : "")})*@
         <a class="@(level == 0 ? "dropbtn" : "")" tabindex="@(wa_Blog.WA_Blogs1.Count > 0 && level != 0 ? "-1" : "")"
-            href="@Url.Action("ViewBlogs","Blogs",new{id = wa_Blog.BlogID, Title= UrlEncode.ToFriendlyUrl(wa_Blog.Name)})">@wa_Blog.Name
+            href="@Url.RouteUrl("ViewPostsInBlogs", new { id = wa_Blog.BlogID, title = UrlEncode.ToFriendlyUrl(wa_Blog.Name) })">@wa_Blog.Name
             @if (wa_Blog.WA_Blogs1.Count > 0)
             {
                 if (level == 0)

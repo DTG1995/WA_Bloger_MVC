@@ -26,7 +26,7 @@ namespace WA_Blogers_MVC.Models
         public string Description { get; set; }
         public string ContentPost { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
-        public string Author { get; set; }
+        public Nullable<int> Author { get; set; }
         public string Picture { get; set; }
         public Nullable<bool> UseDescription { get; set; }
         public Nullable<int> Seen { get; set; }

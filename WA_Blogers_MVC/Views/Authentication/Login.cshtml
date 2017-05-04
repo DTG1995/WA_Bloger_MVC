@@ -1,0 +1,27 @@
+﻿@model WA_Blogers_MVC.Models.WA_Users
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Đăng nhập website</title>
+</head>
+<body>
+    <div> 
+        @using (Html.BeginForm("Login", "Authentication", FormMethod.Post))
+        {
+            @Html.LabelFor(c=>c.UserName)
+            @Html.TextBoxFor(c=>c.UserName)
+            <br />
+            @Html.LabelFor(c=>c.Password)
+            @Html.PasswordFor(c=>c.Password)
+            <br />
+            <input type="submit" name="btnLogin" value="Đăng Nhập"/>
+        }
+    </div>
+</body>
+</html>

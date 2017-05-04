@@ -17,7 +17,7 @@ namespace WA_Blogers_MVC.Models
         public int CommentID { get; set; }
         public string ContenComment { get; set; }
         public Nullable<int> PostID { get; set; }
-        public string Author { get; set; }
+        public Nullable<int> Author { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
         public Nullable<int> Parent { get; set; }
     

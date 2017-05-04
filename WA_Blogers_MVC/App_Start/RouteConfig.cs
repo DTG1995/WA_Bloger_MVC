@@ -15,8 +15,8 @@ namespace WA_Blogers_MVC
             //my change
             routes.MapRoute(
                 name: "ViewPostsInBlogs",
-                url: "{controller}/{title}",
-                defaults: new { controller = "Blogs", action = "ViewBlogs", id = UrlParameter.Optional, title = "" }
+                url: "{controller}/{title}-{id}",
+                defaults: new { controller = "Blogs", action = "ViewBlogs", id = UrlParameter.Optional, title = UrlParameter.Optional }
                 );
 
 

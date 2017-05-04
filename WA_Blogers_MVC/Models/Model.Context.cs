@@ -27,6 +27,7 @@ namespace WA_Blogers_MVC.Models
     
         public virtual DbSet<WA_Blogs> WA_Blogs { get; set; }
         public virtual DbSet<WA_Comments> WA_Comments { get; set; }
+        public virtual DbSet<WA_GroupUser> WA_GroupUser { get; set; }
         public virtual DbSet<WA_Likes> WA_Likes { get; set; }
         public virtual DbSet<WA_Options> WA_Options { get; set; }
         public virtual DbSet<WA_Posts> WA_Posts { get; set; }

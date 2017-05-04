@@ -16,13 +16,13 @@ namespace WA_Blogers_MVC.Models
     {
         public WA_Roles()
         {
-            this.WA_Users = new HashSet<WA_Users>();
+            this.WA_GroupUser = new HashSet<WA_GroupUser>();
         }
     
         public int RoleID { get; set; }
         public string RoleName { get; set; }
         public string Description { get; set; }
     
-        public virtual ICollection<WA_Users> WA_Users { get; set; }
+        public virtual ICollection<WA_GroupUser> WA_GroupUser { get; set; }
     }
 }

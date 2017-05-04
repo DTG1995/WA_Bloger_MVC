@@ -19,10 +19,9 @@ namespace WA_Blogers_MVC.Models
             this.WA_Comments = new HashSet<WA_Comments>();
             this.WA_Likes = new HashSet<WA_Likes>();
             this.WA_Posts = new HashSet<WA_Posts>();
-            this.WA_Roles = new HashSet<WA_Roles>();
         }
     
-        public string UserID { get; set; }
+        public int UserID { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
@@ -31,12 +30,14 @@ namespace WA_Blogers_MVC.Models
         public Nullable<System.DateTime> Modified { get; set; }
         public string Avatar { get; set; }
         public Nullable<System.DateTime> LastLogin { get; set; }
+        public Nullable<int> GroupID { get; set; }
+        public bool IsAdmin { get; set; }
         public string IPLast { get; set; }
         public string IPCreated { get; set; }
     
         public virtual ICollection<WA_Comments> WA_Comments { get; set; }
+        public virtual WA_GroupUser WA_GroupUser { get; set; }
         public virtual ICollection<WA_Likes> WA_Likes { get; set; }
         public virtual ICollection<WA_Posts> WA_Posts { get; set; }
-        public virtual ICollection<WA_Roles> WA_Roles { get; set; }
     }
 }

@@ -9,8 +9,37 @@ namespace WA_Blogers_MVC
 {
     public static class UrlEncode
     {
+        private static readonly string[] VietNamChar = new string[] 
+    { 
+        "aAeEoOuUiIdDyY", 
+        "áàạảãâấầậẩẫăắằặẳẵ", 
+        "ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ", 
+        "éèẹẻẽêếềệểễ", 
+        "ÉÈẸẺẼÊẾỀỆỂỄ", 
+        "óòọỏõôốồộổỗơớờợởỡ", 
+        "ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ", 
+        "úùụủũưứừựửữ", 
+        "ÚÙỤỦŨƯỨỪỰỬỮ", 
+        "íìịỉĩ", 
+        "ÍÌỊỈĨ", 
+        "đ", 
+        "Đ", 
+        "ýỳỵỷỹ", 
+        "ÝỲỴỶỸ" 
+    };
+        public static string LocDau(string str)
+        {
+            //Thay thế và lọc dấu từng char      
+            for (int i = 1; i < VietNamChar.Length; i++)
+            {
+                for (int j = 0; j < VietNamChar[i].Length; j++)
+                    str = str.Replace(VietNamChar[i][j], VietNamChar[0][i - 1]);
+            }
+            return str;
+        }
         public static string ToFriendlyUrl(string urlToEncode)
         {
+            urlToEncode = LocDau(urlToEncode);
             urlToEncode = (urlToEncode ?? "").Trim().ToLower();
 
             StringBuilder url = new StringBuilder();
@@ -32,8 +61,7 @@ namespace WA_Blogers_MVC
                             (ch >= 'a' && ch <= 'z'))
                         {
                             url.Append(ch);
-                        }
-                        else
+                        }else 
                         {
                             url.Append('-');
                         }

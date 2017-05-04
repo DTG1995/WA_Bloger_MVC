@@ -15,7 +15,7 @@ namespace WA_Blogers_MVC.Models
     public partial class WA_Likes
     {
         public int PostID { get; set; }
-        public string Author { get; set; }
+        public int Author { get; set; }
         public Nullable<int> IsLike { get; set; }
     
         public virtual WA_Posts WA_Posts { get; set; }

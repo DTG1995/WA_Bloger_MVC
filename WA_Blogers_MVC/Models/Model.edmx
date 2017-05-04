@@ -30,9 +30,18 @@
           <Property Name="CommentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ContenComment" Type="ntext" />
           <Property Name="PostID" Type="int" />
-          <Property Name="Author" Type="char" MaxLength="10" />
+          <Property Name="Author" Type="int" />
           <Property Name="Created" Type="datetime" />
           <Property Name="Parent" Type="int" />
+        </EntityType>
+        <EntityType Name="WA_GroupUser">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="ntext" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="WA_Likes">
           <Key>
@@ -40,7 +49,7 @@
             <PropertyRef Name="Author" />
           </Key>
           <Property Name="PostID" Type="int" Nullable="false" />
-          <Property Name="Author" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Author" Type="int" Nullable="false" />
           <Property Name="IsLike" Type="int" />
         </EntityType>
         <EntityType Name="WA_Options">
@@ -61,7 +70,7 @@
           <Property Name="Description" Type="ntext" />
           <Property Name="ContentPost" Type="ntext" />
           <Property Name="Created" Type="datetime" />
-          <Property Name="Author" Type="char" MaxLength="10" />
+          <Property Name="Author" Type="int" />
           <Property Name="Picture" Type="ntext" />
           <Property Name="UseDescription" Type="bit" />
           <Property Name="Seen" Type="int" />
@@ -77,17 +86,17 @@
         </EntityType>
         <EntityType Name="WA_UserRoles">
           <Key>
-            <PropertyRef Name="UserID" />
+            <PropertyRef Name="GroupID" />
             <PropertyRef Name="RoleID" />
           </Key>
-          <Property Name="UserID" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="GroupID" Type="int" Nullable="false" />
           <Property Name="RoleID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="WA_Users">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="50" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
@@ -96,6 +105,8 @@
           <Property Name="Modified" Type="datetime" />
           <Property Name="Avatar" Type="ntext" />
           <Property Name="LastLogin" Type="datetime" />
+          <Property Name="GroupID" Type="int" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
           <Property Name="IPLast" Type="varchar" MaxLength="50" />
           <Property Name="IPCreated" Type="varchar" MaxLength="50" />
         </EntityType>
@@ -195,18 +206,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserRoles_Users">
-          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="1" />
-          <End Role="WA_UserRoles" Type="Self.WA_UserRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WA_Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="WA_UserRoles">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_WA_Blogs_WA_Blogs">
           <End Role="WA_Blogs" Type="Self.WA_Blogs" Multiplicity="0..1" />
           <End Role="WA_Blogs1" Type="Self.WA_Blogs" Multiplicity="*" />
@@ -219,10 +218,35 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WA_UserRoles_WA_GroupUser">
+          <End Role="WA_GroupUser" Type="Self.WA_GroupUser" Multiplicity="1" />
+          <End Role="WA_UserRoles" Type="Self.WA_UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_GroupUser">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="WA_UserRoles">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WA_Users_WA_GroupUser">
+          <End Role="WA_GroupUser" Type="Self.WA_GroupUser" Multiplicity="0..1" />
+          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_GroupUser">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="WA_Users">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="WA_BlogerModelStoreContainer">
           <EntitySet Name="WA_BlogPosts" EntityType="Self.WA_BlogPosts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WA_Blogs" EntityType="Self.WA_Blogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WA_Comments" EntityType="Self.WA_Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WA_GroupUser" EntityType="Self.WA_GroupUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WA_Likes" EntityType="Self.WA_Likes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WA_Options" EntityType="Self.WA_Options" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WA_Posts" EntityType="Self.WA_Posts" Schema="dbo" store:Type="Tables" />
@@ -261,13 +285,17 @@
             <End Role="WA_Roles" EntitySet="WA_Roles" />
             <End Role="WA_UserRoles" EntitySet="WA_UserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserRoles_Users" Association="Self.FK_UserRoles_Users">
-            <End Role="WA_Users" EntitySet="WA_Users" />
-            <End Role="WA_UserRoles" EntitySet="WA_UserRoles" />
-          </AssociationSet>
           <AssociationSet Name="FK_WA_Blogs_WA_Blogs" Association="Self.FK_WA_Blogs_WA_Blogs">
             <End Role="WA_Blogs" EntitySet="WA_Blogs" />
             <End Role="WA_Blogs1" EntitySet="WA_Blogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WA_UserRoles_WA_GroupUser" Association="Self.FK_WA_UserRoles_WA_GroupUser">
+            <End Role="WA_GroupUser" EntitySet="WA_GroupUser" />
+            <End Role="WA_UserRoles" EntitySet="WA_UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WA_Users_WA_GroupUser" Association="Self.FK_WA_Users_WA_GroupUser">
+            <End Role="WA_GroupUser" EntitySet="WA_GroupUser" />
+            <End Role="WA_Users" EntitySet="WA_Users" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -295,11 +323,22 @@
           <Property Name="CommentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ContenComment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PostID" Type="Int32" />
-          <Property Name="Author" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Author" Type="Int32" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Parent" Type="Int32" />
           <NavigationProperty Name="WA_Posts" Relationship="Self.FK_Comments_Posts" FromRole="WA_Comments" ToRole="WA_Posts" />
           <NavigationProperty Name="WA_Users" Relationship="Self.FK_Comments_Users" FromRole="WA_Comments" ToRole="WA_Users" />
+        </EntityType>
+        <EntityType Name="WA_GroupUser">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="WA_Users" Relationship="Self.FK_WA_Users_WA_GroupUser" FromRole="WA_GroupUser" ToRole="WA_Users" />
+          <NavigationProperty Name="WA_Roles" Relationship="Self.WA_UserRoles" FromRole="WA_GroupUser" ToRole="WA_Roles" />
         </EntityType>
         <EntityType Name="WA_Likes">
           <Key>
@@ -307,7 +346,7 @@
             <PropertyRef Name="Author" />
           </Key>
           <Property Name="PostID" Type="Int32" Nullable="false" />
-          <Property Name="Author" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Author" Type="Int32" Nullable="false" />
           <Property Name="IsLike" Type="Int32" />
           <NavigationProperty Name="WA_Posts" Relationship="Self.FK_Likes_Posts" FromRole="WA_Likes" ToRole="WA_Posts" />
           <NavigationProperty Name="WA_Users" Relationship="Self.FK_Likes_Users" FromRole="WA_Likes" ToRole="WA_Users" />
@@ -330,7 +369,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ContentPost" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Precision="3" />
-          <Property Name="Author" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Author" Type="Int32" />
           <Property Name="Picture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UseDescription" Type="Boolean" />
           <Property Name="Seen" Type="Int32" />
@@ -347,13 +386,13 @@
           <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="WA_Users" Relationship="Self.WA_UserRoles" FromRole="WA_Roles" ToRole="WA_Users" />
+          <NavigationProperty Name="WA_GroupUser" Relationship="Self.WA_UserRoles" FromRole="WA_Roles" ToRole="WA_GroupUser" />
         </EntityType>
         <EntityType Name="WA_Users">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -362,12 +401,14 @@
           <Property Name="Modified" Type="DateTime" Precision="3" />
           <Property Name="Avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
+          <Property Name="GroupID" Type="Int32" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
           <Property Name="IPLast" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IPCreated" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="WA_Comments" Relationship="Self.FK_Comments_Users" FromRole="WA_Users" ToRole="WA_Comments" />
+          <NavigationProperty Name="WA_GroupUser" Relationship="Self.FK_WA_Users_WA_GroupUser" FromRole="WA_Users" ToRole="WA_GroupUser" />
           <NavigationProperty Name="WA_Likes" Relationship="Self.FK_Likes_Users" FromRole="WA_Users" ToRole="WA_Likes" />
           <NavigationProperty Name="WA_Posts" Relationship="Self.FK_Posts_Users" FromRole="WA_Users" ToRole="WA_Posts" />
-          <NavigationProperty Name="WA_Roles" Relationship="Self.WA_UserRoles" FromRole="WA_Users" ToRole="WA_Roles" />
         </EntityType>
         <Association Name="FK_WA_Blogs_WA_Blogs">
           <End Role="WA_Blogs" Type="Self.WA_Blogs" Multiplicity="0..1" />
@@ -402,6 +443,18 @@
             </Principal>
             <Dependent Role="WA_Comments">
               <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WA_Users_WA_GroupUser">
+          <End Role="WA_GroupUser" Type="Self.WA_GroupUser" Multiplicity="0..1" />
+          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_GroupUser">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="WA_Users">
+              <PropertyRef Name="GroupID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -447,11 +500,12 @@
         </Association>
         <Association Name="WA_UserRoles">
           <End Role="WA_Roles" Type="Self.WA_Roles" Multiplicity="*" />
-          <End Role="WA_Users" Type="Self.WA_Users" Multiplicity="*" />
+          <End Role="WA_GroupUser" Type="Self.WA_GroupUser" Multiplicity="*" />
         </Association>
         <EntityContainer Name="WA_BlogerEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="WA_Blogs" EntityType="Self.WA_Blogs" />
           <EntitySet Name="WA_Comments" EntityType="Self.WA_Comments" />
+          <EntitySet Name="WA_GroupUser" EntityType="Self.WA_GroupUser" />
           <EntitySet Name="WA_Likes" EntityType="Self.WA_Likes" />
           <EntitySet Name="WA_Options" EntityType="Self.WA_Options" />
           <EntitySet Name="WA_Posts" EntityType="Self.WA_Posts" />
@@ -468,6 +522,10 @@
           <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
             <End Role="WA_Users" EntitySet="WA_Users" />
             <End Role="WA_Comments" EntitySet="WA_Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WA_Users_WA_GroupUser" Association="Self.FK_WA_Users_WA_GroupUser">
+            <End Role="WA_GroupUser" EntitySet="WA_GroupUser" />
+            <End Role="WA_Users" EntitySet="WA_Users" />
           </AssociationSet>
           <AssociationSet Name="FK_Likes_Posts" Association="Self.FK_Likes_Posts">
             <End Role="WA_Posts" EntitySet="WA_Posts" />
@@ -487,7 +545,7 @@
           </AssociationSet>
           <AssociationSet Name="WA_UserRoles" Association="Self.WA_UserRoles">
             <End Role="WA_Roles" EntitySet="WA_Roles" />
-            <End Role="WA_Users" EntitySet="WA_Users" />
+            <End Role="WA_GroupUser" EntitySet="WA_GroupUser" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -516,6 +574,16 @@
                 <ScalarProperty Name="Author" ColumnName="Author" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Parent" ColumnName="Parent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WA_GroupUser">
+            <EntityTypeMapping TypeName="WA_BlogerModel.WA_GroupUser">
+              <MappingFragment StoreEntitySet="WA_GroupUser">
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -575,6 +643,8 @@
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
                 <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
                 <ScalarProperty Name="IPLast" ColumnName="IPLast" />
                 <ScalarProperty Name="IPCreated" ColumnName="IPCreated" />
               </MappingFragment>
@@ -592,8 +662,8 @@
             <EndProperty Name="WA_Roles">
               <ScalarProperty Name="RoleID" ColumnName="RoleID" />
             </EndProperty>
-            <EndProperty Name="WA_Users">
-              <ScalarProperty Name="UserID" ColumnName="UserID" />
+            <EndProperty Name="WA_GroupUser">
+              <ScalarProperty Name="GroupID" ColumnName="GroupID" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
