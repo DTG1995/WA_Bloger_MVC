@@ -170,6 +170,7 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UrlEncode.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Filter\AdminFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

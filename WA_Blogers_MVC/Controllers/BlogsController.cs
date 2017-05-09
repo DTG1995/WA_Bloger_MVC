@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using WA_Blogers_MVC.Filter;
 using WA_Blogers_MVC.Models;
 
 namespace WA_Blogers_MVC.Controllers
@@ -36,6 +37,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Blogs/Create
+        [AdminFilter]
         public ActionResult Create()
         {
             return View();

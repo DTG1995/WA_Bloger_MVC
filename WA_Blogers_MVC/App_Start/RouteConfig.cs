@@ -19,8 +19,16 @@ namespace WA_Blogers_MVC
                 defaults: new { controller = "Blogs", action = "ViewBlogs", id = UrlParameter.Optional, title = UrlParameter.Optional }
                 );
 
-
-
+            routes.MapRoute(
+                name: "Login",
+                url: "Login",
+                defaults: new {controller = "Authentication", action = "Login"}
+                );
+            routes.MapRoute(
+                name: "Logout",
+                url: "Logout",
+                defaults: new { controller = "Authentication", action = "Logout" }
+                );
 
 
 

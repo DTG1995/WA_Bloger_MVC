@@ -27,7 +27,7 @@ namespace WA_Blogers_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            WA_Users wa_users = db.WA_Users.Find(id);
+            WA_Users wa_users = db.WA_Users.Find(int.Parse(id));
             if (wa_users == null)
             {
                 return HttpNotFound();
