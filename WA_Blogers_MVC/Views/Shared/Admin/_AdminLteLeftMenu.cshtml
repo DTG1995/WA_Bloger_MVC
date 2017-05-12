@@ -1,0 +1,86 @@
+﻿@* 
+ This partial controls the left menu of the AdminLTE dashboard and is called automatically by _AdminLteLayout
+    This is where you can add, modify, or remove navigation options in your app
+    TODO: This preserves the links as-is for the demo, which lead to broken pages!
+    It's up to you to make sure these links either get deleted or lead somewhere REAL!
+*@
+
+
+@{
+    Layout = null;
+}
+<aside class="main-sidebar">
+    
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="/Content/AdminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+            </div>
+            <div class="pull-left info">
+                <p>Alexander Pierce</p>
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+        </div>
+        <!-- search form -->
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search..." />
+                <span class="input-group-btn">
+                    <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <li class="header">MAIN NAVIGATION</li>
+            <li class="active treeview">
+                <a href="@Url.Action("Index","Home")">
+                    <i class="fa fa-dashboard"></i> <span>Trang Chủ</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-files-o"></i>
+                    <span>Blogs</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="@Url.Action("Index","Blogs")"><i class="fa fa-circle-o"></i> Quản Lý Blogs</a></li>
+                    <li><a href="@Url.Action("Create","Blogs")"><i class="fa fa-circle-o"></i> Thêm Blog Mới</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-files-o"></i>
+                    <span>Posts</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="@Url.Action("Index","Blogs")"><i class="fa fa-circle-o"></i> Quản Lý Posts</a></li>
+                    <li><a href="@Url.Action("Create","Blogs")"><i class="fa fa-circle-o"></i> Thêm Post Mới</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-files-o"></i>
+                    <span>Người dùng</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="@Url.Action("Index","Blogs")"><i class="fa fa-circle-o"></i> Quản Lý Người Dùng</a></li>
+                    <li><a href="@Url.Action("Create","Blogs")"><i class="fa fa-circle-o"></i> Thêm Người Dùng Mới</a></li>
+                    <li><a href="@Url.Action("Create","Blogs")"><i class="fa fa-circle-o"></i> Phân Quyền Người Dùng</a></li>
+                </ul>
+            </li>
+            <li><a href="documentation/index.html"><i class="fa fa-book"></i> Documentation</a></li>
+            <li class="header">LABELS</li>
+            <li><a href="#"><i class="fa fa-circle-o text-danger"></i> Important</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-warning"></i> Warning</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-info"></i> Information</a></li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
