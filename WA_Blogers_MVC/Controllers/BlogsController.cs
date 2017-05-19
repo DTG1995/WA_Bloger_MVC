@@ -146,7 +146,7 @@ namespace WA_Blogers_MVC.Controllers
                 return HttpNotFound();
             }
             //string titleEncode = UrlEncode.ToFriendlyUrl(wa_blogs.Name);
-            return View(wa_blogs.WA_Blogs1);
+            return View(wa_blogs.WA_Posts.ToList());
         }
     }
 }

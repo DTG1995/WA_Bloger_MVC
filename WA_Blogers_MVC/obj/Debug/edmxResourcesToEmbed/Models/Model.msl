@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WA_BlogerModelStoreContainer" CdmEntityContainer="WA_BlogerEntities">
+    <EntitySetMapping Name="WA_Blogs">
+      <EntityTypeMapping TypeName="WA_BlogerModel.WA_Blogs">
+        <MappingFragment StoreEntitySet="WA_Blogs">
+          <ScalarProperty Name="BlogID" ColumnName="BlogID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Parent" ColumnName="Parent" />
+          <ScalarProperty Name="Order" ColumnName="Order" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WA_Comments">
+      <EntityTypeMapping TypeName="WA_BlogerModel.WA_Comments">
+        <MappingFragment StoreEntitySet="WA_Comments">
+          <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+          <ScalarProperty Name="ContenComment" ColumnName="ContenComment" />
+          <ScalarProperty Name="PostID" ColumnName="PostID" />
+          <ScalarProperty Name="Author" ColumnName="Author" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="Parent" ColumnName="Parent" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WA_GroupUser">
+      <EntityTypeMapping TypeName="WA_BlogerModel.WA_GroupUser">
+        <MappingFragment StoreEntitySet="WA_GroupUser">
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WA_Likes">
+      <EntityTypeMapping TypeName="WA_BlogerModel.WA_Likes">
+        <MappingFragment StoreEntitySet="WA_Likes">
+          <ScalarProperty Name="PostID" ColumnName="PostID" />
+          <ScalarProperty Name="Author" ColumnName="Author" />
+          <ScalarProperty Name="IsLike" ColumnName="IsLike" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WA_Options">
+      <EntityTypeMapping TypeName="WA_BlogerModel.WA_Options">
+        <MappingFragment StoreEntitySet="WA_Options">
+          <ScalarProperty Name="Option_ID" ColumnName="Option_ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Group" ColumnName="Group" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WA_Posts">
+      <EntityTypeMapping TypeName="WA_BlogerModel.WA_Posts">
+        <MappingFragment StoreEntitySet="WA_Posts">
+          <ScalarProperty Name="PostID" ColumnName="PostID" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ContentPost" ColumnName="ContentPost" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="Author" ColumnName="Author" />
+          <ScalarProperty Name="Picture" ColumnName="Picture" />
+          <ScalarProperty Name="UseDescription" ColumnName="UseDescription" />
+          <ScalarProperty Name="Seen" ColumnName="Seen" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WA_Roles">
+      <EntityTypeMapping TypeName="WA_BlogerModel.WA_Roles">
+        <MappingFragment StoreEntitySet="WA_Roles">
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WA_Users">
+      <EntityTypeMapping TypeName="WA_BlogerModel.WA_Users">
+        <MappingFragment StoreEntitySet="WA_Users">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="Modified" ColumnName="Modified" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+          <ScalarProperty Name="IPLast" ColumnName="IPLast" />
+          <ScalarProperty Name="IPCreated" ColumnName="IPCreated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="WA_BlogPosts" TypeName="WA_BlogerModel.WA_BlogPosts" StoreEntitySet="WA_BlogPosts">
+      <EndProperty Name="WA_Blogs">
+        <ScalarProperty Name="BlogID" ColumnName="BlogID" />
+      </EndProperty>
+      <EndProperty Name="WA_Posts">
+        <ScalarProperty Name="PostID" ColumnName="PostID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="WA_UserRoles" TypeName="WA_BlogerModel.WA_UserRoles" StoreEntitySet="WA_UserRoles">
+      <EndProperty Name="WA_Roles">
+        <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+      </EndProperty>
+      <EndProperty Name="WA_GroupUser">
+        <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

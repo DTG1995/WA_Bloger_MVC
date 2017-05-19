@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
 <h2>Create</h2>
@@ -26,7 +27,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description)
+                @Html.TextAreaFor(model => model.Description)
                 @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
@@ -42,3 +43,11 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<!-- CK Editor -->
+@Scripts.Render("~/Scripts/AdminLTE/plugins/ckeditor/ckeditor.js")
+
+<script>
+    $(function () {
+        CKEDITOR.replace("Description");
+    });
+</script>
