@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6b6e58098c864b43b0d29ca942d5b885" Name="Diagram1">
+      <Diagram DiagramId="8036585438544271815221b2f7fe85d4" Name="Diagram1">
         <EntityTypeShape EntityType="WA_BlogerModel.WA_Blogs" Width="1.5" PointX="8.25" PointY="8.875" IsExpanded="true" />
         <EntityTypeShape EntityType="WA_BlogerModel.WA_Comments" Width="1.5" PointX="7.5" PointY="4.875" IsExpanded="true" />
         <EntityTypeShape EntityType="WA_BlogerModel.WA_GroupUser" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />

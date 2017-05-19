@@ -1,0 +1,52 @@
+﻿@model WA_Blogers_MVC.Models.WA_Blogs
+
+@{
+    Layout = null;
+}
+@Styles.Render("~/Content/bootstrap-toggle.min.css")
+@Scripts.Render("~/Scripts/bootstrap-toggle.min.js")
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        
+        <div class="form-horizontal">
+ 
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.BlogID)
+    
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+    
+            
+    
+            <div class="form-group">
+                @Html.LabelFor(model => model.Order, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Order)
+                    @Html.ValidationMessageFor(model => model.Order)
+                </div>
+            </div>
+    
+            <div class="form-group">
+                @Html.LabelFor(model => model.Active, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="checkbox" data-toggle="toggle"/>
+                    @*@Html.CheckBoxFor(active, new {data_toggle="toggle" })*@
+                    @Html.ValidationMessageFor(model => model.Active)
+
+                    
+                </div>
+            </div>
+    
+            
+        </div>
+    }
+    
+
+

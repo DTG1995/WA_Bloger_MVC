@@ -21,7 +21,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="Parent" Type="int" />
           <Property Name="Order" Type="int" />
-          <Property Name="Active" Type="bit" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="WA_Comments">
           <Key>
@@ -311,7 +311,7 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Parent" Type="Int32" />
           <Property Name="Order" Type="Int32" />
-          <Property Name="Active" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="WA_Blogs1" Relationship="Self.FK_WA_Blogs_WA_Blogs" FromRole="WA_Blogs" ToRole="WA_Blogs1" />
           <NavigationProperty Name="WA_Blogs2" Relationship="Self.FK_WA_Blogs_WA_Blogs" FromRole="WA_Blogs1" ToRole="WA_Blogs" />
           <NavigationProperty Name="WA_Posts" Relationship="Self.WA_BlogPosts" FromRole="WA_Blogs" ToRole="WA_Posts" />

@@ -16,8 +16,17 @@ namespace WA_Blogers_MVC.Controllers
         private WA_BlogerEntities db = new WA_BlogerEntities();
 
         // GET: /Blogs/
-        public ActionResult Index()
+        public ActionResult Index(string searchString, string sortOrder)
         {
+            var blog = from b in db.WA_Blogs
+                       select b;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                blog = blog.Where(s => s.Name.Contains(searchString));
+            }
+
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             return View(db.WA_Blogs.ToList());
         }
 
@@ -148,5 +157,25 @@ namespace WA_Blogers_MVC.Controllers
             //string titleEncode = UrlEncode.ToFriendlyUrl(wa_blogs.Name);
             return View(wa_blogs.WA_Posts.ToList());
         }
+
+        public ActionResult QuickEdit(int? blogID)
+        {
+            var blog = db.WA_Blogs.Find(blogID);
+            return View(blog);
+        }
+
+        public JsonResult SaveQuickEdit(int? blogID, string name, bool? active)
+        {
+            var blog = db.WA_Blogs.Find(blogID);
+            if (blog != null)
+            {
+                blog.Name = name;
+                blog.Active = active;
+                db.Entry(blog).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return Json(blog);
+        }
+
     }
 }

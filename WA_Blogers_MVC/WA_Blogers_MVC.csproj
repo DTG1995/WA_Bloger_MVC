@@ -40,6 +40,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -262,6 +268,7 @@
     <Content Include="Content\AdminLTE\skins\skin-yellow.min.css" />
     <Content Include="Content\AdminLTE\skins\_all-skins.css" />
     <Content Include="Content\AdminLTE\skins\_all-skins.min.css" />
+    <Content Include="Content\bootstrap-toggle.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dropmenuhover\animate.css" />
@@ -269,10 +276,14 @@
     <Content Include="Content\dropmenuhover\bootstrap-dropdownhover.css" />
     <Content Include="Content\dropmenuhover\bootstrap-dropdownhover.min.css" />
     <Content Include="Content\dropmenuhover\layout.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Public\Loading_icon.gif" />
     <Content Include="Scripts\AdminLTE\app.js" />
     <Content Include="Scripts\AdminLTE\app.min.js" />
     <Content Include="Scripts\AdminLTE\demo.js" />
@@ -934,25 +945,9 @@
     <Content Include="Scripts\AdminLTE\plugins\timepicker\bootstrap-timepicker.min.js" />
     <Content Include="Scripts\bootstrap-dropdownhover.js" />
     <Content Include="Scripts\bootstrap-dropdownhover.min.js" />
+    <Content Include="Scripts\bootstrap-toggle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\Model.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\Model.edmx.diagram">
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\AdminLTE\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Scripts\AdminLTE\plugins\input-mask\phone-codes\phone-codes.json" />
     <Content Include="Content\AdminLTE\img\Thumbs.db" />
@@ -973,6 +968,28 @@
     <Content Include="Scripts\AdminLTE\plugins\ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
     <Content Include="Scripts\AdminLTE\plugins\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
     <Content Include="Scripts\AdminLTE\plugins\ckeditor\skins\moono-lisa\readme.md" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <EntityDeploy Include="Models\Model.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model.edmx.diagram">
+      <DependentUpon>Model.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.cs</LastGenOutput>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1049,6 +1066,8 @@
     <Content Include="Views\Shared\Admin\_AdminLteLeftMenu.cshtml" />
     <Content Include="Views\Shared\Admin\_AdminLteTopMenu.cshtml" />
     <Content Include="Views\Blogs\ViewBlogs.cshtml" />
+    <Content Include="Views\Blogs\QuickEdit.cshtml" />
+    <Content Include="Views\Blogs\SaveQuickEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -38,6 +38,9 @@ namespace WA_Blogers_MVC
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
+            //Hoang Khuyen
+            
+
             
         }
     }

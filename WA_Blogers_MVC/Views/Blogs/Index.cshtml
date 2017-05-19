@@ -9,8 +9,16 @@
 
 <p>
     @Html.ActionLink("Create New", "Create")
+    @using (Html.BeginForm())
+    {
+        <p>
+            Title: @Html.TextBox("SearchString")
+            <input type="submit" value="Tìm kiếm"/>
+        </p>
+        
+    }
 </p>
-<table class="table">
+<table class="table table-striped table-hover" >
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -30,17 +38,82 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Parent)
+            @Html.DisplayFor(modelItem => item.WA_Blogs2.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Active)
+            <input type="checkbox" checked data-toggle="toggle">
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BlogID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BlogID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BlogID })
+            <a href="#" onclick="Edit(@item.BlogID)"><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
+            <a href="#" @Url.Action("Details",new{id=@item.BlogID})><i class="fa fa-info-circle" aria-hidden="true"></i> </a> |
+            <a href="#" @Url.Action("Delete","Blogs",new{id=@item.BlogID})><i class="fa fa-trash" aria-hidden="true"></i> </a>
         </td>
     </tr>
 }
 
 </table>
+
+<script>
+    function Edit(id) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("QuickEdit")",
+            data: {
+                blogID: id
+            },
+            beforeSend: function () {
+                $("#contentModalEdit").css('background-image','url("@Href("~/Public/Loading-icon.gif")")');
+                $("#modalEdit").modal();
+            },
+            success: function (data) {
+                $("#contentModalEdit").css('background-color','#fff');
+                $("#contentModalEdit").html(data);
+              
+            }
+        });
+    }
+    function SaveEdit() {
+        var blogID = $("#BlogID").val();
+        var name = $("Name").val();
+        var action = $("Action").val();
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("SaveQuickEdit")",
+            data: {
+            blogID: id,
+            name: name,
+            action: action
+            },
+            beforeSend: function () {
+
+            },
+            success: function (data) {
+            alert(data);
+
+        }
+    });
+    }
+
+
+</script>
+<!-- Modal -->
+<div class="modal fade" id="modalEdit" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sửa Blog</h4>
+            </div>
+            <div class="modal-body" id="contentModalEdit">
+             
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" onclick="SaveEdit">Lưu thay đổi</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
