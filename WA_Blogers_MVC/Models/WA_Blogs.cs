@@ -11,6 +11,7 @@ namespace WA_Blogers_MVC.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class WA_Blogs
     {
@@ -19,9 +20,13 @@ namespace WA_Blogers_MVC.Models
             this.WA_Blogs1 = new HashSet<WA_Blogs>();
             this.WA_Posts = new HashSet<WA_Posts>();
         }
-    
+
         public int BlogID { get; set; }
+
+        [Display (Name="Tên Blog")]
+        [StringLength(100)]
         public string Name { get; set; }
+
         public Nullable<int> Parent { get; set; }
         public Nullable<int> Order { get; set; }
         public Nullable<bool> Active { get; set; }

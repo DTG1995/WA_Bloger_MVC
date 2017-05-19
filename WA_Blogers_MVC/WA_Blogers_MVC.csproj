@@ -273,6 +273,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Public\Loading_icon.gif" />
     <Content Include="Scripts\AdminLTE\app.js" />
     <Content Include="Scripts\AdminLTE\app.min.js" />
     <Content Include="Scripts\AdminLTE\demo.js" />
@@ -877,6 +878,8 @@
     <Content Include="Views\Shared\Admin\_AdminLteBreadcrumb.cshtml" />
     <Content Include="Views\Shared\Admin\_AdminLteLeftMenu.cshtml" />
     <Content Include="Views\Shared\Admin\_AdminLteTopMenu.cshtml" />
+    <Content Include="Views\Blogs\QuickEdit.cshtml" />
+    <Content Include="Views\Blogs\SaveQuickEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
