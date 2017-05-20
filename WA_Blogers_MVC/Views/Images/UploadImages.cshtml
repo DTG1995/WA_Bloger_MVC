@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "UploadImages";
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
+}
+
+<h2>UploadImages</h2>
+@using (Html.BeginForm("UploadImages","Images",FormMethod.Post, new {enctype="multipart/form-data" }))
+{ 
+    <label for="path">Thư mục: </label>
+    <div class="form-group">
+        <select name="path" id="path" class="form-control">
+            <option value="~/Content/images/thuvien">Thư viện hình ảnh</option>
+            <option value="~/Content/images/avatar">Ảnh đại diện người dùng</option>
+        </select>
+    </div>
+    <label for="filepath">Tải ảnh lên</label>
+    <div class="form-group">
+        <input type="file" name="filepath" id="filepath">
+    </div>
+    <input type="submit" value="Tải Ảnh Lên" />
+}
+

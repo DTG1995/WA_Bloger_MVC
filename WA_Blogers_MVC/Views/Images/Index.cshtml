@@ -1,0 +1,49 @@
+﻿@model List<string>
+@{
+    ViewBag.Title = "Thư viện hình ảnh";
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
+}
+
+<div class="container" style="margin-bottom:50px;">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Thư viện hình ảnh</h1>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+            <form class="form-inline pull-right">
+                <label for="path" >Thư mục: </label>
+                <div class="form-group">
+                    @{var Paths = new[] { new {link="~/Content/images/thuvien",Name="Thư viện hình ảnh"},
+                          new {link="~/Content/images/avatar",Name="Thư viện ảnh đại diện"} };}
+                    <select name="path" id="path" class="form-control" onchange="this.form.submit()">
+                        @foreach (var item in Paths)
+                        {
+                            <option value="@item.link" @(item.link.CompareTo(ViewBag.Path)==0?"selected":"")>@item.Name</option>        
+                        }
+                    </select>
+                </div>
+            </form>
+        </div>
+        @if (Model != null) 
+        { 
+            for (int i = 0; i < Model.Count; i += 4)
+            {
+                <div class="row">
+                @for (int j = i; j < Model.Count && j < i + 4;j++ )
+                { 
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a class="thumbnail" >
+                            <img class="img-responsive" src="@Url.Content(Model[j])" alt="">
+                        </a>
+                    </div>
+                }
+                </div>
+
+            }
+        }
+        else
+        {
+            <h3>Thư mục không tìm thấy hình ảnh!</h3>
+        }
+    </div>
+</div>

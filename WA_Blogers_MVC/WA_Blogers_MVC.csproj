@@ -171,6 +171,7 @@
     <Compile Include="Controllers\BlogsController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -1068,6 +1069,8 @@
     <Content Include="Views\Blogs\ViewBlogs.cshtml" />
     <Content Include="Views\Blogs\QuickEdit.cshtml" />
     <Content Include="Views\Blogs\SaveQuickEdit.cshtml" />
+    <Content Include="Views\Images\Index.cshtml" />
+    <Content Include="Views\Images\UploadImages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

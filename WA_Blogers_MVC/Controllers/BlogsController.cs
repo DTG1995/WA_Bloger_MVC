@@ -166,11 +166,12 @@ namespace WA_Blogers_MVC.Controllers
 
         public JsonResult SaveQuickEdit(int? blogID, string name, bool? active)
         {
+            bool Active = active ?? false;
             var blog = db.WA_Blogs.Find(blogID);
             if (blog != null)
             {
                 blog.Name = name;
-                blog.Active = active;
+                blog.Active = Active;
                 db.Entry(blog).State = EntityState.Modified;
                 db.SaveChanges();
             }
