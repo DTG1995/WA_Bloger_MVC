@@ -8,6 +8,7 @@
 
     @using (Html.BeginForm())
     {
+        <div id="alertError"></div>
         @Html.AntiForgeryToken()
         
         <div class="form-horizontal">
@@ -36,8 +37,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Active, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    <input type="checkbox" data-toggle="toggle"/>
-                    @*@Html.CheckBoxFor(active, new {data_toggle="toggle" })*@
+                    @Html.CheckBoxFor(model=>model.Active, new {data_toggle="toggle" })
                     @Html.ValidationMessageFor(model => model.Active)
 
                     

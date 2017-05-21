@@ -2,13 +2,11 @@
 
 @{
     ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
-
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
+<h2>Xóa Blog</h2>
+<h3>Bạn có chắc muốn xóa Blog này không?</h3>
 <div>
-    <h4>WA_Blogs</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -28,6 +26,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Order)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Active)
         </dt>
 
@@ -41,8 +47,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
+            <input type="submit" value="Xóa" class="btn btn-danger" /><span>&nbsp;</span>
+    @Html.ActionLink("Quay lại", "Index",null, new { @class="btn btn-default"})
+</div>
     }
 </div>
