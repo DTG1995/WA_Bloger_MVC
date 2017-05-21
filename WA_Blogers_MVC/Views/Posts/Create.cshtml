@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
 <h2>Create</h2>
@@ -18,15 +19,15 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { @class = "from-control" })
-                @Html.ValidationMessageFor(model => model.Title)
+                @Html.TextBoxFor(n=>n.Title, new { @class = "form-control" })
+                @Html.ValidationMessageFor(n => n.Title)
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { @class = "from-control" })
+                @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
@@ -34,13 +35,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ContentPost, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.ContentPost, new { @class = "from-control" })
+                @Html.TextAreaFor(model => model.ContentPost)
                 @Html.ValidationMessageFor(model => model.ContentPost)
             </div>
         </div>
-
-       
-
         <div class="form-group">
             @Html.LabelFor(model => model.Author, "Author", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -52,9 +50,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Picture, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Picture)
-                @Html.ValidationMessageFor(model => model.Picture)
-            </div>
+                <input type="file" name="Picture" id="Picture"/>
+                       </div>
         </div>
 
         <div class="form-group">
@@ -84,3 +81,10 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+@Scripts.Render("~/Scripts/AdminLTE/plugins/ckeditor/ckeditor.js")
+
+<script>
+    $(function () {
+        CKEDITOR.replace("ContentPost");
+    });
+</script>

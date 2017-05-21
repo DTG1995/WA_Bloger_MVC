@@ -1,7 +1,8 @@
 ﻿@model WA_Blogers_MVC.Models.WA_Posts
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit - " + Model.Title;
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
 <h2>Edit</h2>
