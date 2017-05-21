@@ -7,6 +7,14 @@
 
 
 @{
+    string postactive = "";
+    string indexactive = "active";
+    
+    if (ViewBag.PostActive!=null)
+    {
+        postactive = "active";
+        indexactive = "";
+    }
     Layout = null;
 }
 <aside class="main-sidebar">
@@ -36,7 +44,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="active treeview">
+            <li class="@indexactive treeview">
                 <a href="@Url.Action("Index","Home")">
                     <i class="fa fa-dashboard"></i> <span>Trang Chủ</span>
                 </a>
@@ -52,14 +60,16 @@
                     <li><a href="@Url.Action("Create","Blogs")"><i class="fa fa-circle-o"></i> Thêm Blog Mới</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            
+            <li class="@postactive treeview">
                 <a href="#">
                     <i class="fa fa-files-o"></i>
                     <span>Posts</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
+
                 <ul class="treeview-menu">
-                    <li><a href="@Url.Action("Index","Posts")"><i class="fa fa-circle-o"></i> Quản Lý Posts</a></li>
+                    <li class="@postactive"><a href="@Url.Action("Index","Posts")"><i class="fa fa-circle-o"></i> Quản Lý Posts</a></li>
                     <li><a href="@Url.Action("Create","Posts")"><i class="fa fa-circle-o"></i> Thêm Post Mới</a></li>
                 </ul>
             </li>

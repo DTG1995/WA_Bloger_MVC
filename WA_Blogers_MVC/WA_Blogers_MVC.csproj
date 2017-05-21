@@ -1071,6 +1071,7 @@
     <Content Include="Views\Blogs\SaveQuickEdit.cshtml" />
     <Content Include="Views\Images\Index.cshtml" />
     <Content Include="Views\Images\UploadImages.cshtml" />
+    <Content Include="Views\Posts\QuickEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,21 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8036585438544271815221b2f7fe85d4" Name="Diagram1">
-        <EntityTypeShape EntityType="WA_BlogerModel.WA_Blogs" Width="1.5" PointX="8.25" PointY="8.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WA_BlogerModel.WA_Comments" Width="1.5" PointX="7.5" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WA_BlogerModel.WA_GroupUser" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WA_BlogerModel.WA_Likes" Width="1.5" PointX="7.5" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WA_BlogerModel.WA_Options" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WA_BlogerModel.WA_Posts" Width="1.5" PointX="10.5" PointY="4.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="WA_BlogerModel.WA_Roles" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WA_BlogerModel.WA_Users" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+      <Diagram DiagramId="f1f727d4963746b7938d94f94c1584e4" Name="Diagram1">
+        <EntityTypeShape EntityType="WA_BlogerModel.WA_Blogs" Width="1.5" PointX="8.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WA_BlogerModel.WA_Comments" Width="1.5" PointX="7.5" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WA_BlogerModel.WA_GroupUser" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WA_BlogerModel.WA_Likes" Width="1.5" PointX="10.5" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WA_BlogerModel.WA_Options" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="WA_BlogerModel.WA_Posts" Width="1.5" PointX="10.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WA_BlogerModel.WA_Roles" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WA_BlogerModel.WA_Users" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
         <AssociationConnector Association="WA_BlogerModel.FK_WA_Blogs_WA_Blogs" ManuallyRouted="false" />
         <AssociationConnector Association="WA_BlogerModel.FK_Comments_Posts" ManuallyRouted="false" />
         <AssociationConnector Association="WA_BlogerModel.FK_Comments_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="WA_BlogerModel.FK_WA_Comments_WA_Comments" ManuallyRouted="false" />
         <AssociationConnector Association="WA_BlogerModel.FK_WA_Users_WA_GroupUser" ManuallyRouted="false" />
         <AssociationConnector Association="WA_BlogerModel.FK_Likes_Posts" ManuallyRouted="false" />
         <AssociationConnector Association="WA_BlogerModel.FK_Likes_Users" ManuallyRouted="false" />
