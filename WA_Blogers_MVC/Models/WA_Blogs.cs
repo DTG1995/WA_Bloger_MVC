@@ -11,6 +11,7 @@ namespace WA_Blogers_MVC.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class WA_Blogs
     {
@@ -21,10 +22,17 @@ namespace WA_Blogers_MVC.Models
         }
     
         public int BlogID { get; set; }
+        [Display(Name="Tên Blog")]
+        [StringLength(100)]
         public string Name { get; set; }
         public Nullable<int> Parent { get; set; }
         public Nullable<int> Order { get; set; }
         public bool Active { get; set; }
+
+        //Phân Trang
+        //public int CurrentPage { get; set; }
+        //public int TotalPage { get; set; }
+        //public int PageSize { get; set; }
     
         public virtual ICollection<WA_Blogs> WA_Blogs1 { get; set; }
         public virtual WA_Blogs WA_Blogs2 { get; set; }
