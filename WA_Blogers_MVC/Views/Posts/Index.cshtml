@@ -137,7 +137,12 @@
             @Html.DisplayFor(modelItem => item.Created)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Picture)
+            @{
+                string linkImage = "#";
+                linkImage = item.Picture ?? "#";
+                
+            }
+            <img width="100px" height="100px" src="@Url.Content(linkImage)"/>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UseDescription)
@@ -258,7 +263,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning" onclick="SaveEdit()">Lưu thay đổi</button>
+                <button type="submit" form="frmEdit" class="btn btn-warning"">Lưu thay đổi</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
             </div>
         </div>

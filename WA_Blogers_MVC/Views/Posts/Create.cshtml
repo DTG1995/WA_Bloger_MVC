@@ -7,7 +7,7 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create","Posts",FormMethod.Post, new { enctype="multipart/form-data"})) 
 {
     @Html.AntiForgeryToken()
     
@@ -65,7 +65,7 @@
                 {
                     <li class="list-group-item ">
                         <div class="checkbox">
-                            <label class="btn btn-link"><input type="checkbox" name="@("Blogs.Blog_"+blog.BlogID)"/>@blog.Name </label> <span class="badge pull-right">@blog.WA_Posts.Count</span>
+                            <label class="btn btn-link"><input type="checkbox" name="Blogs" value="@blog.BlogID"/>@blog.Name </label> <span class="badge pull-right">@blog.WA_Posts.Count</span>
                         </div>
                         <ul class="list-group">
                             @foreach (var item in blog.WA_Blogs1)

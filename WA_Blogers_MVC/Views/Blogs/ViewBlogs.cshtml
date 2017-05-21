@@ -6,7 +6,24 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script>
+    snippet_count = 150;
 
+    function removeHtmlTag(n, e) {
+        if (-1 != n.indexOf("<")) {
+            for (var t = n.split("<"), i = 0; i < t.length; i++)
+                -1 != t[i].indexOf(">") && (t[i] = t[i].substring(t[i].indexOf(">") + 1, t[i].length));
+            n = t.join("")
+        }
+        for (e = e < n.length - 1 ? e : n.length - 2; " " != n.charAt(e - 1) && -1 != n.indexOf(" ", e) ;)
+            e++;
+        return n = n.substring(0, e - 1), n + "..."
+    }
+
+    function createSnippet(n) { var e = document.getElementById(n), t = snippet_count, i = '<div class="snippets">' + removeHtmlTag(e.innerHTML, t) + "</div>"; e.innerHTML = i }
+    //function bp_thumbnail_resize(a, t) { var i = 410, e = 200, l = !0, g = "http://1.bp.blogspot.com/-4fqrt2MACHQ/UADPlJjibiI/AAAAAAAAAcc/FBN03q3jT2A/s1600/blank_post_thumbnail.png"; return 1 == l && "" == a && (a = g), image_tag = '<div class="block-image tlrp-thumb tl-thumboverlay"><img width="' + i + '" height="' + e + '" src="' + a.replace("/s72-c/", "/w" + i + "-h" + e + "-c/") + '" class="postimage" alt="' + t + '"/></div>', yimage_tag = '<div class="block-image"><img src="' + a.replace("default", "maxresdefault") + '" alt="' + t + '" class="postimage"/></div>', -1 != a.indexOf("img.youtube.com") ? yimage_tag : "" != a ? image_tag : "" }
+
+</script>
 @helper RenderHtmlPost(WA_Posts post){
     <div class="post-outer">
         <article class="post hentry" id="@post.PostID" itemscope="" itemtype="http://schema.org/BlogPosting">
@@ -15,10 +32,14 @@
                     <div class="tl-img-post">
                         <a href="@Url.RouteUrl("ViewPost",new{id=post.PostID, title=UrlEncode.ToFriendlyUrl(post.Title)})" title="@post.Title">
                             <div class="img-thumbnail">
+                                @{
+                                    string linkImage = "#";
+                                    linkImage = post.Picture ?? "#";
+                                }
+
+                                <span data-imgsrc="@Url.Content(linkImage)" data-title="@post.Title" id="@(post.PostID + "bp_f")"></span>
                                 
-                                @*<span data-imgsrc="@linkImage" data-title="Never Forget What Got You Here Today" id="@(post.PostID + "bp_f")"></span>*@
-                                
-                                <div class="block-image tlrp-thumb tl-thumboverlay"><img width="410" height="200" src="#" class="postimage" alt="@post.Title">
+                                <div class="block-image tlrp-thumb tl-thumboverlay"><img width="410" height="200" src="@Url.Content(linkImage)" class="postimage" alt="@post.Title">
                                 </div>
                             </div>
                         </a>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Json;
@@ -145,8 +146,43 @@ namespace WA_Blogers_MVC.Controllers
         /// <returns></returns>
         public ActionResult QuickEdit(int PostID)
         {
+            ViewBag.ListBlogs = db.WA_Blogs.Where(x=>x.Parent==null && x.Active).ToList();
             var post = db.WA_Posts.FirstOrDefault(n=>n.PostID==PostID);
             return View(post);
+        }
+        [HttpPost]
+        public ActionResult QuickEdit([Bind(Include="PostID,Title,Description,ContentPost,Active")] WA_Posts wa_posts,int[] Blogs,HttpPostedFileBase filebase)
+        {
+            if (ModelState.IsValid)
+            {
+                WA_Posts change = db.WA_Posts.Find(wa_posts.PostID);
+                change.Title = wa_posts.Title;
+                change.Description = wa_posts.Description;
+                change.ContentPost = wa_posts.ContentPost;
+                change.Active = wa_posts.Active;
+                change.WA_Blogs = new List<WA_Blogs>();
+
+                //Save pic
+                string path = "~/Content/images/thuvien";
+                if (Request.Files[0] != null)
+                {
+                    string tg = DateTime.Now.ToString("ddMMyyyy_");
+                    string pathToSave = Server.MapPath(path);
+                    string filename =  tg+Path.GetFileName(Request.Files[0].FileName);
+                    change.Picture = Path.Combine(path, filename);
+                    Request.Files[0].SaveAs( Path.Combine(pathToSave, filename));
+                }
+
+                foreach (var item in Blogs)
+                {
+                    change.WA_Blogs.Add(db.WA_Blogs.Find(item));
+                }
+                db.Entry(change).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.Author = new SelectList(db.WA_Users, "UserID", "UserName", wa_posts.Author);
+            return View(wa_posts);
         }
         [HttpPost]
        
@@ -198,18 +234,27 @@ namespace WA_Blogers_MVC.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PostID,Title,Description,ContentPost,Author,Picture,UseDescription,Active")] WA_Posts wa_posts)
+        public ActionResult Create([Bind(Include = "PostID,Title,Description,ContentPost,Author,Picture,UseDescription,Active")] WA_Posts wa_posts, int[] Blogs,HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
             {
-
-               
-  
                 
-
                 wa_posts.Created = DateTime.Now;
                 wa_posts.Active = false;
                 wa_posts.Seen = 0;
+                for (int i = 0; i < Blogs.Count(); i++)
+                {
+                    wa_posts.WA_Blogs.Add(db.WA_Blogs.Find(Blogs[i]));
+                }
+                string path = "~/Content/images/thuvien";
+                if (Request.Files[0] != null)
+                {
+                    string tg = DateTime.Now.ToString("ddMMyyyy_");
+                    string pathToSave = Server.MapPath(path);
+                    string filename = tg + Path.GetFileName(Request.Files[0].FileName);
+                    wa_posts.Picture = Path.Combine(path, filename);
+                    Request.Files[0].SaveAs(Path.Combine(pathToSave, filename));
+                }
                 db.WA_Posts.Add(wa_posts);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -321,6 +366,9 @@ namespace WA_Blogers_MVC.Controllers
             {
                 return HttpNotFound();
             }
+            wa_posts.Seen++;
+            db.Entry(wa_posts).State = EntityState.Modified;
+            db.SaveChanges();
             return View(wa_posts);
         }
         protected override void Dispose(bool disposing)

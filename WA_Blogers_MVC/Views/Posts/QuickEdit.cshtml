@@ -8,7 +8,7 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("QuickEdit","Posts",FormMethod.Post,new{id="frmEdit", enctype="multipart/form-data"}))
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
@@ -38,12 +38,52 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.ContentPost, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ContentPost, new {@class = "control-label col-md-2"})
             <div class="col-md-10">
                 @*<input type="checkbox" data-toggle="toggle" />*@
                 @Html.TextAreaFor(model => model.ContentPost)
             </div>
         </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Picture, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="Picture"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Thể loại</label>
+            @helper RenderHtmlBlogs(WA_Blogers_MVC.Models.WA_Blogs blog)
+            {
+                   var ischecked =false;
+                foreach (var item in Model.WA_Blogs)
+                {
+                    if (item.BlogID == blog.BlogID)
+                    {
+                        ischecked = true;
+                        break;
+                    }
+                }
+                <li class="list-group-item ">
+                    <div class="checkbox">
+                        <label class="btn btn-link"><input type="checkbox" @(ischecked?"checked":null) name="Blogs" value="@blog.BlogID" />@blog.Name </label> <span class="badge pull-right">@blog.WA_Posts.Count</span>
+                    </div>
+                    <ul class="list-group">
+                        @foreach (var item in blog.WA_Blogs1)
+                        {
+                            @RenderHtmlBlogs(item)
+                        }
+                    </ul>
+                </li>
+            }
+            <ul class="list-group ">
+                @foreach (var item in ViewBag.ListBlogs)
+                {
+                    @RenderHtmlBlogs(item)
+                }
+            </ul>
+
+        </div>
+
     </div>
 }
 <!-- CK Editor -->

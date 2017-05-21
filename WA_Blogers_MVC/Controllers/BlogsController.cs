@@ -208,7 +208,7 @@ namespace WA_Blogers_MVC.Controllers
                 return HttpNotFound();
             }
             ViewBag.NameBlogs = wa_blogs.Name;
-            var listPost = GetAllPost(wa_blogs).OrderByDescending(x => x.Created).ToList();
+            var listPost = GetAllPost(wa_blogs).OrderByDescending(x => x.Created).Distinct().ToList();
             //string titleEncode = UrlEncode.ToFriendlyUrl(wa_blogs.Name);
             return View(listPost);
         }

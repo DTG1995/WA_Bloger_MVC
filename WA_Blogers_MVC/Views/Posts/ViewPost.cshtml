@@ -36,8 +36,13 @@
                                                 <i class="fa fa-clock-o"></i>
                                                 at
                                                 <a class="timestamp-link" href="#" rel="bookmark" title="permanent link">
-                                                    <abbr class="updated published" title="@Model.Created">
-                                                        <span class="updated">@Model.Created.ToString("HH:mm dd-MM-yyyy")</span>
+                                                    @{
+                                                        DateTime a = DateTime.Now;
+                                                        a = Model.Created ?? DateTime.Now;
+                                                    }
+                                                    <abbr class="updated published" title="@a.ToString("F")">
+                                                        
+                                                        <span class="updated">@a.ToString("dd/MM/yyyy")</span>
                                                     </abbr>
                                                 </a>
                                             </span>
