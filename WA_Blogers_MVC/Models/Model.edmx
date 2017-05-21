@@ -69,7 +69,7 @@
           <Property Name="Title" Type="ntext" />
           <Property Name="Description" Type="ntext" />
           <Property Name="ContentPost" Type="ntext" />
-          <Property Name="Created" Type="datetime" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="Author" Type="int" />
           <Property Name="Picture" Type="ntext" />
           <Property Name="UseDescription" Type="bit" />
@@ -386,7 +386,7 @@
           <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ContentPost" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Author" Type="Int32" />
           <Property Name="Picture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UseDescription" Type="Boolean" />

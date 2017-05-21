@@ -1,4 +1,4 @@
-﻿<style>
+﻿@*<style>
     @@media(min-width:768px){
     /* Dropdown Button */
     .dropbtn {
@@ -108,9 +108,9 @@
         nameclass = "dropdown-submenu";
     }
     <li class="@nameclass">
-        @*@Html.ActionLink(wa_Blog.Name+ (wa_Blog.WA_Blogs1.Count>0 && level==0?"<span class='caret'></span>":""),
+        @Html.ActionLink(wa_Blog.Name+ (wa_Blog.WA_Blogs1.Count>0 && level==0?"<span class='caret'></span>":""),
         "ViewBlogs","Blogs",wa_Blog.BlogID,
-        new {@class=(level == 0 ? "dropbtn" : ""), tabindex=(wa_Blog.WA_Blogs1.Count > 0 && level != 0 ? "-1" : "")})*@
+        new {@class=(level == 0 ? "dropbtn" : ""), tabindex=(wa_Blog.WA_Blogs1.Count > 0 && level != 0 ? "-1" : "")})
         <a class="@(level == 0 ? "dropbtn" : "")" tabindex="@(wa_Blog.WA_Blogs1.Count > 0 && level != 0 ? "-1" : "")"
             href="@Url.RouteUrl("ViewPostsInBlogs", new { id = wa_Blog.BlogID, title = UrlEncode.ToFriendlyUrl(wa_Blog.Name) })">@wa_Blog.Name
             @if (wa_Blog.WA_Blogs1.Count > 0)
@@ -166,3 +166,45 @@
         </li>
     </ul>
 </div>*@
+@using WA_Blogers_MVC.Models;
+@model List<WA_Blogs>
+@helper RenderHtmlBlog(WA_Blogs wa_Blog, int? level)
+{
+    string strClass = "submenu";
+    if (level > 0)
+    {
+        strClass = "submenu2";
+    }
+    <li class="@(wa_Blog.WA_Blogs1.Count>0?strClass:null)">
+        <a href="@Url.RouteUrl("ViewPostsInBlogs",new { id = wa_Blog.BlogID, title = UrlEncode.ToFriendlyUrl(wa_Blog.Name) })" itemprop="url"><span itemprop="name"> @wa_Blog.Name</span></a>
+        <ul>
+            @foreach (var item in wa_Blog.WA_Blogs1)
+            {
+                @RenderHtmlBlog(@item, @level+1);
+            }
+        </ul>
+    </li>
+}
+    <ul class="leftmenus">
+        <li class="homelink"><a href="/"><i class="fa fahome fa-home"></i></a></li>
+        @foreach (var item in Model)
+        {
+            @RenderHtmlBlog(@item,0);
+        }
+        <!-- Hot News Right Menu Start -->
+        <li class="submenu choose-cat">
+            <a href="#" itemprop="url"><span itemprop="name">Hot News</span></a>
+            <ul>
+                <li><a href="#" itemprop="url"><span itemprop="name">World News</span></a></li>
+                <li><a href="#" itemprop="url"><span itemprop="name">Travel</span></a></li>
+                <li><a href="#" itemprop="url"><span itemprop="name">Entertainment</span></a></li>
+                <li><a href="#" itemprop="url"><span itemprop="name">Sports</span></a></li>
+                <li><a href="#" itemprop="url"><span itemprop="name">Music</span></a></li>
+                <li><a href="#" itemprop="url"><span itemprop="name">Fashion</span></a></li>
+                <li><a href="#" itemprop="url"><span itemprop="name">Gallery</span></a></li>
+                <li><a href="#" itemprop="url"><span itemprop="name">Video</span></a></li>
+            </ul>
+        </li>
+        <!-- Hot News Right Menu End -->
+
+    </ul>

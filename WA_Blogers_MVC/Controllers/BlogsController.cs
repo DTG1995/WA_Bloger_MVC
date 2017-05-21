@@ -141,6 +141,16 @@ namespace WA_Blogers_MVC.Controllers
             return PartialView(model);
         }
 
+        [NonAction]
+        private List<WA_Posts> GetAllPost(WA_Blogs blog)
+        {
+            List<WA_Posts> listpost = blog.WA_Posts.ToList();
+            foreach (var item in blog.WA_Blogs1)
+            {
+                listpost.AddRange(GetAllPost(item));
+            }
+            return listpost;
+        }
         //GET: //Blogs/Name-Blog
         public ActionResult ViewBlogs(int? id)
         {
@@ -149,13 +159,17 @@ namespace WA_Blogers_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            
             WA_Blogs wa_blogs = db.WA_Blogs.FirstOrDefault(x=>x.BlogID ==id);
+            
             if (wa_blogs == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.NameBlogs = wa_blogs.Name;
+            var listPost = GetAllPost(wa_blogs).OrderByDescending(x => x.Created).ToList();
             //string titleEncode = UrlEncode.ToFriendlyUrl(wa_blogs.Name);
-            return View(wa_blogs.WA_Posts.ToList());
+            return View(listPost);
         }
 
         public ActionResult QuickEdit(int? blogID)

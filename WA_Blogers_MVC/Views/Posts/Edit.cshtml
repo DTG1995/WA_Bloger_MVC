@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
 <h2>Edit</h2>
@@ -19,7 +20,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Title)
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Title)
             </div>
         </div>
@@ -27,7 +28,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description)
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
@@ -35,26 +36,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ContentPost, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ContentPost)
+                @Html.TextAreaFor(model => model.ContentPost, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ContentPost)
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Created, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Created)
-                @Html.ValidationMessageFor(model => model.Created)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Author, "Author", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Author", String.Empty)
-                @Html.ValidationMessageFor(model => model.Author)
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Picture, new { @class = "control-label col-md-2" })
@@ -91,3 +77,20 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<!-- CK Editor -->
+@Scripts.Render("~/Scripts/AdminLTE/plugins/ckeditor/ckeditor.js")
+
+<script>
+    $(function () {
+        var config = {
+            extraPlugins: 'codesnippet',
+            codeSnippet_theme: 'monokai_sublime',
+            height: 356
+        };
+        CKEDITOR.replace("ContentPost",config);
+    });
+</script>

@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization.Json;
 using System.Web;
 using System.Web.Mvc;
 using WA_Blogers_MVC.Models;
@@ -121,12 +122,15 @@ namespace WA_Blogers_MVC.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="PostID,Title,Description,ContentPost,Author,Picture,UseDescription,Active")] WA_Posts wa_posts)
         {
             if (ModelState.IsValid)
             {
                 wa_posts.Created = DateTime.Now;
+                wa_posts.Active = false;
+                wa_posts.Seen = 0;
                 db.WA_Posts.Add(wa_posts);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -156,12 +160,20 @@ namespace WA_Blogers_MVC.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="PostID,Title,Description,ContentPost,Created,Author,Picture,UseDescription,Active")] WA_Posts wa_posts)
+        public ActionResult Edit([Bind(Include="PostID,Title,Description,ContentPost,Picture,UseDescription,Active")] WA_Posts wa_posts)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(wa_posts).State = EntityState.Modified;
+                WA_Posts change = db.WA_Posts.Find(wa_posts.PostID);
+                change.Title = wa_posts.Title;
+                change.Description = wa_posts.Description;
+                change.ContentPost = wa_posts.ContentPost;
+                change.Picture = wa_posts.Picture;
+                change.UseDescription = wa_posts.UseDescription;
+                change.Active = wa_posts.Active;
+                db.Entry(change).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -219,7 +231,19 @@ namespace WA_Blogers_MVC.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        public ActionResult ViewPost(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            WA_Posts wa_posts = db.WA_Posts.Find(id);
+            if (wa_posts == null)
+            {
+                return HttpNotFound();
+            }
+            return View(wa_posts);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

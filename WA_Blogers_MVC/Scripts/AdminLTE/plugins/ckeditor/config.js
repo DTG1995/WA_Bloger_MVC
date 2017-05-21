@@ -7,5 +7,25 @@ CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here. For example:
     config.language = 'vi';
     config.skin = 'moono-lisa';
-	// config.uiColor = '#AADC6E';
+    // config.uiColor = '#AADC6E';
+    config.toolbarGroups = [
+		{ name: 'clipboard', groups: ['clipboard', 'undo'] },
+		{ name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+		{ name: 'links' },
+		{ name: 'document', groups: [ 'document', 'doctools'] },
+		{ name: 'others' },
+		{ name: 'forms' },
+		{ name: 'tools' },
+		{ name: 'insert' },
+		'/',
+		{ name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+		{ name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
+		{ name: 'styles' },
+		{ name: 'colors' },
+        { name: 'mode' },
+		{ name: 'about' }
+    ];
+
 };
+
+

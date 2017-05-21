@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Web.Mvc;
+
 namespace WA_Blogers_MVC.Models
 {
     using System;
@@ -24,8 +26,9 @@ namespace WA_Blogers_MVC.Models
         public int PostID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        [AllowHtml]
         public string ContentPost { get; set; }
-        public Nullable<System.DateTime> Created { get; set; }
+        public System.DateTime Created { get; set; }
         public Nullable<int> Author { get; set; }
         public string Picture { get; set; }
         public Nullable<bool> UseDescription { get; set; }

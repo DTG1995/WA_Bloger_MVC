@@ -1,72 +1,121 @@
-﻿@model IEnumerable<WA_Blogers_MVC.Models.WA_Posts>
+﻿@using WA_Blogers_MVC.Models;
+@model List<WA_Posts>
 
 @{
-    ViewBag.Title = "ViewBlogs";
+    ViewBag.Title = "DS Bài Viết";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ContentPost)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Created)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Picture)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UseDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Seen)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Active)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WA_Users.UserName)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ContentPost)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Picture)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UseDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Seen)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Active)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WA_Users.UserName)
-        </td>
-    </tr>
+@helper RenderHtmlPost(WA_Posts post){
+    <div class="post-outer">
+        <article class="post hentry" id="@post.PostID" itemscope="" itemtype="http://schema.org/BlogPosting">
+            <div class="home-thumbp">
+                <figure>
+                    <div class="tl-img-post">
+                        <a href="@Url.RouteUrl("ViewPost",new{id=post.PostID, title=UrlEncode.ToFriendlyUrl(post.Title)})" title="@post.Title">
+                            <div class="img-thumbnail">
+                                
+                                @*<span data-imgsrc="@linkImage" data-title="Never Forget What Got You Here Today" id="@(post.PostID + "bp_f")"></span>*@
+                                
+                                <div class="block-image tlrp-thumb tl-thumboverlay"><img width="410" height="200" src="#" class="postimage" alt="@post.Title">
+                                </div>
+                            </div>
+                        </a>
+                        <div class="tl-label-post">
+                            <div class="postags">
+                                <a href="#" rel="tag">Tag</a>
+                                <a href="#" rel="tag">Tag1</a>
+                            </div>
+                        </div>
+                    </div><figcaption>
+                        <div class="caption-content">
+                        </div>
+                    </figcaption>
+                </figure>
+            </div>
+            <div class="home-descx">
+                <div class="posttitle">
+                    <h2 class="post-title entry-title" itemprop="name headline">
+                        <a href="@Url.RouteUrl("ViewPost",new{id=post.PostID, title=UrlEncode.ToFriendlyUrl(post.Title)})" itemprop="url">@post.Title</a>
+                    </h2>
+                    <div style="clear: both;"></div>
+                </div>
+                <div class="tl-post-meta">
+                    <span class="post-author vcard tl-post-author" itemscope="itemscope" itemtype="http://schema.org/Person">
+                    <span class="fn author">
+                        <a href="#" rel="author" title="author profile">
+                            <span itemprop="name"><i class="fa fa-user"></i> @(post.WA_Users!=null?post.WA_Users.DisplayName:"Người nặc danh")</span>
+                        </a>
+                    </span>
+                </span>
+                    <span class="tl-post-timestamp">
+                    <i class="fa fa-clock-o"></i>
+                    at
+                        <a class="timestamp-link" href="@Url.RouteUrl("ViewPost",new{id=post.PostID, title=UrlEncode.ToFriendlyUrl(post.Title)})" rel="bookmark" title="permanent link"><abbr class="updated published" title="@(post.Created!=null?post.Created.ToString():null)"><span class="updated">@(post.Created!=null?post.Created.ToString():"")</span></abbr></a>
+                </span>
+                    <span class="tl-post-comment-link"><a class="comment-link" href="#" onclick=""><i class="fa fa-comment"></i>@post.WA_Comments.Count</a></span>
+                </div>
+                <div class="tl-post-summary">
+                    <div id="@("summary"+post.PostID)">
+                        <div class="snippets">
+                            @post.Description
+                        </div>
+                    </div>
+                    <script type="text/javascript"> createSnippet("@("summary"+post.PostID)"); </script>
+                    <div class="jumpbreak">
+                        <a class="rmoreb" href="@Url.RouteUrl("ViewPost",new{id=post.PostID, title=UrlEncode.ToFriendlyUrl(post.Title)})">
+                            Read more »
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="post-header" style="position: absolute; left: -9999px">
+                <div class="post-header-line-1"></div>
+            </div>
+            <div class="post-body entry-content" id="@("post-body-"+post.PostID)">
+                <div style="clear: both;"></div>
+            </div>
+        </article>
+    </div>
 }
 
-</table>
+
+<div class="main-and-sidebar">
+    <div class="main-wrapper" id="main-wrapper">
+        <div class="main-inner">
+            <div class="blogMainContent">
+                <div class="status-msg">
+                    <span>Bài viết của "@ViewBag.NameBlogs"</span>
+                </div>
+                <div class="main row section" id="main">
+                    <div class="widget Blog" data-version="1" id="Blog1">
+                        <div class="status-msg-wrap">
+                            <div class="status-msg-body">
+                                Các bài viết trong <b>@ViewBag.NameBlogs</b>.
+                                @*<a href="http://magpress1-themelet.blogspot.com/">Show all posts</a>*@
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="blog-posts hfeed">
+                            <!--Can't find substitution for tag [defaultAdStart]-->
+                            @foreach (var item in Model)
+                            {
+                                @RenderHtmlPost(item);
+                                <script type="text/javascript">
+                                    var rr = "@item.PostID",
+                                        s = document.getElementById(rr + "bp_f"),
+                                        e = s.getAttribute('data-title'),
+                                        f = s.getAttribute('data-imgsrc');
+                                    document.write(bp_thumbnail_resize(f, e));
+                                </script>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @* Content rigth *@
+<div></div>
+</div>
+</div>
