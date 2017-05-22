@@ -1,0 +1,10 @@
+﻿@model WA_Blogers_MVC.Models.WA_Users
+@{
+    Layout = null;
+}
+@if (Model != null)
+{
+    return JSON(Model);
+}else {
+    Response.Write("Co loi");
+}
