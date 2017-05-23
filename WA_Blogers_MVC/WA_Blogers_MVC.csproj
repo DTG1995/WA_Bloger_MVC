@@ -1252,6 +1252,8 @@
     <Content Include="Views\Shared\Post\CommentPost.cshtml" />
     <Content Include="Views\Shared\Post\RelatedPosts.cshtml" />
     <Content Include="Views\Shared\Post\PostShares.cshtml" />
+    <Content Include="Views\Users\QuickEdit.cshtml" />
+    <Content Include="Views\Users\SaveQuickEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,15 +1,23 @@
 ﻿@model IEnumerable<WA_Blogers_MVC.Models.WA_Users>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quản Lý Người Dùng";
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Quản lý người dùng</h2>
+
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Tạo Mới", "Create")
 </p>
-<table class="table">
+@using (Html.BeginForm())
+{
+    <p> Name :  @Html.TextBox("SearchName")
+    Email : @Html.TextBox("SearchEmail")<br /><br />
+    <input type="submit" value="Search"/></p>
+}
+<table class="table table-hover">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.UserName)
@@ -18,70 +26,238 @@
             @Html.DisplayNameFor(model => model.Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.DisplayName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Created)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Modified)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Avatar)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastLogin)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IPLast)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IPCreated)
-        </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DisplayName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Modified)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Avatar)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastLogin)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IPLast)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IPCreated)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.UserID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.UserID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.UserID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.UserName, "Edit",new {id = item.UserID})
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Avatar)
+            </td>
+            <td>
+                <a href="#" data-toggle="modal" data-target="#modalEdit_@item.UserID"><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
+                <a href="#" data-toggle="modal" data-target="#modalDetails_@item.UserID"><i class="fa fa-info-circle" aria-hidden="true"></i> </a> |
+                <a href="#" data-toggle="modal" data-target="#modalDelete_@item.UserID"><i class="fa fa-trash" aria-hidden="true"></i> </a>
+                @* Modal edit *@
+                <div class="modal fade" id="modalEdit_@item.UserID" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Sửa nhanh người dùng</h4>
+                            </div>
+                            <div class="modal-body" id="contentModalEdit" style="min-width:100px;">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-warning" onclick="SaveEdit()" id="btnSaveEdit">Lưu Thay Đổi</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @* Modal delete *@
+                <div class="modal fade" id="modalDelete_@item.UserID" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Trạng thái người dùng</h4>
+                            </div>
+                            <div class="modal-body" id="contentModalDetails" style="min-width:100px;">
+                                <table class="table  table-striped">
+                                    <tr>
+                                        <th>Tên người dùng</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().UserName)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().Email)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tên hiển thị</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().DisplayName)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Modified</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().Modified)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ảnh đại diện</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().Avatar)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ngày khởi tạo</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().Created)</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="col-xs-8"></div>
+                                @using (Html.BeginForm("Delete", "User", new { id = item.UserID }, FormMethod.Post, new { @class = "col-xs-2", style = "padding:2px" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-block btn-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+
+                                }
+                                <div class="col-xs-2">
+                                    <button type="button" class="btn btn-block btn-default" data-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                @* Modal Details *@
+                <div class="modal fade" id="modalDetails_@item.UserID" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Trạng thái người dùng</h4>
+                            </div>
+                            <div class="modal-body" id="contentModalDetails" style="min-width:100px;">
+                                <table class="table  table-striped">
+                                    <tr>
+                                        <th>Tên người dùng</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().UserName)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().Email)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tên hiển thị</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().DisplayName)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Modified</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().Modified)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ảnh đại diện</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().Avatar)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ngày khởi tạo</th>
+                                        <td>@Html.DisplayFor(model => model.FirstOrDefault().Created)</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="form-group form-inline">
+                                    <div class="col-xs-6"></div>
+                                    <div class="col-xs-2" style="padding:2px">
+                                        <a type="button" class="btn btn-block btn-warning " href="@Url.Action("Edit", new { id=item.UserID})"><i class="fa fa-pencil" aria-hidden="true"></i> Sửa</a>
+                                    </div>
+                                    <div class="col-xs-2" style="padding:2px">
+                                        <button type="button" onclick="DeleteQuestion(@item.UserID);" class="btn btn-block btn-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                                    </div>
+                                    <div class="col-xs-2" style="padding:2px">
+                                        <button type="button" class="btn btn-block btn-default col-xs-2" data-dismiss="modal">Đóng</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+    }
 
 </table>
+
+
+<script>
+    @*function Edit(id) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("QuickEdit")",
+            data:{
+                userID: id
+            },
+            beforeSend: function () {
+                $("#contentModalEdit").css('background-image', 'url("@Href("~/Public/Loading_icon.gif")")');
+                $("#contentModalEdit").css('background-repeat', 'none');
+                $("#contentModalEdit").css('text-align', 'center');
+                $("#modalEdit").modal();
+            },
+            success: function (data) {
+                $("#contentModalEdit").css('background-image', 'none');
+                $("#contentModalEdit").html(data);
+            }
+        });
+    }*@
+    function SaveEdit() {
+        var userid = $("#UserID").val();
+        var userName = $("#UserName").val();
+        var email = $("#Email").val();
+        var displayName = $("#DisplayName").val();
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("SaveQuickEdit")/",
+            dataType: 'json',
+            data: {
+                'userID': userid,
+                'userName': userName,
+                'email': email,
+                'nameDisplay': displayName
+            },
+            beforeSend: function () {
+                $("#btnSaveEdit").prop('disabled', true);
+                $("#btnSaveEdit").html('Lưu Thay Đổi <i class="fa fa-refresh fa-spin fa-fw" aria-hidden="true"></i>');
+            },
+            success: function (data) {
+                alert(data);
+                $("#btnSaveEdit").prop('disabled', false);
+                $("#btnSaveEdit").html('Lưu Thay Đổi');
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    }
+    function Details(id) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("QuickDetails")",
+            data: {
+            userID: id
+            },
+        beforeSend: function () {
+            $("#contentModalDetails").css('background-image', 'url("@Href("~/Public/Loading_icon.gif")")');
+            $("#contentModalDetails").css('background-repeat', 'none');
+            $("#contentModalDetails").css('text-align', 'center');
+            $("#modalDetails").modal();
+        },
+        success: function (data) {
+            $("#contentModalDetails").css('background-image', 'none');
+            $("#contentModalDetails").html(data);
+        }
+    });
+    }
+    $('#modalDelete').on('show.bs.modal', function (e) {
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+    });
+</script>
+
+

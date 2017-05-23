@@ -15,9 +15,19 @@ namespace WA_Blogers_MVC.Controllers
         private WA_BlogerEntities db = new WA_BlogerEntities();
 
         // GET: /Users/
-        public ActionResult Index()
+        public ActionResult Index(string searchName,string searchEmail)
         {
-            return View(db.WA_Users.ToList());
+            var user = from u in db.WA_Users
+                        select u;
+            if(!String.IsNullOrEmpty(searchName))
+            {
+                user = user.Where(s => s.UserName.Contains(searchName));
+            }
+            if (!String.IsNullOrEmpty(searchEmail))
+            {
+                user = user.Where(s => s.Email.Contains(searchEmail));
+            }
+            return View(user);
         }
 
         // GET: /Users/Details/5
@@ -59,7 +69,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Users/Edit/5
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int id)
         {
             if (id == null)
             {
@@ -90,7 +100,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Users/Delete/5
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int id)
         {
             if (id == null)
             {
@@ -115,6 +125,27 @@ namespace WA_Blogers_MVC.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult QuickEdit(int? userID)
+        {
+            var user = db.WA_Users.Find(userID);
+            return View(user);
+        }
+        [HttpGet]
+        public JsonResult SaveQuickEdit(int? userID, string userName, string email, string nameDisplay)
+        {
+            var user = db.WA_Users.Find(userID);
+            if (user != null)
+            {
+                user.UserName = userName;
+                user.Email = email;
+                user.DisplayName = nameDisplay;
+                user.Modified = DateTime.Now;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return Json(user, JsonRequestBehavior.AllowGet);
+        }
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
