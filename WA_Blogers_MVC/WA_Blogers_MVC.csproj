@@ -277,9 +277,12 @@
     <Content Include="Content\dropmenuhover\bootstrap-dropdownhover.css" />
     <Content Include="Content\dropmenuhover\bootstrap-dropdownhover.min.css" />
     <Content Include="Content\dropmenuhover\layout.css" />
+    <Content Include="Content\FlipClock\flipclock.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\owlcarousel\owl.carousel.min.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\test\style.css" />
+    <Content Include="Content\ticker\breakingNews.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -1167,6 +1170,7 @@
     <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\README.md" />
     <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\README.ru.md" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\FlipClock\flipclock.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -1175,9 +1179,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\owlcarousel\owl.carousel.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\test\script.js" />
+    <Content Include="Scripts\ticker\breakingNews.js" />
+    <Content Include="Scripts\ticker\jquery.easing.min.js" />
+    <Content Include="Scripts\ticker\jquery.easy-ticker.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1254,6 +1262,9 @@
     <Content Include="Views\Shared\Post\PostShares.cshtml" />
     <Content Include="Views\Users\QuickEdit.cshtml" />
     <Content Include="Views\Users\SaveQuickEdit.cshtml" />
+    <Content Include="Views\Shared\Home\NewsPost.cshtml" />
+    <Content Include="Views\Shared\Home\Search.cshtml" />
+    <Content Include="Views\Shared\Home\FeaturedPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

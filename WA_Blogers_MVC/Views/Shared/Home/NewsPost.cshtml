@@ -1,0 +1,45 @@
+﻿@using WA_Blogers_MVC.Models
+@Styles.Render("~/Content/ticker/breakingNews.css")
+@Scripts.Render("~/Scripts/ticker/breakingNews.js")
+@Scripts.Render("~/Scripts/ticker/jquery.easing.min.js")
+@Scripts.Render("~/Scripts/ticker/jquery.easy-ticker.min.js")
+
+        <div class="tl-newsTicker" style="margin-bottom: 25px;">
+            <div class="featured-inner">
+                <div class="breakingNews bn-red" id="bn4">
+                    <div class="bn-title" style="width: auto;">
+                        <h2 style="display: inline-block;">Bài Mới</h2><span></span>
+                    </div>
+                    <ul style="left: 177px;">
+                         @for (int i = 0; i < ViewBag.ListTopNews.Count; i++)
+                         {
+                             WA_Posts waPosts = ViewBag.ListTopNews[i];
+                             int top = 0;
+                             if (i == 1)
+                             { top = 60;}
+                             else if (i > 1)
+                             {   top = -60;}
+                             string title = (waPosts.Title.Length > 150 ? waPosts.Title.Substring(0, 150) + "..." : waPosts.Title);
+                             WA_Blogs blog = waPosts.WA_Blogs.FirstOrDefault();
+                             <li style="top: @(top.ToString()+"px"); display: block;"><span>@blog.Name</span> - <a href="@Url.RouteUrl("ViewPost", new{id = blog.BlogID, title=UrlEncode.ToFriendlyUrl(title)})" style="display: unset;">@title</a></li>
+                         }
+                    </ul>
+                    <div class="bn-navi">
+                    </div>
+                </div>
+                <script>
+
+                    $(window).load(function(e) {
+                        $("#bn4").breakingNews({
+                            effect: "slide-v",
+                            autoplay: true,
+                            timer: 2000,
+                            color: 'red',
+                            border: true
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+

@@ -24,7 +24,8 @@
     //function bp_thumbnail_resize(a, t) { var i = 410, e = 200, l = !0, g = "http://1.bp.blogspot.com/-4fqrt2MACHQ/UADPlJjibiI/AAAAAAAAAcc/FBN03q3jT2A/s1600/blank_post_thumbnail.png"; return 1 == l && "" == a && (a = g), image_tag = '<div class="block-image tlrp-thumb tl-thumboverlay"><img width="' + i + '" height="' + e + '" src="' + a.replace("/s72-c/", "/w" + i + "-h" + e + "-c/") + '" class="postimage" alt="' + t + '"/></div>', yimage_tag = '<div class="block-image"><img src="' + a.replace("default", "maxresdefault") + '" alt="' + t + '" class="postimage"/></div>', -1 != a.indexOf("img.youtube.com") ? yimage_tag : "" != a ? image_tag : "" }
 
 </script>
-@helper RenderHtmlPost(WA_Posts post){
+@helper RenderHtmlPost(WA_Posts post)
+{
     <div class="post-outer">
         <article class="post hentry" id="@post.PostID" itemscope="" itemtype="http://schema.org/BlogPosting">
             <div class="home-thumbp">
@@ -38,8 +39,9 @@
                                 }
 
                                 <span data-imgsrc="@Url.Content(linkImage)" data-title="@post.Title" id="@(post.PostID + "bp_f")"></span>
-                                
-                                <div class="block-image tlrp-thumb tl-thumboverlay"><img width="410" height="200" src="@Url.Content(linkImage)" class="postimage" alt="@post.Title">
+
+                                <div class="block-image tlrp-thumb tl-thumboverlay">
+                                    <img width="410" height="200" src="@Url.Content(linkImage)" class="postimage" alt="@post.Title">
                                 </div>
                             </div>
                         </a>
@@ -64,17 +66,17 @@
                 </div>
                 <div class="tl-post-meta">
                     <span class="post-author vcard tl-post-author" itemscope="itemscope" itemtype="http://schema.org/Person">
-                    <span class="fn author">
-                        <a href="#" rel="author" title="author profile">
-                            <span itemprop="name"><i class="fa fa-user"></i> @(post.WA_Users!=null?post.WA_Users.DisplayName:"Người nặc danh")</span>
-                        </a>
+                        <span class="fn author">
+                            <a href="#" rel="author" title="author profile">
+                                <span itemprop="name"><i class="fa fa-user"></i> @(post.WA_Users != null ? post.WA_Users.DisplayName : "Người nặc danh")</span>
+                            </a>
+                        </span>
                     </span>
-                </span>
                     <span class="tl-post-timestamp">
-                    <i class="fa fa-clock-o"></i>
-                    at
-                        <a class="timestamp-link" href="@Url.RouteUrl("ViewPost",new{id=post.PostID, title=UrlEncode.ToFriendlyUrl(post.Title)})" rel="bookmark" title="permanent link"><abbr class="updated published" title="@(post.Created!=null?post.Created.ToString():null)"><span class="updated">@(post.Created!=null?post.Created.ToString():"")</span></abbr></a>
-                </span>
+                        <i class="fa fa-clock-o"></i>
+                        at
+                        <a class="timestamp-link" href="@Url.RouteUrl("ViewPost",new{id=post.PostID, title=UrlEncode.ToFriendlyUrl(post.Title)})" rel="bookmark" title="permanent link"><abbr class="updated published" title="@(post.Created!=null?post.Created.ToString():null)"><span class="updated">@(post.Created != null ? post.Created.ToString() : "")</span></abbr></a>
+                    </span>
                     <span class="tl-post-comment-link"><a class="comment-link" href="#" onclick=""><i class="fa fa-comment"></i>@post.WA_Comments.Count</a></span>
                 </div>
                 <div class="tl-post-summary">
@@ -101,42 +103,47 @@
     </div>
 }
 
-
-<div class="main-and-sidebar">
-    <div class="main-wrapper" id="main-wrapper">
-        <div class="main-inner">
-            <div class="blogMainContent">
-                <div class="status-msg">
-                    <span>Bài viết của "@ViewBag.NameBlogs"</span>
-                </div>
-                <div class="main row section" id="main">
-                    <div class="widget Blog" data-version="1" id="Blog1">
-                        <div class="status-msg-wrap">
-                            <div class="status-msg-body">
-                                Các bài viết trong <b>@ViewBag.NameBlogs</b>.
-                                @*<a href="http://magpress1-themelet.blogspot.com/">Show all posts</a>*@
+<div class="content-wrapper main-content">
+    <div class="inner container" style="max-width:100%;">
+        <div class="row">
+            <div class="main-and-sidebar">
+                <div class="main-wrapper" id="main-wrapper">
+                    <div class="main-inner">
+                        <div class="blogMainContent">
+                            <div class="status-msg">
+                                <span>Bài viết của "@ViewBag.NameBlogs"</span>
+                            </div>
+                            <div class="main row section" id="main">
+                                <div class="widget Blog" data-version="1" id="Blog1">
+                                    <div class="status-msg-wrap">
+                                        <div class="status-msg-body">
+                                            Các bài viết trong <b>@ViewBag.NameBlogs</b>.
+                                            @*<a href="http://magpress1-themelet.blogspot.com/">Show all posts</a>*@
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div class="blog-posts hfeed">
+                                        <!--Can't find substitution for tag [defaultAdStart]-->
+                                        @foreach (var item in Model)
+                                        {
+                                            @RenderHtmlPost(item);
+                                            <script type="text/javascript">
+                                                var rr = "@item.PostID",
+                                                    s = document.getElementById(rr + "bp_f"),
+                                                    e = s.getAttribute('data-title'),
+                                                    f = s.getAttribute('data-imgsrc');
+                                                document.write(bp_thumbnail_resize(f, e));
+                                            </script>
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="clear"></div>
-                        <div class="blog-posts hfeed">
-                            <!--Can't find substitution for tag [defaultAdStart]-->
-                            @foreach (var item in Model)
-                            {
-                                @RenderHtmlPost(item);
-                                <script type="text/javascript">
-                                    var rr = "@item.PostID",
-                                        s = document.getElementById(rr + "bp_f"),
-                                        e = s.getAttribute('data-title'),
-                                        f = s.getAttribute('data-imgsrc');
-                                    document.write(bp_thumbnail_resize(f, e));
-                                </script>
-                            }
-                        </div>
                     </div>
+                    @* Content rigth *@
+                    <div></div>
                 </div>
             </div>
         </div>
-        @* Content rigth *@
-<div></div>
-</div>
+    </div>
 </div>

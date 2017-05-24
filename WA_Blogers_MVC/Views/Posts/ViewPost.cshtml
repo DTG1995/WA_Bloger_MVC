@@ -5,140 +5,146 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="main-and-sidebar">
-    <div class="main-wrapper" id="main-wrapper">
-        <div class="main-inner">
-            <div class="blogMainContent">
-                <div class="main row section" id="main">
-                    <div class="widget Blog" data-version="1" id="Blog1">
-                        <div class="blog-posts hfeed">
-                            <!--Can't find substitution for tag [defaultAdStart]-->
-                            <div class="post-outer">
-                                <article class="hentry" id="@Model.PostID" itemscope="" itemtype="http://schema.org/BlogPosting">
-                                    <div class="home-descx">
-                                        <div class="posttitle">
-                                            <h1 class="post-title entry-title" itemprop="name headline">
-                                                <span class="tl-wrapIn">
-                                                    <a href="#" itemprop="url">@Model.Title </a>
-                                                </span>
-                                            </h1>
-                                            <div style="clear: both;"></div>
-                                        </div>
-                                        <div class="tl-post-meta">
-                                            <span class="post-author vcard tl-post-author" itemscope="itemscope" itemtype="http://schema.org/Person">
-                                                <span class="fn author">
-                                                    <a href="#" rel="author" title="author profile">
-                                                        <span itemprop="name"><i class="fa fa-user"></i>@(Model.WA_Users!=null?Model.WA_Users.DisplayName:"Người nặc danh")</span>
-                                                    </a>
-                                                </span>
-                                            </span>
-                                            <span class="tl-post-timestamp">
-                                                <i class="fa fa-clock-o"></i>
-                                                at
-                                                <a class="timestamp-link" href="#" rel="bookmark" title="permanent link">
-                                                    @{
-                                                        DateTime a = DateTime.Now;
-                                                        a = Model.Created ?? DateTime.Now;
-                                                    }
-                                                    <abbr class="updated published" title="@a.ToString("F")">
-                                                        
-                                                        <span class="updated">@a.ToString("dd/MM/yyyy")</span>
-                                                    </abbr>
-                                                </a>
-                                            </span>
-                                            <span class="tl-post-labels">
-                                                <i class="fa fa-folder-open"></i>
-                                                <a href="#" rel="tag">Tag1,</a>
-                                                <a href="#" rel="tag">Tag2,</a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="post-header" style="position: absolute; left: -9999px">
-                                        <div class="post-header-line-1"></div>
-                                    </div>
-                                    <div class="post-body entry-content" id="post-body-3627668647661354258">
-                                        <!--Nôi dung bai viet-->
-                                        @Html.Raw(new HtmlString(@Model.ContentPost))
-                                    </div>
-                                    <div class="post-footer">
-                                        <div class="tl-footerTag">
-                                            <span class="post-label">
-                                                <i class="fa fa-tags"></i>
-                                                <span>
-                                                    <a href="#" rel="tag">tag1</a>,
-                                                </span>
-                                                <span>
-                                                    <a href="#" rel="tag">Tag2</a>
-                                                </span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="tl-customArea">
-                                        <div class="tl-customArea-inner">
-                                            @Html.Partial("~/Views/Shared/Post/PostShares.cshtml")
-                                            <div class="clear"></div>
-                                            <!--Các bài viết gần đó-->
-                                            @*<div class="blog-pager-item" id="blog-pager-item">
-                                                <div class="bcreative-pager">
-                                                    <a class="blog-pager-newer-link" href="http://magpress1-themelet.blogspot.com/2015/10/test-your-survival-skills-with-project.html"
-                                                       id="Blog1_blog-pager-newer-link" title="Newer Post">
-                                                        <h6>Next</h6>
-                                                        <h5>
-                                                            Test Your Survival Skills With Project Zomboid
-                                                        </h5>
-                                                    </a>
-                                                    <a class="blog-pager-older-link" href="http://magpress1-themelet.blogspot.com/2015/10/dont-forget-that-forest-jogging-is-best.html"
-                                                       id="Blog1_blog-pager-older-link" title="Older Post">
-                                                        <h6>Previous</h6>
-                                                        <h5>
-                                                            Don’t Forget That Forest Jogging Is The Best Stress Relief
-                                                        </h5>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <script type="text/javascript">
-                                                (function ($) {
-                                                    var newerLink = $('a.blog-pager-newer-link');
-                                                    var olderLink = $('a.blog-pager-older-link');
-                                                    $.get(newerLink.attr('href'), function (data) {
-                                                        newerLink.html('<h6>Next</h6><h5>' + $(data).find('.post h1.post-title').text() + '</h5>');
-                                                    }, "html");
-                                                    $.get(olderLink.attr('href'), function (data2) {
-                                                        olderLink.html('<h6>Previous</h6><h5>' + $(data2).find('.post h1.post-title').text() + '</h5>');
-                                                    }, "html");
-                                                })(jQuery);
-                                            </script>*@
+<div class="content-wrapper main-content">
+    <div class="inner container" style="max-width:100%;">
+        <div class="row">
+            <div class="main-and-sidebar">
+                <div class="main-wrapper" id="main-wrapper">
+                    <div class="main-inner">
+                        <div class="blogMainContent">
+                            <div class="main row section" id="main">
+                                <div class="widget Blog" data-version="1" id="Blog1">
+                                    <div class="blog-posts hfeed">
+                                        <!--Can't find substitution for tag [defaultAdStart]-->
+                                        <div class="post-outer">
+                                            <article class="hentry" id="@Model.PostID" itemscope="" itemtype="http://schema.org/BlogPosting">
+                                                <div class="home-descx">
+                                                    <div class="posttitle">
+                                                        <h1 class="post-title entry-title" itemprop="name headline">
+                                                            <span class="tl-wrapIn">
+                                                                <a href="#" itemprop="url">@Model.Title </a>
+                                                            </span>
+                                                        </h1>
+                                                        <div style="clear: both;"></div>
+                                                    </div>
+                                                    <div class="tl-post-meta">
+                                                        <span class="post-author vcard tl-post-author" itemscope="itemscope" itemtype="http://schema.org/Person">
+                                                            <span class="fn author">
+                                                                <a href="#" rel="author" title="author profile">
+                                                                    <span itemprop="name"><i class="fa fa-user"></i>@(Model.WA_Users != null ? Model.WA_Users.DisplayName : "Người nặc danh")</span>
+                                                                </a>
+                                                            </span>
+                                                        </span>
+                                                        <span class="tl-post-timestamp">
+                                                            <i class="fa fa-clock-o"></i>
+                                                            at
+                                                            <a class="timestamp-link" href="#" rel="bookmark" title="permanent link">
+                                                                @{
+                                                                    DateTime a = DateTime.Now;
+                                                                    a = Model.Created ?? DateTime.Now;
+                                                                }
+                                                                <abbr class="updated published" title="@a.ToString("F")">
 
-                                            <!--Tác giả-->
-                                            <div class="tl-author">
-                                                <div class="about-author">
-                                                    <div class="tl-authAvatar">
-                                                        <img src="//lh6.googleusercontent.com/-wUuT8I7rqZ0/AAAAAAAAAAI/AAAAAAAAANc/XCl8wqizoU8/s512-c/photo.jpg">
-                                                    </div>
-                                                    <div class="authorcontent">
-                                                        <h3>Mohammad Qasim</h3>
-                                                        <p>
-                                                            <!--Can't find substitution for tag [post.authorAboutMe]-->
-                                                        </p>
-                                                        <div class="author-profile">
-                                                            <a class="button blue" href="https://plus.google.com/104724919698044791161"><span><i class="fa fa-paper-plane"></i></span> View Profile</a>
-                                                        </div>
+                                                                    <span class="updated">@a.ToString("dd/MM/yyyy")</span>
+                                                                </abbr>
+                                                            </a>
+                                                        </span>
+                                                        <span class="tl-post-labels">
+                                                            <i class="fa fa-folder-open"></i>
+                                                            <a href="#" rel="tag">Tag1,</a>
+                                                            <a href="#" rel="tag">Tag2,</a>
+                                                        </span>
                                                     </div>
                                                 </div>
+                                                <div class="post-header" style="position: absolute; left: -9999px">
+                                                    <div class="post-header-line-1"></div>
+                                                </div>
+                                                <div class="post-body entry-content" id="post-body-3627668647661354258">
+                                                    <!--Nôi dung bai viet-->
+                                                    @Html.Raw(new HtmlString(@Model.ContentPost))
+                                                </div>
+                                                <div class="post-footer">
+                                                    <div class="tl-footerTag">
+                                                        <span class="post-label">
+                                                            <i class="fa fa-tags"></i>
+                                                            <span>
+                                                                <a href="#" rel="tag">tag1</a>,
+                                                            </span>
+                                                            <span>
+                                                                <a href="#" rel="tag">Tag2</a>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="tl-customArea">
+                                                    <div class="tl-customArea-inner">
+                                                        @Html.Partial("~/Views/Shared/Post/PostShares.cshtml")
+                                                        <div class="clear"></div>
+                                                        <!--Các bài viết gần đó-->
+                                                        @*<div class="blog-pager-item" id="blog-pager-item">
+                                                                <div class="bcreative-pager">
+                                                                    <a class="blog-pager-newer-link" href="http://magpress1-themelet.blogspot.com/2015/10/test-your-survival-skills-with-project.html"
+                                                                       id="Blog1_blog-pager-newer-link" title="Newer Post">
+                                                                        <h6>Next</h6>
+                                                                        <h5>
+                                                                            Test Your Survival Skills With Project Zomboid
+                                                                        </h5>
+                                                                    </a>
+                                                                    <a class="blog-pager-older-link" href="http://magpress1-themelet.blogspot.com/2015/10/dont-forget-that-forest-jogging-is-best.html"
+                                                                       id="Blog1_blog-pager-older-link" title="Older Post">
+                                                                        <h6>Previous</h6>
+                                                                        <h5>
+                                                                            Don’t Forget That Forest Jogging Is The Best Stress Relief
+                                                                        </h5>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <script type="text/javascript">
+                                                                (function ($) {
+                                                                    var newerLink = $('a.blog-pager-newer-link');
+                                                                    var olderLink = $('a.blog-pager-older-link');
+                                                                    $.get(newerLink.attr('href'), function (data) {
+                                                                        newerLink.html('<h6>Next</h6><h5>' + $(data).find('.post h1.post-title').text() + '</h5>');
+                                                                    }, "html");
+                                                                    $.get(olderLink.attr('href'), function (data2) {
+                                                                        olderLink.html('<h6>Previous</h6><h5>' + $(data2).find('.post h1.post-title').text() + '</h5>');
+                                                                    }, "html");
+                                                                })(jQuery);
+                                                            </script>*@
+
+                                                        <!--Tác giả-->
+                                                        <div class="tl-author">
+                                                            <div class="about-author">
+                                                                <div class="tl-authAvatar">
+                                                                    <img src="//lh6.googleusercontent.com/-wUuT8I7rqZ0/AAAAAAAAAAI/AAAAAAAAANc/XCl8wqizoU8/s512-c/photo.jpg">
+                                                                </div>
+                                                                <div class="authorcontent">
+                                                                    <h3>Mohammad Qasim</h3>
+                                                                    <p>
+                                                                        <!--Can't find substitution for tag [post.authorAboutMe]-->
+                                                                    </p>
+                                                                    <div class="author-profile">
+                                                                        <a class="button blue" href="https://plus.google.com/104724919698044791161"><span><i class="fa fa-paper-plane"></i></span> View Profile</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--Các bài viết liên quan-->
+                                                        @*  @Html.Partial("~/Views/Shared/Post/RelatedPosts.cshtml")*@
+                                                    </div>
+                                                </div>
+                                            </article>
+                                            <div class="tl-comment-tabs">
+                                                <!--comment-->
+                                                @*@Html.Partial("~/Views/Shared/Post/CommentPost.cshtml")*@
                                             </div>
-                                            <!--Các bài viết liên quan-->
-                                          @*  @Html.Partial("~/Views/Shared/Post/RelatedPosts.cshtml")*@
                                         </div>
+                                        <!--Can't find substitution for tag [adEnd]-->
                                     </div>
-                                </article>
-                                <div class="tl-comment-tabs">
-                                    <!--comment-->
-                                    @*@Html.Partial("~/Views/Shared/Post/CommentPost.cshtml")*@
+
                                 </div>
                             </div>
-                            <!--Can't find substitution for tag [adEnd]-->
                         </div>
-
                     </div>
                 </div>
             </div>
