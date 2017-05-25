@@ -1,6 +1,11 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+@using WA_Blogers_MVC.Models;
+@{
+    WA_BlogerEntities db = new WA_BlogerEntities();
+    
+}
 <div class="tl-topfeatured homepage-featured" style="margin: 25px;">
     <div class="featured-top">
         @if (ViewBag.ListTopNews != null || ViewBag.ListTopNews.Count != 0)
@@ -8,13 +13,40 @@
             @Html.Partial("Home/NewsPost")
         }
         @Html.Partial("Home/Search")
-        @Html.Partial("Home/FeaturedPost")
+        @if(ViewBag.ListPostFeatured.Count>=4)
+        {
+            @Html.Partial("Home/FeaturedPost")
+        }
     </div>
 </div>
 <div class="content-wrapper main-content">
     <div class="inner container" style="max-width:100%;">
         <div class="row">
+            <div class="main-and-sidebar">
+                <div class="main-wrapper" id="main-wrapper">
+                    <div class="main-inner">
+                        <div class="blogMainContent">
+                            <div class="top-main-section mag-layout">
+                                @{
+                                    WA_Options ListBlogs = db.WA_Options.Where(x => x.Name == "listIDTopNewBlog").FirstOrDefault();
+                                    int[] listID = ListBlogs.Value.Split(';').Select(n => Convert.ToInt32(n)).ToArray();
+                                    ViewBag.ListBlogTopNews = db.WA_Blogs.Where(b => listID.Contains(b.BlogID)).Take(4).ToList();
+                                    if (ViewBag.ListBlogTopNews.Count >0)
+                                    {
+                                         @Html.Partial("Home/TopNewBlogs")
+                                    }
+                                }
+                              
+                               
 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="tl-sidebar sidebar" id="sidebar-wrapper" itemscope="" itemtype="http://schema.org/WPSideBar"></aside>
+                <div style="clear:both"></div>
+            </div>
+            
         </div>
     </div>
 </div>

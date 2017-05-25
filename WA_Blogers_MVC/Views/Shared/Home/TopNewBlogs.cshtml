@@ -1,0 +1,133 @@
+﻿<script>
+    $(function () {
+        $('.recent-button span:first-child').addClass('active');
+        $('.recent-button').find('span').click(function () {
+            $('.recent-button').find('span').removeClass('active');
+            var currentclass = $(this).attr('class');
+            $(this).addClass('active');
+            $('.recent-content').children('div').each(function () {
+                if ($(this).attr('class') == currentclass) {
+                    $('.recent-content').find('div').hide();
+                    $(this).find('div').show();
+                    $(this).fadeIn();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>
+@{
+    List<WA_Blogers_MVC.Models.WA_Blogs> listBLNs = ViewBag.ListBlogTopNews;
+}
+<div class="headline-tabs-top hot-news">
+    <div class="recent-button tabs-button">
+        <div class="recent-head-title"><h3><i class="fa fa-book"></i> Bài viết hàng đầu</h3></div>
+        @for (int i = 0; i < listBLNs.Count; i++)
+        {
+            if (listBLNs[i].WA_Posts.Count == 0)
+            {
+                listBLNs.RemoveAt(i);
+                i--;
+                continue;
+            }
+            <span class=@("tl-recent"+(i+1))>@listBLNs[i].Name</span>
+        }
+
+    </div>
+    <div class="recent-content tabs-content">
+        @for (int i = 0; i < listBLNs.Count; i++)
+        {
+            string display = i == 0 ? "block" : "none";
+            WA_Blogers_MVC.Models.WA_Blogs blog = listBLNs[i];
+            List<WA_Blogers_MVC.Models.WA_Posts> posts = blog.WA_Posts.OrderByDescending(x => x.Seen).ToList();
+            <div class=@("tl-recent"+(i+1)) style="display: @display;">
+                <div class="recenttab section" id=@("TabContent-"+(i+1))>
+                    <div class="widget HTML" data-version="1" id="HTML6">
+                        <div class="widget-content">
+                            <div class="tl-recentMag tl-recentHeadline" data-label="@blog.Name" data-results="5">
+                                <div class="tl-recentLink headlinehead">
+                                    <div class="tl-recentText">
+                                        <span class="tl-headtext">
+                                            <i class="fa fa-rss"></i> @blog.Name
+                                        </span><span class="tl-headtextHover"><i class="fa fa-rss"></i> @blog.Name</span>
+                                    </div>
+                                    <a href="@Url.RouteUrl("ViewPostsInBlogs", new {id = blog.BlogID, title=UrlEncode.ToFriendlyUrl(blog.Name) })" class="tl-headlinks">Xem thêm <i class="fa fa-angle-right"></i></a>
+                                </div><div class="tl-wspace">
+                                    <div class="tl-headlineWrap">
+                                        <div class="headline">
+                                            <div class="tl-magMedia">
+                                                <a class="featured-thumb" title=" Air Space Exposition" href="@Url.RouteUrl("ViewPost", new {id=posts[0].PostID, title=UrlEncode.ToFriendlyUrl(posts[0].Title) })">
+                                                    @{
+            string image = "#";
+            image = posts[0].Picture ?? "#";
+                                                    }
+                                                    <img src="@Url.Content(image)">
+
+                                                </a>
+                                            </div>
+                                            <h3>
+                                                <a href="@Url.RouteUrl("ViewPost", new {id=posts[0].PostID, title=UrlEncode.ToFriendlyUrl(posts[0].Title) })">
+                                                    @posts[0].Title
+                                                </a>
+                                            </h3><p>
+                                                @posts[0].Description
+                                            </p>
+                                            <div class="tl-headm">
+                                                @{
+            DateTime date = DateTime.Now;
+            date = posts[0].Created ?? date;
+            string strUser = posts[0].WA_Users == null ? "Người nặc danh" : posts[0].WA_Users.DisplayName;
+                                                }
+                                                <span class="recentdate">
+                                                    <i class="fa fa-calendar">
+                                                    </i> @date.ToString("dd-MM-yyyy")
+                                                </span>  - <span class="authorname"><i class="fa fa-user"></i> @strUser</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tl-subheadWrap">
+                                        <div class="subhead">
+                                            @for (int j = 1; j < posts.Count; j++)
+                                            {
+                                                <div class="container">
+                                                    <div class="imagewrap">
+                                                        <a class="featured-thumb" title="@posts[j].Title" href="@Url.RouteUrl("ViewPost", new {id=posts[j].PostID, title=UrlEncode.ToFriendlyUrl(posts[j].Title) })">
+                                                            @{
+                                                image = "#";
+                                                image = posts[j].Picture ?? "#";
+                                                            }
+                                                            <img src="@Url.Content(image)">
+                                                        </a>
+                                                    </div><div class="recentcontent">
+                                                        <h3>
+                                                            <a href="@Url.RouteUrl("ViewPost", new {id=posts[j].PostID, title=UrlEncode.ToFriendlyUrl(posts[j].Title) })">@posts[j].Title</a>
+                                                        </h3>
+                                                        <div class="metadata">
+                                                            @{
+                                                date = DateTime.Now;
+                                                date = posts[j].Created ?? date;
+                                                strUser = posts[j].WA_Users == null ? "Người nặc danh" : posts[j].WA_Users.DisplayName;
+                                                            }
+                                                            <span class="recentdate">
+                                                                <i class="fa fa-calendar">
+                                                                </i> @date.ToString("dd-MM-yyyy")
+                                                            </span>  - <span class="authorname"><i class="fa fa-user"></i> @strUser</span>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div style="clear: both; display: none;"></div>
+    </div>
+</div>

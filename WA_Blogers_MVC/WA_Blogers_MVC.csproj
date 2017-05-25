@@ -1265,6 +1265,7 @@
     <Content Include="Views\Shared\Home\NewsPost.cshtml" />
     <Content Include="Views\Shared\Home\Search.cshtml" />
     <Content Include="Views\Shared\Home\FeaturedPost.cshtml" />
+    <Content Include="Views\Shared\Home\TopNewBlogs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
