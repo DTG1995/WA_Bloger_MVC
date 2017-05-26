@@ -242,10 +242,14 @@ namespace WA_Blogers_MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+                if (Blogs == null || Blogs.Count()==0)
+                {
+                    return View("Error");
+                }
                 wa_posts.Created = DateTime.Now;
                 wa_posts.Active = false;
                 wa_posts.Seen = 0;
+                
                 for (int i = 0; i < Blogs.Count(); i++)
                 {
                     wa_posts.WA_Blogs.Add(db.WA_Blogs.Find(Blogs[i]));
@@ -269,7 +273,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Posts/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id,string title)
         {
             if (id == null)
             {
@@ -280,6 +284,7 @@ namespace WA_Blogers_MVC.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.ListBlogs = db.WA_Blogs.Where(x => x.Parent == null && x.Active).ToList();
             ViewBag.Author = new SelectList(db.WA_Users, "UserID", "UserName", wa_posts.Author);
             return View(wa_posts);
         }
@@ -290,7 +295,7 @@ namespace WA_Blogers_MVC.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="PostID,Title,Description,ContentPost,Picture,UseDescription,Active")] WA_Posts wa_posts)
+        public ActionResult Edit([Bind(Include = "PostID,Title,Description,ContentPost,Picture,UseDescription,Active")] WA_Posts wa_posts, HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
             {
@@ -298,9 +303,18 @@ namespace WA_Blogers_MVC.Controllers
                 change.Title = wa_posts.Title;
                 change.Description = wa_posts.Description;
                 change.ContentPost = wa_posts.ContentPost;
-                change.Picture = wa_posts.Picture;
                 change.UseDescription = wa_posts.UseDescription;
                 change.Active = wa_posts.Active;
+                string path = "~/Content/images/thuvien";
+                if (!string.IsNullOrEmpty(Request.Files[0].FileName ))
+                {
+                    string tg = DateTime.Now.ToString("ddMMyyyy_");
+                    string pathToSave = Server.MapPath(path);
+                    string filename = tg + Path.GetFileName(Request.Files[0].FileName);
+                    wa_posts.Picture = Path.Combine(path, filename);
+                    change.Picture = wa_posts.Picture;
+                    Request.Files[0].SaveAs(Path.Combine(pathToSave, filename));
+                }
                 db.Entry(change).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -344,6 +358,14 @@ namespace WA_Blogers_MVC.Controllers
             WA_Posts wa_posts = db.WA_Posts.Single(n=>n.PostID==id);
             if (wa_posts != null)
             {
+                var blogs = wa_posts.WA_Blogs.ToList();
+                for (int i = 0; i < blogs.Count; i++)
+                {
+                    WA_Blogs blog = blogs[i];
+                    blog.WA_Posts.Remove(wa_posts);
+                    db.Entry(blog).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
                 var comments = wa_posts.WA_Comments.ToList();
                 for (int i = 0; i < comments.Count; i++)
                 {

@@ -281,6 +281,18 @@
     <Content Include="Content\FlipClock\flipclock.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\owlcarousel\owl.carousel.min.css" />
+    <Content Include="Content\images\avatar\avatar.png" />
+    <Content Include="Content\images\avatar\avatar04.png" />
+    <Content Include="Content\images\avatar\avatar2.png" />
+    <Content Include="Content\images\avatar\avatar3.png" />
+    <Content Include="Content\images\avatar\avatar5.png" />
+    <Content Include="Content\images\thuvien\22052017_1.png" />
+    <Content Include="Content\images\thuvien\22052017_11122a632cdf7935bf40aadce99dc80b.gif" />
+    <Content Include="Content\images\thuvien\22052017_13310472_133055423765941_80942107835344624230_n.jpg" />
+    <Content Include="Content\images\thuvien\22052017_15042009_1363715837036197_1000972004062345105_o.jpg" />
+    <Content Include="Content\images\thuvien\22052017_919a0a2898d5cf2ff651ae954b5c0d4b.jpg" />
+    <Content Include="Content\images\thuvien\22052017_Sp1.png" />
+    <Content Include="Content\images\thuvien\24052017_Sp1.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\test\style.css" />
     <Content Include="Content\ticker\breakingNews.css" />
@@ -1170,6 +1182,11 @@
       <DependentUpon>Model.edmx</DependentUpon>
       <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\CHANGES.md" />
+    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\LICENSE" />
+    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\README.md" />
+    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\README.ru.md" />
+    <Content Include="Content\images\thuvien\24052017_" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\FlipClock\flipclock.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

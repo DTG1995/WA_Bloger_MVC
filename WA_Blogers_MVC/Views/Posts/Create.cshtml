@@ -1,18 +1,18 @@
 ﻿@model WA_Blogers_MVC.Models.WA_Posts
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Thêm Post";
     Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Thêm Post</h2>
 
 @using (Html.BeginForm("Create","Posts",FormMethod.Post, new { enctype="multipart/form-data"})) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>WA_Posts</h4>
+      
         <hr />
         @Html.ValidationSummary(true)
 

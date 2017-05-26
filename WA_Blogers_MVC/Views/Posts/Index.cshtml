@@ -8,7 +8,7 @@
 }
 <!-- CK Editor -->
 @Scripts.Render("~/Scripts/AdminLTE/plugins/ckeditor/ckeditor.js")
-<h2>Index</h2>
+<h2>Quản lý Post</h2>
 
 <div class="form-group form-inline">
 
@@ -117,13 +117,13 @@
           sortauthor = (ViewBag.SortAuthor == null ? "desc" : ViewBag.SortAuthor)
       })
         </th>
-        <th></th>
+        <th>Hành Động</th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            <a href="@Url.Action("Edit",new{id=item.PostID})" class="btn btn-link">
+            <a href="@Url.RouteUrl("EditPost", new { id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title) })" class="btn btn-link">
                 @Html.DisplayFor(modelItem => item.Title)
             </a>
         </td>
@@ -142,7 +142,7 @@
                 linkImage = item.Picture ?? "#";
                 
             }
-            <img width="100px" height="100px" src="@Url.Content(linkImage)"/>
+            <img width="100" height="100" src="@Url.Content(linkImage)"/>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UseDescription)
@@ -155,9 +155,9 @@
             @Html.DisplayFor(modelItem => item.WA_Users.UserName)
         </td>
         <td>
-            <a href="#" onclick="Edit(@item.PostID)"><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
-            <a href="@Url.Action("Details", new { id = @item.PostID })"><i class="fa fa-info-circle" aria-hidden="true"></i> </a> |
-            <a href="@Url.Action("Delete",  new { id = @item.PostID })"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            <a href="#" onclick="Edit(@item.PostID)" @*data-toggle="modal" data-target="#modalEdit_@item.PostID"*@><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
+            <a href="@Url.RouteUrl("ChiTietPost", new { id = @item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title) })"><i class="fa fa-info-circle" aria-hidden="true"></i> </a> |
+            <a href="@Url.RouteUrl("XoaPost", new { id = @item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title) })"><i class="fa fa-trash" aria-hidden="true"></i></a>
             @*@Html.ActionLink("Edit", "Edit", new { id=item.PostID }) |
             @Html.ActionLink("Details", "Details", new { id=item.PostID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.PostID })*@
@@ -217,7 +217,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                 //contentquickedit
             </div>
             <div class="modal-footer">
-                <button type="submit" form="frmEdit" class="btn btn-warning"">Lưu thay đổi</button>
+                <button type="submit" form="frmEdit" class="btn btn-warning">Lưu thay đổi</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
             </div>
         </div>
