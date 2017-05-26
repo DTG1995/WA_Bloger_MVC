@@ -79,6 +79,7 @@ namespace WA_Blogers_MVC.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
+            
             return View();
         }
 

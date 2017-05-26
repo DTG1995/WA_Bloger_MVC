@@ -1,17 +1,56 @@
 ﻿@{
     ViewBag.Title = "Contact";
+    Layout = "";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<!DOCTYPE html>
+<html>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<head>
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+    <title>asdasdasd</title>
+    @Styles.Render("~/Content/css")
+    <!-- Font Awesome Icons -->
+    @Styles.Render("~/Content/font-awesome.min.css")
+    @* Bundles assume jquery 2.1.3 and Bootstrap 3 *@
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/test/style.css")
+    @* @Scripts.Render("~/Scripts/test/script.js")*@
+    <script>
+        $(function() {
+            $('.navigation-button').click(function() {
+                $('.navigation .widget-content').slideToggle();
+                $(this).toggleClass('active');
+            });
+            $('.dropdown-button').click(function() {
+                $('.dropdown .widget-content').slideToggle();
+                $(this).toggleClass('active');
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="tl-headerwrap" id="header-wrapper">
+        <div class="header-section header-contents">
+            <div class="main-navigation">
+                <div class="inner container">
+                    <div class="dropdown section" id="MainNavigation">
+                        <span class="dropdown-button"><i class="fa fa-bars"></i> Navigation</span>
+                        <div class="widget HTML" data-version="1"
+                             id="HTML18">
+                            <div class="widget-content">
+                                <nav class="mainnavs">
+                                    @Html.Action("MainMenu","Blogs");
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+
+</html>

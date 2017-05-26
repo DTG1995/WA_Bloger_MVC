@@ -1,39 +1,121 @@
-﻿@model IEnumerable<WA_Blogers_MVC.Models.WA_Posts>
+﻿@model PagedList.IPagedList<WA_Blogers_MVC.Models.WA_Posts>
+           
+@using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quản lý Posts";
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
-
+<!-- CK Editor -->
+@Scripts.Render("~/Scripts/AdminLTE/plugins/ckeditor/ckeditor.js")
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
+<div class="form-group form-inline">
+
+    @Html.ActionLink("Thêm Bài Viết", "Create", null, new { @class = "btn btn-primary pull-left" })
+    <form class="form-inline pull-right" style="margin-right:40px;">
+        <label for="numDisplay">Hiển thị: &nbsp;</label>
+        <div class="form-group">
+            <select class="form-control " name="numDisplay" id="numDisplay" onchange="this.form.submit()">
+                @{
+                    var select = new[] { "10", "20", "50", "100", "Tất cả" };
+                }
+                @foreach (var item in select)
+                {
+                    <option @(@item.CompareTo(ViewBag.numDisplay.ToString())==0?"selected":"") value="@item">@item</option>
+                }
+            </select>
+        </div>
+        <label for="txtSearch">Tìm kiếm: </label>
+        <div class="input-group" style="width: 150px; display: inline-flex;">
+            <input type="text" class="form-control" name="searchString" id="searchString" placeholder="Tìm kiếm..." value="@ViewBag.searchString" />
+            @{if (ViewBag.Page>1)
+            {
+                <input type="hidden" name="page" value="@ViewBag.Page"/>
+            }}
+            @{if (ViewBag.TempSortTitle != null)
+            {
+                <input type="hidden" name="sorttitle" value="@ViewBag.TempSortTitle" />
+            }}
+            @{if (ViewBag.TempSortCreate != null)
+            {
+                <input type="hidden" name="sortcreate" value="@ViewBag.TempSortCreate" />
+            }}
+            @{if (ViewBag.TempSortActive != null)
+            {
+                <input type="hidden" name="sortactive" value="@ViewBag.TempSortActive" />
+            }}
+            @{if (ViewBag.TempSortAuthor != null)
+            {
+                <input type="hidden" name="sortauthor" value="@ViewBag.TempSortAuthor" />
+            }}
+            <div class="input-group-btn">
+                <button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+        </div>
+        <!-- rest of form -->
+    </form>
+</div>
+<table class="table table-striped table-hover" >
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.ActionLink("Tiêu đề", "Index", new { 
+           page = ViewBag.Page, 
+           searchString = ViewBag.searchString,
+           numDisplay = ViewBag.TemnumDisplay, 
+           sorttitle = (ViewBag.SortTitle == null ? "desc" : ViewBag.SortTitle) ,
+           sortcreate = (ViewBag.TempSortCreate),
+           sortactive = (ViewBag.TempSortActive),
+           sortauthor = (ViewBag.TempSortAuthor)
+       })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.LabelFor(model=>model.SingleOrDefault().Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ContentPost)
+          @Html.LabelFor(model => model.SingleOrDefault().ContentPost)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Created)
+            @Html.ActionLink("Ngày Tạo", "Index", new
+       {
+           page = ViewBag.Page,
+           searchString = ViewBag.searchString,
+           numDisplay = ViewBag.TemnumDisplay,
+           sorttitle = (ViewBag.TempSortTitle),
+           sortcreate = (ViewBag.SortCreate == null ? "desc" : ViewBag.SortCreate),
+           sortactive = (ViewBag.TempSortActive),
+           sortauthor = (ViewBag.TempSortAuthor)
+       })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Picture)
+          @Html.LabelFor(model => model.SingleOrDefault().Picture)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UseDescription)
+          @Html.LabelFor(model => model.SingleOrDefault().UseDescription)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Active)
+            @Html.ActionLink("Hoạt Động", "Index", new
+       {
+           page = ViewBag.Page,
+           searchString = ViewBag.searchString,
+           numDisplay = ViewBag.TemnumDisplay,
+           sorttitle = (ViewBag.TempSortTitle),
+           sortcreate = (ViewBag.TempSortCreate),
+           sortactive = (ViewBag.SortActive == null ? "desc" : ViewBag.SortActive),
+           sortauthor = (ViewBag.TempSortAutho)
+       })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.WA_Users.UserName)
+            @Html.ActionLink("Tác Giả", "Index", new
+      {
+          page = ViewBag.Page,
+          searchString = ViewBag.searchString,
+          numDisplay = ViewBag.TemnumDisplay,
+          sorttitle = (ViewBag.TempSortTitle),
+          sortcreate = (ViewBag.TempSortCreate),
+          sortactive = (ViewBag.TempSortActive),
+          sortauthor = (ViewBag.SortAuthor == null ? "desc" : ViewBag.SortAuthor)
+      })
         </th>
         <th></th>
     </tr>
@@ -41,7 +123,9 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
+            <a href="@Url.Action("Edit",new{id=item.PostID})" class="btn btn-link">
+                @Html.DisplayFor(modelItem => item.Title)
+            </a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)
@@ -53,23 +137,89 @@
             @Html.DisplayFor(modelItem => item.Created)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Picture)
+            @{
+                string linkImage = "#";
+                linkImage = item.Picture ?? "#";
+                
+            }
+            <img width="100px" height="100px" src="@Url.Content(linkImage)"/>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UseDescription)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Active)
+            
+            @Html.CheckBoxFor(modelItem => item.Active, new {data_toggle="toggle" })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.WA_Users.UserName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PostID }) |
+            <a href="#" onclick="Edit(@item.PostID)"><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
+            <a href="@Url.Action("Details", new { id = @item.PostID })"><i class="fa fa-info-circle" aria-hidden="true"></i> </a> |
+            <a href="@Url.Action("Delete",  new { id = @item.PostID })"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.PostID }) |
             @Html.ActionLink("Details", "Details", new { id=item.PostID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PostID })
+            @Html.ActionLink("Delete", "Delete", new { id=item.PostID })*@
+
+            
         </td>
     </tr>
+    
 }
 
 </table>
+
+
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+              new { 
+                  page, 
+                  searchString = ViewBag.searchString,
+                  numDisplay = ViewBag.TemnumDisplay, 
+                  sorttitle = ViewBag.TempSortTitle ,
+                  sortcreate = ViewBag.TempSortCreate,
+                  sortactive = ViewBag.TempSortActive,
+                  sortauthor = ViewBag.TempSortAuthor
+              }))
+<script>
+    function Edit(id) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("QuickEdit")",
+            data: {
+                PostID: id
+            },
+            beforeSend: function () {
+                $("#contentModalEdit").css('background-image','url("@Href("~/Public/Loading-icon.gif")")');
+                $("#modalEdit").modal();
+            },
+            success: function (data) {
+                $("#contentModalEdit").css('background-color','#fff');
+                $("#contentModalEdit").html(data);
+
+            }
+        });
+    }
+   
+</script>
+@* modal Edit *@
+<div class="modal fade" id="modalEdit" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sửa Post</h4>
+            </div>
+            <div class="modal-body" id="contentModalEdit">
+                //contentquickedit
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="frmEdit" class="btn btn-warning"">Lưu thay đổi</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

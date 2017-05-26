@@ -7,6 +7,14 @@
 
 
 @{
+    string postactive = "";
+    string indexactive = "active";
+    
+    if (ViewBag.PostActive!=null)
+    {
+        postactive = "active";
+        indexactive = "";
+    }
     Layout = null;
 }
 <aside class="main-sidebar">
@@ -36,7 +44,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="active treeview">
+            <li class="@indexactive treeview">
                 <a href="@Url.Action("Index","Home")">
                     <i class="fa fa-dashboard"></i> <span>Trang Chủ</span>
                 </a>
@@ -52,15 +60,17 @@
                     <li><a href="@Url.Action("Create","Blogs")"><i class="fa fa-circle-o"></i> Thêm Blog Mới</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            
+            <li class="@postactive treeview">
                 <a href="#">
                     <i class="fa fa-files-o"></i>
                     <span>Posts</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
+
                 <ul class="treeview-menu">
-                    <li><a href="@Url.Action("Index","Blogs")"><i class="fa fa-circle-o"></i> Quản Lý Posts</a></li>
-                    <li><a href="@Url.Action("Create","Blogs")"><i class="fa fa-circle-o"></i> Thêm Post Mới</a></li>
+                    <li class="@postactive"><a href="@Url.Action("Index","Posts")"><i class="fa fa-circle-o"></i> Quản Lý Posts</a></li>
+                    <li><a href="@Url.Action("Create","Posts")"><i class="fa fa-circle-o"></i> Thêm Post Mới</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -71,11 +81,22 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="@Url.Action("Index","Users")"><i class="fa fa-circle-o"></i> Quản Lý Người Dùng</a></li>
-                    <li><a href="@Url.Action("Create", "Users")"><i class="fa fa-circle-o"></i> Thêm Người Dùng Mới</a></li>
-                    <li><a href="@Url.Action("Create", "Users")"><i class="fa fa-circle-o"></i> Phân Quyền Người Dùng</a></li>
+                    <li><a href="@Url.Action("Create","Users")"><i class="fa fa-circle-o"></i> Thêm Người Dùng Mới</a></li>
+                    <li><a href="@Url.Action("Create","Users")"><i class="fa fa-circle-o"></i> Phân Quyền Người Dùng</a></li>
                 </ul>
             </li>
-            <li><a href="documentation/index.html"><i class="fa fa-book"></i> Documentation</a></li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-files-o"></i>   
+                    <span>Quyền</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="@Url.Action("Index","Roles")"><i class="fa fa-circle-o"></i> Quản Lý Quyền</a></li>
+                    <li><a href="@Url.Action("Create", "Roles")"><i class="fa fa-circle-o"></i> Thêm Quyền Mới</a></li>
+                </ul>
+            </li>
+            <li><a href="@Url.Action("Index","Images")"><i class="fa fa-picture-o"></i> Thư viện hình ảnh</a></li>
             <li class="header">LABELS</li>
             <li><a href="#"><i class="fa fa-circle-o text-danger"></i> Important</a></li>
             <li><a href="#"><i class="fa fa-circle-o text-warning"></i> Warning</a></li>

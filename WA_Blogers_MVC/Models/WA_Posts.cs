@@ -25,12 +25,12 @@ namespace WA_Blogers_MVC.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string ContentPost { get; set; }
-        public Nullable<System.DateTime> Created { get; set; }
+        public System.DateTime Created { get; set; }
         public Nullable<int> Author { get; set; }
         public string Picture { get; set; }
         public Nullable<bool> UseDescription { get; set; }
-        public Nullable<int> Seen { get; set; }
-        public Nullable<bool> Active { get; set; }
+        public int Seen { get; set; }
+        public bool Active { get; set; }
     
         public virtual ICollection<WA_Comments> WA_Comments { get; set; }
         public virtual ICollection<WA_Likes> WA_Likes { get; set; }

@@ -21,7 +21,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="Parent" Type="int" />
           <Property Name="Order" Type="int" />
-          <Property Name="Active" Type="bit" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="WA_Comments">
           <Key>
@@ -69,12 +69,12 @@
           <Property Name="Title" Type="ntext" />
           <Property Name="Description" Type="ntext" />
           <Property Name="ContentPost" Type="ntext" />
-          <Property Name="Created" Type="datetime" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="Author" Type="int" />
           <Property Name="Picture" Type="ntext" />
           <Property Name="UseDescription" Type="bit" />
-          <Property Name="Seen" Type="int" />
-          <Property Name="Active" Type="bit" />
+          <Property Name="Seen" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="WA_Roles">
           <Key>
@@ -218,6 +218,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WA_Comments_WA_Comments">
+          <End Role="WA_Comments" Type="Self.WA_Comments" Multiplicity="0..1" />
+          <End Role="WA_Comments1" Type="Self.WA_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Comments">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="WA_Comments1">
+              <PropertyRef Name="Parent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WA_UserRoles_WA_GroupUser">
           <End Role="WA_GroupUser" Type="Self.WA_GroupUser" Multiplicity="1" />
           <End Role="WA_UserRoles" Type="Self.WA_UserRoles" Multiplicity="*" />
@@ -289,6 +301,10 @@
             <End Role="WA_Blogs" EntitySet="WA_Blogs" />
             <End Role="WA_Blogs1" EntitySet="WA_Blogs" />
           </AssociationSet>
+          <AssociationSet Name="FK_WA_Comments_WA_Comments" Association="Self.FK_WA_Comments_WA_Comments">
+            <End Role="WA_Comments" EntitySet="WA_Comments" />
+            <End Role="WA_Comments1" EntitySet="WA_Comments" />
+          </AssociationSet>
           <AssociationSet Name="FK_WA_UserRoles_WA_GroupUser" Association="Self.FK_WA_UserRoles_WA_GroupUser">
             <End Role="WA_GroupUser" EntitySet="WA_GroupUser" />
             <End Role="WA_UserRoles" EntitySet="WA_UserRoles" />
@@ -311,7 +327,7 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Parent" Type="Int32" />
           <Property Name="Order" Type="Int32" />
-          <Property Name="Active" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="WA_Blogs1" Relationship="Self.FK_WA_Blogs_WA_Blogs" FromRole="WA_Blogs" ToRole="WA_Blogs1" />
           <NavigationProperty Name="WA_Blogs2" Relationship="Self.FK_WA_Blogs_WA_Blogs" FromRole="WA_Blogs1" ToRole="WA_Blogs" />
           <NavigationProperty Name="WA_Posts" Relationship="Self.WA_BlogPosts" FromRole="WA_Blogs" ToRole="WA_Posts" />
@@ -328,6 +344,8 @@
           <Property Name="Parent" Type="Int32" />
           <NavigationProperty Name="WA_Posts" Relationship="Self.FK_Comments_Posts" FromRole="WA_Comments" ToRole="WA_Posts" />
           <NavigationProperty Name="WA_Users" Relationship="Self.FK_Comments_Users" FromRole="WA_Comments" ToRole="WA_Users" />
+          <NavigationProperty Name="WA_Comments1" Relationship="Self.FK_WA_Comments_WA_Comments" FromRole="WA_Comments" ToRole="WA_Comments1" />
+          <NavigationProperty Name="WA_Comments2" Relationship="Self.FK_WA_Comments_WA_Comments" FromRole="WA_Comments1" ToRole="WA_Comments" />
         </EntityType>
         <EntityType Name="WA_GroupUser">
           <Key>
@@ -368,12 +386,12 @@
           <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ContentPost" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Author" Type="Int32" />
           <Property Name="Picture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UseDescription" Type="Boolean" />
-          <Property Name="Seen" Type="Int32" />
-          <Property Name="Active" Type="Boolean" />
+          <Property Name="Seen" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="WA_Comments" Relationship="Self.FK_Comments_Posts" FromRole="WA_Posts" ToRole="WA_Comments" />
           <NavigationProperty Name="WA_Likes" Relationship="Self.FK_Likes_Posts" FromRole="WA_Posts" ToRole="WA_Likes" />
           <NavigationProperty Name="WA_Users" Relationship="Self.FK_Posts_Users" FromRole="WA_Posts" ToRole="WA_Users" />
@@ -443,6 +461,18 @@
             </Principal>
             <Dependent Role="WA_Comments">
               <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WA_Comments_WA_Comments">
+          <End Role="WA_Comments" Type="Self.WA_Comments" Multiplicity="0..1" />
+          <End Role="WA_Comments1" Type="Self.WA_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WA_Comments">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="WA_Comments1">
+              <PropertyRef Name="Parent" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -522,6 +552,10 @@
           <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
             <End Role="WA_Users" EntitySet="WA_Users" />
             <End Role="WA_Comments" EntitySet="WA_Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WA_Comments_WA_Comments" Association="Self.FK_WA_Comments_WA_Comments">
+            <End Role="WA_Comments" EntitySet="WA_Comments" />
+            <End Role="WA_Comments1" EntitySet="WA_Comments" />
           </AssociationSet>
           <AssociationSet Name="FK_WA_Users_WA_GroupUser" Association="Self.FK_WA_Users_WA_GroupUser">
             <End Role="WA_GroupUser" EntitySet="WA_GroupUser" />

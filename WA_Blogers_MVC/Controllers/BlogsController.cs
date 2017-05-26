@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using WA_Blogers_MVC.Filter;
 using WA_Blogers_MVC.Models;
+using PagedList;
+using PagedList.Mvc;
 
 namespace WA_Blogers_MVC.Controllers
 {
@@ -16,9 +18,39 @@ namespace WA_Blogers_MVC.Controllers
         private WA_BlogerEntities db = new WA_BlogerEntities();
 
         // GET: /Blogs/
-        public ActionResult Index()
+        public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
-            return View(db.WA_Blogs.ToList());
+            var blog = from b in db.WA_Blogs select b;
+            ViewBag.CurrentSort = sortOrder;
+
+            //search
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                blog = blog.Where(s => s.Name.Contains(searchString));
+            }
+
+            //sort
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_asc" : sortOrder;
+            switch (sortOrder)
+            {
+                case "parent":
+                    blog = blog.OrderByDescending(b=>b.Parent);
+                    break;
+                case "name_desc":
+                    blog = blog.OrderBy(b => b.Name);
+                    break;
+                default:
+                    blog = blog.OrderByDescending(b => b.Name);
+                    break;
+            }
+
+            //pagelist
+            if (searchString != null) page = 1;
+            else searchString = currentFilter;
+            ViewBag.CurrentFilter = searchString;
+            int pageSize =3;
+            int pageNumber = (page ?? 1);
+            return View(blog.ToPagedList(pageNumber,pageSize));
         }
 
         // GET: /Blogs/Details/5
@@ -37,7 +69,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Blogs/Create
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult Create()
         {
             return View();
@@ -92,6 +124,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Blogs/Delete/5
+        [AdminFilter]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -105,16 +138,34 @@ namespace WA_Blogers_MVC.Controllers
             }
             return View(wa_blogs);
         }
-
+        //[NonAction]
+        //private void DeleteLoop(WA_Blogs blog)
+        //{
+        //    foreach (var item in blog.WA_Blogs1)
+        //    {
+        //        DeleteLoop(item);
+        //    }
+        //    foreach (var item in blog.WA_Posts)
+        //    {
+        //        db.WA_Posts.Remove(item);
+        //    }
+        //    db.WA_Blogs.Remove(blog);
+        //    db.SaveChanges();
+        //}
         // POST: /Blogs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int? id)
         {
-            WA_Blogs wa_blogs = db.WA_Blogs.Find(id);
-            db.WA_Blogs.Remove(wa_blogs);
+        //    WA_Blogs wa_blogs = db.WA_Blogs.Find(id);
+        //    DeleteLoop(wa_blogs);
+        //    return RedirectToAction("Index");
+
+            var Blog = db.WA_Blogs.Find(id);
+            Blog.WA_Posts.ToList().ForEach(m => db.WA_Posts.Remove(m));
+            db.WA_Blogs.Remove(Blog);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return new EmptyResult();
         }
 
         protected override void Dispose(bool disposing)
@@ -132,6 +183,16 @@ namespace WA_Blogers_MVC.Controllers
             return PartialView(model);
         }
 
+        [NonAction]
+        private List<WA_Posts> GetAllPost(WA_Blogs blog)
+        {
+            List<WA_Posts> listpost = blog.WA_Posts.ToList();
+            foreach (var item in blog.WA_Blogs1)
+            {
+                listpost.AddRange(GetAllPost(item));
+            }
+            return listpost;
+        }
         //GET: //Blogs/Name-Blog
         public ActionResult ViewBlogs(int? id)
         {
@@ -140,13 +201,49 @@ namespace WA_Blogers_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            
             WA_Blogs wa_blogs = db.WA_Blogs.FirstOrDefault(x=>x.BlogID ==id);
+            
             if (wa_blogs == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.NameBlogs = wa_blogs.Name;
+            var listPost = GetAllPost(wa_blogs).OrderByDescending(x => x.Created).Distinct().ToList();
             //string titleEncode = UrlEncode.ToFriendlyUrl(wa_blogs.Name);
-            return View(wa_blogs.WA_Blogs1);
+            return View(listPost);
         }
+
+        public ActionResult QuickEdit(int? blogID)
+        {
+            var blog = db.WA_Blogs.Find(blogID);
+            return View(blog);
+        }
+
+        public JsonResult SaveQuickEdit(int? blogID, string name, bool? active)
+        {
+            bool Active = active ?? false;
+            var blog = db.WA_Blogs.Find(blogID);
+            object obj = new object();
+            if (blog != null)
+            {
+                blog.Name = name;
+                blog.Active = Active;
+                db.Entry(blog).State = EntityState.Modified;
+                db.SaveChanges();
+                obj = new { error = false, Name = name, Active = Active, IDBlog = blogID };
+            }
+            else
+            {
+                obj = new { error = true};
+            }
+
+            
+            return Json(obj,JsonRequestBehavior.AllowGet);
+            
+        }
+
+        
+
     }
 }

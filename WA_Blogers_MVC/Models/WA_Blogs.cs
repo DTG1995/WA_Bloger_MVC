@@ -24,7 +24,7 @@ namespace WA_Blogers_MVC.Models
         public string Name { get; set; }
         public Nullable<int> Parent { get; set; }
         public Nullable<int> Order { get; set; }
-        public Nullable<bool> Active { get; set; }
+        public bool Active { get; set; }
     
         public virtual ICollection<WA_Blogs> WA_Blogs1 { get; set; }
         public virtual WA_Blogs WA_Blogs2 { get; set; }

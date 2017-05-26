@@ -2,12 +2,12 @@
 
 @{
     ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Chi tiết Blog</h2>
 
 <div>
-    <h4>WA_Blogs</h4>
 	<hr />
     <dl class="dl-horizontal">
         <dt>
@@ -27,6 +27,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Order)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Active)
         </dt>
 
@@ -37,6 +45,9 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.BlogID }) |
-    @Html.ActionLink("Back to List", "Index")
+    <div class="form-actions no-color">
+        @Html.ActionLink("Sửa", "Edit", new {id= Model.BlogID }, new { @class = "btn btn-warning" })
+        @Html.ActionLink("Xóa", "Delete", new {id=Model.BlogID }, new { @class = "btn btn-danger" })
+        @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-default" })
+    </div>
 </p>

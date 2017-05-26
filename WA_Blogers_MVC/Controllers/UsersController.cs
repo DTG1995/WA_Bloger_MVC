@@ -7,6 +7,10 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WA_Blogers_MVC.Models;
+using PagedList;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace WA_Blogers_MVC.Controllers
 {
@@ -15,19 +19,51 @@ namespace WA_Blogers_MVC.Controllers
         private WA_BlogerEntities db = new WA_BlogerEntities();
 
         // GET: /Users/
-        public ActionResult Index(string searchName,string searchEmail)
+        public ActionResult Index(string q, int? numDisplay, string sort,int? page)
         {
             var user = from u in db.WA_Users
                         select u;
-            if(!String.IsNullOrEmpty(searchName))
+            ViewBag.CurrentSort=sort;
+            
+            //search
+            if(!String.IsNullOrEmpty(q))
             {
-                user = user.Where(s => s.UserName.Contains(searchName));
+                user = user.Where(s => s.UserName.Contains(q) || s.Email.Contains(q));
             }
-            if (!String.IsNullOrEmpty(searchEmail))
+            ViewBag.SearchName = q;
+            ViewBag.SumUsers = user.Count();
+            //sort
+            ViewBag.NameSort = String.IsNullOrEmpty(sort) ? "name_desc" : "";
+            ViewBag.EmailSort = sort == "Email" ? "email_desc" : "Email";
+            ViewBag.DisplaySort = sort == "DisplayName" ? "displayName_desc" : "DisplayName";
+            switch(sort)
             {
-                user = user.Where(s => s.Email.Contains(searchEmail));
+                case"name_desc":
+                    user = user.OrderByDescending(s => s.UserName);
+                    break;
+                case"Email":
+                    user = user.OrderBy(s => s.Email);
+                    break;
+                case "email_desc":
+                    user = user.OrderByDescending(s => s.Email);
+                    break;
+                case "DisplayName":
+                    user = user.OrderBy(s => s.DisplayName);
+                    break;
+                case"displayName_desc":
+                    user=user.OrderByDescending(s=>s.DisplayName);
+                    break;
+                default:
+                    user=user.OrderBy(s=>s.UserName);
+                    break;
             }
-            return View(user);
+            //page
+            int pageSize = 5;
+            pageSize = numDisplay == 0 ? user.Count() :( numDisplay??5);
+            ViewBag.NumDisplay = numDisplay;
+            int pageNumber = (page ?? 1);
+
+            return View(user.ToPagedList(pageNumber,pageSize));
         }
 
         // GET: /Users/Details/5
@@ -56,10 +92,18 @@ namespace WA_Blogers_MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="UserID,UserName,Email,Password,DisplayName,Created,Modified,Avatar,LastLogin,IPLast,IPCreated")] WA_Users wa_users)
+        public ActionResult Create([Bind(Include="UserID,UserName,Email,Password,DisplayName,Created,Modified,Avatar,LastLogin,IPLast,IPCreated")] WA_Users wa_users, HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
             {
+                if (Request.Files.Count > 0 || !String.IsNullOrEmpty(Request.Files[0].FileName))
+                {
+                    string path = "~/Content/images/avatar";
+                    string pathToSave = Server.MapPath(path);
+                    string filename = Path.GetFileName(Request.Files[0].FileName);
+                    Request.Files[0].SaveAs(Path.Combine(pathToSave, filename));
+                    wa_users.Avatar = filename;
+                }
                 db.WA_Users.Add(wa_users);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -88,10 +132,18 @@ namespace WA_Blogers_MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="UserID,UserName,Email,Password,DisplayName,Created,Modified,Avatar,LastLogin,IPLast,IPCreated")] WA_Users wa_users)
+        public ActionResult Edit([Bind(Include = "UserID,UserName,Email,Password,DisplayName,Created,Modified,Avatar,LastLogin,IPLast,IPCreated")] WA_Users wa_users, HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
             {
+                if (Request.Files.Count > 0 || !String.IsNullOrEmpty(Request.Files[0].FileName))
+                {
+                    string path = "~/Content/images/avatar";
+                    string pathToSave = Server.MapPath(path);
+                    string filename = Path.GetFileName(Request.Files[0].FileName);
+                    Request.Files[0].SaveAs(Path.Combine(pathToSave, filename));
+                    wa_users.Avatar = filename;
+                }
                 db.Entry(wa_users).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -117,7 +169,7 @@ namespace WA_Blogers_MVC.Controllers
         // POST: /Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(int id)
         {
             WA_Users wa_users = db.WA_Users.Find(id);
             db.WA_Users.Remove(wa_users);
@@ -129,6 +181,20 @@ namespace WA_Blogers_MVC.Controllers
         {
             var user = db.WA_Users.Find(userID);
             return View(user);
+        }
+        [HttpPost]
+        public ActionResult QuickEdit(int UserID, string UserName, string Email, string DisplayName)
+        {
+            WA_Users user = db.WA_Users.Find(UserID);
+            if (user != null)
+            {
+                user.UserName = UserName;
+                user.Email = Email;
+                user.DisplayName = DisplayName;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public JsonResult SaveQuickEdit(int? userID, string userName, string email, string nameDisplay)
@@ -145,7 +211,36 @@ namespace WA_Blogers_MVC.Controllers
             }
             return Json(user, JsonRequestBehavior.AllowGet);
         }
-        
+        static string GetMd5Hash(MD5 md5Hash, string input)
+        {
+
+            // Convert the input string to a byte array and compute the hash.
+            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+            // Create a new Stringbuilder to collect the bytes
+            // and create a string.
+            StringBuilder sBuilder = new StringBuilder();
+
+            // Loop through each byte of the hashed data 
+            // and format each one as a hexadecimal string.
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+
+            // Return the hexadecimal string.
+            return sBuilder.ToString();
+        }
+        public void Reset(int id)
+        {
+            WA_Users user = db.WA_Users.Find(id);
+            if(user !=null)
+            {
+                MD5 pass = MD5.Create();
+                user.Password = GetMd5Hash(pass,"123456");
+                db.SaveChanges();
+            }
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
