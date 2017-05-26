@@ -5,49 +5,45 @@
     Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
-<h2>Chi tiết Blog</h2>
+<h2><b>Chi tiết Blog</b></h2>
 
-<div>
-	<hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Tên Blog</th>
+        <td>@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <th>Parent</th>
+        <td>@Html.DisplayFor(model => model.WA_Blogs2.Name)</td>
+    </tr>
+    <tr>
+        <th>Order</th>
+        <td>@Html.DisplayFor(model => model.Order)</td>
+    </tr>
+    <tr>
+        <th>Active</th>
+        <td>@Html.CheckBoxFor(modelItem => modelItem.Active, new { data_toggle = "toggle", disable = true })</td>
+        <th></th>
+    </tr>
+</table>
+    @*<p><div class="form-actions no-color">
+           <a type="button" class="btn btn-block btn-warning " href="@Url.Action("Edit" , new { id = Model.BlogID })"><i class="fa fa-pencil" aria-hidden="true"></i> Sửa</a>
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.BlogID }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Xóa", "Delete", new { id = Model.BlogID }, new { @class = "btn btn-danger" })
+    @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-default" })
+</div></p>*@
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Parent)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Parent)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Order)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Order)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Active)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Active)
-        </dd>
-
-    </dl>
-</div>
 <p>
-    <div class="form-actions no-color">
-        @Html.ActionLink("Sửa", "Edit", new {id= Model.BlogID }, new { @class = "btn btn-warning" })
-        @Html.ActionLink("Xóa", "Delete", new {id=Model.BlogID }, new { @class = "btn btn-danger" })
-        @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-default" })
+   
+    <div class="form-group form-inline">
+        <div class="col-xs-2" style="padding:2px">
+            <a type="button" class="btn btn-block btn-warning " href="@Url.Action("Edit", new { id=Model.BlogID})"><i class="fa fa-pencil" aria-hidden="true"></i> Sửa</a>
+        </div>
+        <div class="col-xs-2" style="padding:2px">
+            <a type="button" href="@Url.Action("Delete", new { id=Model.BlogID})" class="btn btn-block btn-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</a>
+        </div>
+        <div class="col-xs-2" style="padding:2px">
+            <a href="@Url.Action("Index")" type="button" class="btn btn-block btn-default col-xs-2" data-dismiss="modal">Quay lại</a>
+        </div>
     </div>
 </p>

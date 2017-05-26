@@ -29,15 +29,16 @@
                             <div class="top-main-section mag-layout">
                                 @{
                                     WA_Options ListBlogs = db.WA_Options.Where(x => x.Name == "listIDTopNewBlog").FirstOrDefault();
-                                    int[] listID = ListBlogs.Value.Split(';').Select(n => Convert.ToInt32(n)).ToArray();
-                                    ViewBag.ListBlogTopNews = db.WA_Blogs.Where(b => listID.Contains(b.BlogID)).Take(4).ToList();
-                                    if (ViewBag.ListBlogTopNews.Count >0)
+                                    if (ListBlogs != null)
                                     {
-                                         @Html.Partial("Home/TopNewBlogs")
+                                        int[] listID = ListBlogs.Value.Split(';').Select(n => Convert.ToInt32(n)).ToArray();
+                                        ViewBag.ListBlogTopNews = db.WA_Blogs.Where(b => listID.Contains(b.BlogID)).Take(4).ToList();
+                                        if (ViewBag.ListBlogTopNews.Count > 0)
+                                        {
+                                            @Html.Partial("Home/TopNewBlogs")
+                                        }
                                     }
                                 }
-                              
-                               
 
                             </div>
                         </div>

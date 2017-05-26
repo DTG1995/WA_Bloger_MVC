@@ -94,7 +94,7 @@
                                                 string img = "#";
                                                 img = post.Picture ?? "#";
                                                 DateTime dateCreated = DateTime.Now;
-                                                dateCreated = post.Created ?? DateTime.Now;
+                                                dateCreated = post.Created;
                                                 
                                             }
                                             <a class="tl-topost-cat" href="@Url.RouteUrl("ViewPostsInBlogs", new { id = blog.BlogID, title = UrlEncode.ToFriendlyUrl(blog.Name) })">@blog.Name</a>
@@ -133,7 +133,7 @@
                                                 img = "#";
                                                 img = post.Picture ?? "#";
                                                 dateCreated = DateTime.Now;
-                                                dateCreated = post.Created ?? DateTime.Now;
+                                                dateCreated = post.Created;
 
                                             }
                                             <a class="tl-topost-cat" href="@Url.RouteUrl("ViewPostsInBlogs", new { id = blog.BlogID, title = UrlEncode.ToFriendlyUrl(blog.Name) })">@blog.Name</a>
@@ -174,7 +174,7 @@
                                                 img = "#";
                                                 img = post.Picture ?? "#";
                                                 dateCreated = DateTime.Now;
-                                                dateCreated = post.Created ?? DateTime.Now;
+                                                dateCreated = post.Created;
 
                                             }
                                             <a class="tl-topost-cat" href="@Url.RouteUrl("ViewPostsInBlogs", new { id = blog.BlogID, title = UrlEncode.ToFriendlyUrl(blog.Name) })">@blog.Name</a>

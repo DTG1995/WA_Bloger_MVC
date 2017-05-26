@@ -11,6 +11,7 @@ namespace WA_Blogers_MVC.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class WA_Blogs
     {
@@ -21,8 +22,14 @@ namespace WA_Blogers_MVC.Models
         }
     
         public int BlogID { get; set; }
+        [Display(Name="T�n Blog")]
+        [StringLength(100)]
+        [Required]
         public string Name { get; set; }
+        
         public Nullable<int> Parent { get; set; }
+
+        [Range(1,100)]
         public Nullable<int> Order { get; set; }
         public bool Active { get; set; }
     

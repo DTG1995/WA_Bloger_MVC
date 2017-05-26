@@ -3,10 +3,10 @@
 @{
     Layout = null;
 }
-@Styles.Render("~/Content/bootstrap-toggle.min.css")
-@Scripts.Render("~/Scripts/bootstrap-toggle.min.js")
 
-    @using (Html.BeginForm())
+
+
+    @using (Html.BeginForm("QuickEdit","Blogs",FormMethod.Post,new{id="SaveEdit"}))
     {
         <div id="alertError"></div>
         @Html.AntiForgeryToken()
@@ -19,30 +19,28 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Name)
+                    @Html.TextBoxFor(model => model.Name, new { @class="form-control"})
                     @Html.ValidationMessageFor(model => model.Name)
                 </div>
             </div>
     
-            
+            <div class="form-group">
+                @Html.LabelFor(model => model.Parent, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Parent", null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Parent)
+                </div>
+            </div>
     
             <div class="form-group">
                 @Html.LabelFor(model => model.Order, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Order)
+                    @Html.TextBoxFor(model => model.Order, new { @class="form-control"})
                     @Html.ValidationMessageFor(model => model.Order)
                 </div>
             </div>
     
-            <div class="form-group">
-                @Html.LabelFor(model => model.Active, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.CheckBoxFor(model=>model.Active, new {data_toggle="toggle" })
-                    @Html.ValidationMessageFor(model => model.Active)
-
-                    
-                </div>
-            </div>
+           
     
             
         </div>
