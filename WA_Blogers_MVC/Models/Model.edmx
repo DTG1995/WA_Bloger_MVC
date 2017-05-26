@@ -57,9 +57,9 @@
             <PropertyRef Name="Option_ID" />
           </Key>
           <Property Name="Option_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="ntext" />
-          <Property Name="Value" Type="ntext" />
-          <Property Name="Group" Type="ntext" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Value" Type="nvarchar(max)" />
+          <Property Name="Group" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="WA_Posts">
           <Key>
@@ -374,7 +374,7 @@
             <PropertyRef Name="Option_ID" />
           </Key>
           <Property Name="Option_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Group" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>

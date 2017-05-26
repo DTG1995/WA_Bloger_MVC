@@ -7,9 +7,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
-
 namespace WA_Blogers_MVC.Models
 {
     using System;
@@ -23,18 +20,13 @@ namespace WA_Blogers_MVC.Models
             this.WA_Likes = new HashSet<WA_Likes>();
             this.WA_Blogs = new HashSet<WA_Blogs>();
         }
-        [Display(Name = "Id")]
+    
         public int PostID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        [AllowHtml]
-        [Display(Name = "Nội dung")]
         public string ContentPost { get; set; }
-        [Display(Name = "Ngày tạo")]
-        public Nullable<System.DateTime> Created { get; set; }
-        [Display(Name = "Người tạo")]
+        public System.DateTime Created { get; set; }
         public Nullable<int> Author { get; set; }
-        [Display(Name = "Hình")]
         public string Picture { get; set; }
         public Nullable<bool> UseDescription { get; set; }
         public int Seen { get; set; }

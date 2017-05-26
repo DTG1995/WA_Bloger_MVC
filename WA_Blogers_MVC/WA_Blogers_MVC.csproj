@@ -167,6 +167,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\BlogsController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
@@ -1148,6 +1149,10 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\CHANGES.md" />
+    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\LICENSE" />
+    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\README.md" />
+    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\README.ru.md" />
     <EntityDeploy Include="Models\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model.Designer.cs</LastGenOutput>
@@ -1165,10 +1170,6 @@
       <DependentUpon>Model.edmx</DependentUpon>
       <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\CHANGES.md" />
-    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\LICENSE" />
-    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\README.md" />
-    <Content Include="Scripts\AdminLTE\plugins\ckeditor\plugins\codesnippet\lib\highlight\README.ru.md" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\FlipClock\flipclock.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1266,6 +1267,8 @@
     <Content Include="Views\Shared\Home\Search.cshtml" />
     <Content Include="Views\Shared\Home\FeaturedPost.cshtml" />
     <Content Include="Views\Shared\Home\TopNewBlogs.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Shared\TopHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

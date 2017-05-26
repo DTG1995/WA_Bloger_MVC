@@ -1,0 +1,137 @@
+﻿@using WA_Blogers_MVC.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
+    WA_BlogerEntities db = new WA_BlogerEntities();
+}
+
+@Styles.Render("~/Content/test/style.css")
+<h3>Tùy chỉnh trang chủ</h3>
+<div class="container">
+    <script>
+        $(function () {
+            $('.navigation-button').click(function () {
+                $('.navigation .widget-content').slideToggle();
+                $(this).toggleClass('active');
+            });
+            $('.dropdown-button').click(function () {
+                $('.dropdown .widget-content').slideToggle();
+                $(this).toggleClass('active');
+            });
+        });
+    </script>
+        <h2>Quản lý Header</h2>
+            <div class="form-group">
+                <button class="btn btn-default" data-toggle="modal" data-target="#modalOptionTopMenu">Tùy chỉnh TopMenu</button>
+                <button class="btn btn-default">Tùy chỉnh Adbanner</button>
+                <button class="btn btn-default">Tùy chỉnh TopNew</button>
+            </div>
+        <div class="container">
+            <h4>Header trang chủ</h4>
+            @Html.Partial("TopHeader")
+        </div>
+    </div>
+@* Modal Option TopMenu *@
+<div class="modal fade" id="modalOptionTopMenu" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sửa nhanh người dùng</h4>
+            </div>
+            <div class="modal-body" style="min-width:100px;">
+                <h2>TopMenu</h2>
+                @{
+                    String topnav = "Topnav";
+                    var listTopNav = db.WA_Options.Where(x => x.Group.Equals(topnav, StringComparison.CurrentCultureIgnoreCase)).ToList();
+                }
+                <div id="editTopNav">
+                    <div class="row">
+                        <div class="col-md-4 col-xs-4">
+                            <label>Tên hiển thị</label>
+                        </div>
+                        <div class="col-md-7 col-xs-7" >
+                            <label>Đường dẫn</label>
+                        </div>
+                        <div class="col-md-1 col-xs-1">
+
+                        </div>
+                    </div>
+                    <div id="contentTopNavOption">
+                        @for (int i = 0; i < listTopNav.Count; i++)
+                        {
+                            <div class="row">
+                                <div class="col-md-4 col-xs-4">
+                                    <input class="form-control" placeholder="Tên hiển thị" name="listNameTopNav" value="@listTopNav[i].Name" />
+                                </div>
+                                <div class="col-md-8 col-xs-8">
+                                    <input class="form-control" name="listUrlTopNav" value="@listTopNav[i].Value" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="pull-right">
+                        <button class="btn btn-default" onclick="AddPageTopNew()">Thêm trang</button> 
+                    </div> 
+                </div>
+                <div id="topSocical">
+                    <h2>Top Socical</h2>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" onclick="SaveEditTopNav()" id="btnSaveEditTopNav">Lưu Thay Đổi</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        var topNavcount = @listTopNav.Count ;
+        function AddPageTopNew(){
+            var div = `<div class=\"row\"><div class=\"col-md-4 col-xs-4\"><input class=\"form-control\" placeholder=\"Tên hiển thị\" name=\"listNameTopNav\"  /></div><div class=\"col-md-8 col-xs-8\"><input class=\"form-control\" placeholder=\"Đường dẫn\" name=\"listUrlTopNav\" /></div></div>`;
+            $("#contentTopNavOption").append(div);
+            topNavcount++;
+        }
+        function SaveEditTopNav(){
+            jQuery.ajaxSettings.traditional = true;
+            var listNameTop =[];
+            
+            $("input[name=listNameTopNav]").each(function() {
+                listNameTop.push($(this).val());
+            });
+            var listUrlTop=[];
+            $("input[name=listUrlTopNav]").each(function() {
+                listUrlTop.push($(this).val());
+            });
+            $.ajax({
+                type: "GET",
+                dataType: "JSON",
+                url: "@Url.Action("ChangeTopNav")",
+                data: {
+                    'listNameTopNav': listNameTop,
+                    'listUrlTopNav': listUrlTop
+                },
+            beforeSend: function () {
+                $("#btnSaveEdit").prop('disabled', true);
+                $("#btnSaveEdit").html(" Lưu thay đổi <i class=\"fa fa-refresh fa-spin fa-fw\" aria-hidden=\"true\"></i>");
+
+            },
+            success: function (data) {
+                if (!data["error"]) {
+                    debugger;
+                    $("#btnSaveEditTopNav").prop('disabled', false);
+                    $("#btnSaveEditTopNav").html(" Lưu thay đổi ");
+                    
+                }
+                else {
+                    $("#alertError").html('<div class="alert alert-error"><strong>Lỗi!</strong>mời bạn xem lại.</div>');
+                    $("#btnSaveEdit").prop('disabled', false);
+                    $("#btnSaveEdit").html(" Lưu thay đổi ");
+                }
+            }
+        });
+        }
+    </script>
+</div>
+
