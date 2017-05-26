@@ -1251,6 +1251,8 @@
     <Content Include="Views\Shared\Admin\_AdminLteBreadcrumb.cshtml" />
     <Content Include="Views\Shared\Admin\_AdminLteLeftMenu.cshtml" />
     <Content Include="Views\Shared\Admin\_AdminLteTopMenu.cshtml" />
+    <Content Include="Views\Users\QuickEdit.cshtml" />
+    <Content Include="Views\Users\SaveQuickEdit.cshtml" />
     <Content Include="Views\Blogs\ViewBlogs.cshtml" />
     <Content Include="Views\Blogs\QuickEdit.cshtml" />
     <Content Include="Views\Blogs\SaveQuickEdit.cshtml" />
@@ -1273,6 +1275,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ImagePost\" />
+    <Folder Include="Content\images\thuvien\"/>
+    <Folder Include="Content\images\avatar\"/>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

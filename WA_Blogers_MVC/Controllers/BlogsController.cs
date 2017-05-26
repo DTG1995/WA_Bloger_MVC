@@ -177,6 +177,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Blogs/Delete/5
+        [AdminFilter]
         public ActionResult Delete(int? id)
         {
             if (id == null)

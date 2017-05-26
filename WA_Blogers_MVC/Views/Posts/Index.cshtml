@@ -155,7 +155,7 @@
             @Html.DisplayFor(modelItem => item.WA_Users.UserName)
         </td>
         <td>
-            <a href="#" onclick="Edit(@item.PostID)" @*data-toggle="modal" data-target="#modalEdit_@item.PostID"*@><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
+            <a href="#" onclick="Edit(@item.PostID)"><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
             <a href="@Url.Action("Details", new { id = @item.PostID })"><i class="fa fa-info-circle" aria-hidden="true"></i> </a> |
             <a href="@Url.Action("Delete",  new { id = @item.PostID })"><i class="fa fa-trash" aria-hidden="true"></i></a>
             @*@Html.ActionLink("Edit", "Edit", new { id=item.PostID }) |
@@ -203,30 +203,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
             }
         });
     }
-    function SaveEdit() {
-        var PostID =$("edit").val() ;
-        var title = $("#title_"+id).val();
-        var description = $("#des_"+id).val();
-        var active = $('#active_'+id+':checked').val();
-        var content = CKEDITOR.instances["ckedit_" + id].getData()
-       
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("SaveQuickEdit")",
-            data: {
-                PostID: PostID,
-                title: title,
-                description: description,
-                active: active,
-                content: content
-            },
-            success: function (data) {
-                alert(data);
-                location.reload();
-
-        }
-    });
-    }
+   
 </script>
 @* modal Edit *@
 <div class="modal fade" id="modalEdit" role="dialog">
@@ -237,30 +214,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                 <h4 class="modal-title">Sửa Post</h4>
             </div>
             <div class="modal-body" id="contentModalEdit">
-                @*<div class="form-horizontal">
-                    <div class="form-group">
-                        @Html.LabelFor(modelItem => item.Title, new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(modelItem => item.Title, new { @class = "form-control", id = "title_" + item.PostID })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(modelItem => item.Description, new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.TextAreaFor(modelItem => item.Description, new { @class = "form-control", id = "des_" + item.PostID })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(modelItem => item.Active, new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <input type="checkbox" data-toggle="toggle" />
-                            @Html.CheckBoxFor(modelItem => item.Active, new { data_toggle = "toggle", id = "active_" + item.PostID })
-                        </div>
-                    </div>
-                    
-                </div>*@
-
+                //contentquickedit
             </div>
             <div class="modal-footer">
                 <button type="submit" form="frmEdit" class="btn btn-warning"">Lưu thay đổi</button>

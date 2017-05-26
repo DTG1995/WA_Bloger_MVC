@@ -1,11 +1,25 @@
 ﻿@model WA_Blogers_MVC.Models.WA_Users
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/Admin/Layout.cshtml";
+}
+@{
+    WebImage photo = null;
+    var newFileName = "";
+    var imagePath = "";
+    if (IsPost)
+    {
+        photo = WebImage.GetImageFromRequest();
+        if (photo != null)
+        {
+            newFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(photo.FileName);
+            imagePath = @"images\" + newFileName;
+            photo.Save(@"~\" + imagePath);
+        }
+    }
 }
 
-
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
@@ -32,14 +46,6 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password)
-                @Html.ValidationMessageFor(model => model.Password)
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.DisplayName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.DisplayName)
@@ -47,59 +53,47 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Created, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Created)
-                @Html.ValidationMessageFor(model => model.Created)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Modified, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Modified)
-                @Html.ValidationMessageFor(model => model.Modified)
-            </div>
-        </div>
+        
 
         <div class="form-group">
             @Html.LabelFor(model => model.Avatar, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Avatar)
-                @Html.ValidationMessageFor(model => model.Avatar)
-            </div>
+            <fieldset>
+                <div class="col-md-10">
+                    @Html.TextBox("file", "", new { type = "file", id = "uploadFile" })<br />
+                    <img width="100" height="100" id="imgshow" src="@Url.Content("~/Content/images/avatar/"+Model.Avatar)" />
+                </div>
+            </fieldset>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastLogin, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LastLogin)
-                @Html.ValidationMessageFor(model => model.LastLogin)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IPLast, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IPLast)
-                @Html.ValidationMessageFor(model => model.IPLast)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IPCreated, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IPCreated)
-                @Html.ValidationMessageFor(model => model.IPCreated)
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" id="btnEditSubmit" class="btn btn-default hidden" />
+                <input type="submit" value="Lưu" class="btn btn-warning" />
+                @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-default" })
             </div>
+            
         </div>
     </div>
+    
 }
+<div>
+    <script>
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imgshow').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#uploadFile").change(function () {
+            readURL(this);
+        });
+    </script>
+</div>
 

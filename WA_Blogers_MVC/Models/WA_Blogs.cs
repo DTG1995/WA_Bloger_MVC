@@ -22,7 +22,7 @@ namespace WA_Blogers_MVC.Models
         }
     
         public int BlogID { get; set; }
-        [Display(Name="T�n Blog")]
+        [Display(Name="Tên Blog")]
         [StringLength(100)]
         [Required]
         public string Name { get; set; }

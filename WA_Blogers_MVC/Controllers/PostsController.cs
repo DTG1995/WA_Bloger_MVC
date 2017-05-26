@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using WA_Blogers_MVC.Models;
 using PagedList;
 using PagedList.Mvc;
+using WA_Blogers_MVC.Filter;
 namespace WA_Blogers_MVC.Controllers
 {
     public class PostsController : Controller
@@ -153,8 +154,11 @@ namespace WA_Blogers_MVC.Controllers
         [HttpPost]
         public ActionResult QuickEdit([Bind(Include="PostID,Title,Description,ContentPost,Active")] WA_Posts wa_posts,int[] Blogs,HttpPostedFileBase filebase)
         {
+            
             if (ModelState.IsValid)
             {
+                if(Blogs==null || Blogs.Count()==0)
+                    return View("Edit", wa_posts);
                 WA_Posts change = db.WA_Posts.Find(wa_posts.PostID);
                 change.Title = wa_posts.Title;
                 change.Description = wa_posts.Description;
@@ -182,7 +186,7 @@ namespace WA_Blogers_MVC.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.Author = new SelectList(db.WA_Users, "UserID", "UserName", wa_posts.Author);
-            return View(wa_posts);
+            return View("Edit", wa_posts);
         }
         [HttpPost]
        
@@ -306,6 +310,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Posts/Delete/5
+        [AdminFilter]
         public ActionResult Delete(int? id)
         {
             if (id == null)
