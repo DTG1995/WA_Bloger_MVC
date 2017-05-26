@@ -69,7 +69,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Blogs/Create
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult Create()
         {
             return View();

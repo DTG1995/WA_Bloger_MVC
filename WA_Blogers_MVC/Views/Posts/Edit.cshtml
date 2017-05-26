@@ -1,22 +1,19 @@
 ﻿@model WA_Blogers_MVC.Models.WA_Posts
 
 @{
-<<<<<<< HEAD
-    ViewBag.Title = "Edit";
-=======
+
     ViewBag.Title = "Edit - " + Model.Title;
->>>>>>> origin/ttndung
     Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Chỉnh sửa Post</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Posts", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>WA_Posts</h4>
+      
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.PostID)
@@ -49,7 +46,15 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Picture, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Picture)
+                @{
+                    string p = "#";
+                    p = Model.Picture ?? "#";
+                }
+                <label id="lbPicture" class="btn btn-default" style="width: 100px; height: 100px; background-image: url(@Url.Content(p)); background-size :100%;background-repeat:round;">
+                    <input type="file" name="Picture" hidden id="ipPicture" style="display:none;" />
+
+                </label>
+                <small>(Click vào hình để thay đổi)</small>
                 @Html.ValidationMessageFor(model => model.Picture)
             </div>
         </div>
@@ -69,6 +74,39 @@
                 @Html.ValidationMessageFor(model => model.Active)
             </div>
         </div>
+        <div class="form-group">
+            <label>Thể loại</label>
+            @helper RenderHtmlBlogs(WA_Blogers_MVC.Models.WA_Blogs blog)
+{
+    var ischecked = false;
+    foreach (var item in Model.WA_Blogs)
+    {
+        if (item.BlogID == blog.BlogID)
+        {
+            ischecked = true;
+            break;
+        }
+    }
+    <li class="list-group-item ">
+        <div class="checkbox">
+            <label class="btn btn-link"><input type="checkbox" @(ischecked ? "checked" : null) name="Blogs" value="@blog.BlogID" />@blog.Name </label> <span class="badge pull-right">@blog.WA_Posts.Count</span>
+        </div>
+        <ul class="list-group">
+            @foreach (var item in blog.WA_Blogs1)
+            {
+                @RenderHtmlBlogs(item)
+            }
+        </ul>
+    </li>
+}
+            <ul class="list-group ">
+                @foreach (var item in ViewBag.ListBlogs)
+                {
+                    @RenderHtmlBlogs(item)
+                }
+            </ul>
+
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -79,10 +117,10 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Quay lại", "Index")
 </div>
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Quay lại", "Index")
 </div>
 
 <!-- CK Editor -->
@@ -95,6 +133,20 @@
             codeSnippet_theme: 'monokai_sublime',
             height: 356
         };
-        CKEDITOR.replace("ContentPost",config);
+        CKEDITOR.replace("ContentPost", config);
     });
+    function readURLImag(input) {
+        debugger;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#lbPicture").css("background-image", 'url(' + e.target.result + ')');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#ipPicture").change(function () {
+        readURLImag(this);
+    });
+
 </script>
