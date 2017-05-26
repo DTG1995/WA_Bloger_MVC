@@ -5,60 +5,80 @@
     Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
-<h2>Thêm Blog</h2>
+
 
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true)
+    <table class="table table-hover table-striped ">
+        <tr>
+            <td><h2><b>Thêm Blog</b></h2></td>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name)
-            </div>
-        </div>
+        </tr>
+        <tr>
+            <td>
+                @*<div class="form-horizontal">
+                    <hr />
+                    @Html.ValidationSummary(true)*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Parent, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Parent)
-                @Html.ValidationMessageFor(model => model.Parent)
-            </div>
-        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+                @*</div>*@
+            </td>
+        </tr>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Order, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Order)
-                @Html.ValidationMessageFor(model => model.Order)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Active, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Active)
-                @Html.ValidationMessageFor(model => model.Active)
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Thêm Blog" class="btn btn-default" />
-            </div>
-        </div>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Parent, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("Parent", null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Parent)
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Order, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Order, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Order)
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Active, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.CheckBoxFor(model => model.Active, new { data_toggle = "toggle", @class = "toggle-active" })
+                        @Html.ValidationMessageFor(model => model.Active)
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+       
+   
+        @*</div>*@
+    <div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Thêm Blog" class="btn btn-primary" />
+        @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-default" })
     </div>
+</div>
 }
 
-<div>
-   @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-default" })
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

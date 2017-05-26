@@ -7,7 +7,9 @@
     Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 <h2>Quản lý Blog</h2>
-
+<span>
+    <a href="@Url.Action()"></a>
+</span>
 <div class="form-group form-inline">
 
     @Html.ActionLink("Thêm Blog", "Create", null, new { @class = "btn btn-primary pull-left" })
@@ -15,29 +17,23 @@
         <label for="numDisplay">Hiển thị: &nbsp;</label>
         <div class="form-group">
             <select class="form-control " name="numDisplay" id="numDisplay" onchange="this.form.submit()">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
+                @{
+                    var select = new[] { "5", "10", "15", "20", "Tất cả" };
+                }
+                @foreach (var item in select)
+                {
+                    <option @(@item.CompareTo(ViewBag.numDisplay.ToString()) == 0 ? "selected" : "") value="@item">@item</option>
+                }
             </select>
         </div>
         <label for="txtSearch">Tìm kiếm: </label>
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Tìm kiếm Blog..." name="searchString" value="@ViewBag.SearchTerm" id="search-box">
+            <input type="text" class="form-control" placeholder="Tìm kiếm Blog..." name="searchString" value="@ViewBag.CurrentFilter" id="search-box">
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
         </div>
-        @*<div class="input-group" style="width: 200px; display: inline-flex;">
-        <input type="text" class="form-control" name="qSearch" id="txtSearch" placeholder="Tìm kiếm Blog" />
-        <button class="btn btn-default" style="width: 60px"><i class=" glyphicon glyphicon-search"></i></button>
-        <div class="input-group">
-            <button type="button" class="btn btn-default" style="width: 20px;padding: 6px 0;text-align: center;" /><i class="fa fa-caret-down" aria-hidden="true"></i>
-            <button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-        </div>
-    </div>*@
-        <!-- rest of form -->
+
     </form>
 
 
@@ -45,10 +41,10 @@
     <table class="table table-striped table-hover">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                @Html.ActionLink("Tên Blog", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().Parent)
+               @Html.ActionLink("Parent", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }) 
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().Order)
@@ -63,8 +59,7 @@
         {
             <tr>
                 <td id="name_@item.BlogID">
-                   @* @Html.DisplayFor(modelItem => item.Name)*@
-                    @Html.ActionLink(item.Name, "Details", new { id = item.BlogID }, new {@class="btn btn-link" })
+                    @Html.ActionLink(item.Name, "Details", new { id = item.BlogID }, new { @class = "btn btn-link" })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.WA_Blogs2.Name)
@@ -73,65 +68,13 @@
                     @Html.DisplayFor(modelItem => item.Order)
                 </td>
                 <td>
-                    @Html.CheckBoxFor(modelItem => item.Active, new { data_toggle = "toggle", id = "active_" + item.BlogID, disabled = true })
+                    @Html.CheckBoxFor(modelItem => item.Active, new { data_toggle = "toggle", id = "active_" + item.BlogID, @class = "toggle-active", value=item.BlogID, onchange="ChangeAcitve("+item.BlogID+");" })
                 </td>
                 <td>
-                    <a href="#" data-toggle="modal" data-target="#modalEdit_@item.BlogID"><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
+                    <a href="#" onclick="Edit(@item.BlogID)" @*data-toggle="modal" data-target="#modalEdit_@item.BlogID"*@><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
                     <a href="#" data-toggle="modal" data-target="#modalDetails_@item.BlogID"><i class="fa fa-info-circle" aria-hidden="true"></i> </a> |
                     <a href="#" data-toggle="modal" data-target="#modalDelete_@item.BlogID"><i class="fa fa-trash" aria-hidden="true"></i> </a>
                     
-                    @*Edit*@
-                    <div class="modal fade" id="modalEdit_@item.BlogID" role="dialog">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h3 class="modal-title"><b>Sửa Blog</b></h3>
-                                </div>
-                                <div class="modal-body">
-                                    @using (Html.BeginForm())
-                                    {
-                                        <div id="alertError"></div>
-                                        @Html.AntiForgeryToken()
-                                        <div class="form-horizontal">
-                                            @Html.ValidationSummary(true)
-                                            @Html.HiddenFor(modelItem => item.BlogID, new { id = "BlogID_" + item.BlogID })
-                                            <div class="form-group">
-                                                @Html.LabelFor(modelItem => item.Name, new { @class = "control-label col-md-2", @for = "name_" + item.BlogID })
-                                                <div class="col-md-10">
-                                                    @Html.TextBoxFor(modelItem => item.Name, new { @id = "nameEdit_" + item.BlogID })
-                                                    @Html.ValidationMessageFor(modelItem => item.Name)
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                @Html.LabelFor(modelItem => item.Order, new { @class = "control-label col-md-2", @for = "order_" + item.BlogID })
-                                                <div class="col-md-10">
-                                                    @Html.TextBoxFor(modelItem => item.Order, new { id = "orderEdit_" + item.BlogID })
-                                                    @Html.ValidationMessageFor(modelItem => item.Order)
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                @Html.LabelFor(modelItem => item.Active, new { @class = "control-label col-md-2" })
-                                                <div class="col-md-10">
-                                                    @Html.CheckBoxFor(modelItem => item.Active, new { data_toggle = "toggle", id = "ActiveEdit_" + item.BlogID })
-                                                    @Html.ValidationMessageFor(modelItem => item.Active)
-
-
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    }
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-warning" id="btnSaveEdit" onclick="SaveEdit(@item.BlogID)"><i class="fa fa-floppy-o" aria-hidden="true"></i>Lưu thay đổi</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     @*Details*@
                     <div class="modal fade" id="modalDetails_@item.BlogID" role="dialog">
                         <div class="modal-dialog">
@@ -141,23 +84,23 @@
                                     <h3 class="modal-title"><b>Chi tiết Blog</b></h3>
                                 </div>
                                 <div class="modal-body">
-                                    <table class="table  table-striped">
+                                    <table class="table table-striped">
                                         <tr>
                                             <th>Tên Blog</th>
-                                            <td>@Html.DisplayFor(model => model.FirstOrDefault().Name)</td>
+                                            <td>@Html.DisplayFor(model => item.Name)</td>
                                         </tr>
                                         <tr>
                                             <th>Parent</th>
-                                            <td>@Html.DisplayFor(model => model.FirstOrDefault().Parent)</td>
+                                            <td>@Html.DisplayFor(model => item.WA_Blogs2.Name)</td>
                                         </tr>
                                         <tr>
                                             <th>Order</th>
-                                            <td>@Html.DisplayFor(model => model.FirstOrDefault().Order)</td>
+                                            <td>@Html.DisplayFor(model => item.Order)</td>
                                         </tr>
-                                        <tr>
-                                            <th>Active</th>
-                                            <td>@Html.CheckBoxFor(modelItem => item.Active, new { data_toggle = "toggle", id = "active_" + item.BlogID, disabled = true })</td>
-                                        </tr>
+                                        @*<tr>
+                                <th>Active</th>
+                                <td>@Html.CheckBoxFor(modelItem => item.Active, new { data_toggle = "toggle", @class = "toggle-active", id = "active_detail_" + item.BlogID })</td>
+                            </tr>*@
                                     </table>
                                 </div>
                                 <div class="modal-footer">
@@ -188,43 +131,48 @@
                                 </div>
                                 <div class="modal-body">
                                     <h4 style="color:red"><b>Bạn có chắc muốn xóa Blog này không?</b></h4>
-                                        <table class="table table-bordered table-striped">
-                                            <tr>
-                                                <th>Tên Blog</th>
-                                                <td>@Html.DisplayFor(model => model.FirstOrDefault().Name)</td>
-                                                </tr>
-                                            <tr>
-                                                <th>Parent</th>
-                                                <td>@Html.DisplayFor(model => model.FirstOrDefault().Parent)</td>
-                                                </tr>
-                                            <tr>
-                                                <th>Active</th>
-                                                <td>@Html.CheckBoxFor(modelItem => item.Active, new { data_toggle = "toggle", id = "active_" + item.BlogID, disabled = true })</td>
-                                                <th></th>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <div class="col-xs-8"></div>
-                                        @using (Html.BeginForm("Delete", "Blogs", new { id = item.BlogID }, FormMethod.Post, new { @class = "col-xs-2", style = "padding:2px" }))
-                                        {
-                                            @Html.AntiForgeryToken()
-                                            <button type="submit" class="btn btn-block btn-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
-
-                                        }
-                                        <div class="col-xs-2">
-                                            <button type="button" class="btn btn-block btn-default" data-dismiss="modal">Đóng</button>
-                                        </div>
+                                    <table class="table table-bordered table-striped">
+                                        <tr>
+                                            <th>Tên Blog</th>
+                                            <td>@Html.DisplayFor(model => item.Name)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Parent</th>
+                                            <td>@Html.DisplayFor(model => item.WA_Blogs2.Name)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Order</th>
+                                            <td>@Html.DisplayFor(model => item.Order)</td>
+                                        </tr>
+                                        @*<tr>
+                                <th>Active</th>
+                                <td>@Html.CheckBoxFor(modelItem => item.Active, new { data_toggle = "toggle", id = "active_delete_" + item.BlogID, disable = true })</td>
+                                <th></th>
+                            </tr>*@
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="col-xs-8"></div>
+                                    
+                                    @using (Html.BeginForm("Delete", "Blogs", new { id = item.BlogID }, FormMethod.Post, new { @class = "col-xs-2", style = "padding:2px" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-block btn-danger" onclick="DeleteNotice(@item.BlogID);" data-toggle="modal" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                                    }
+                                    <div class="col-xs-2">
+                                        <button type="button" class="btn btn-block btn-default" data-dismiss="modal">Đóng</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+                        
+                    
+                              
                 </td>
             </tr>
-    <!-- Modal -->
-
         }
-
     </table>
     <div>
         Trang @(Model.PageCount<Model.PageNumber?0:Model.PageNumber) trong tổng số @Model.PageCount
@@ -232,7 +180,7 @@
     </div>
 
     <script>
-    @*function Edit(id) {
+    function Edit(id) {
         $.ajax({
             type: "GET",
             url: "@Url.Action("QuickEdit")",
@@ -242,55 +190,115 @@
             beforeSend: function () {
                 $("#contentModalEdit").css('background-image','url("@Href("~/Public/Loading-icon.gif")")');
                 $("#modalEdit").modal();
+
             },
             success: function (data) {
                 $("#contentModalEdit").css('background-color','#fff');
-                $("#contentModalEdit").html(data);
-
+                $("#contentModalEdit").html(data);              
             }
         });
-    }*@
-        function SaveEdit(id) {
-            var name = $("#nameEdit_" + id).val();
-            var action = $("#ActiveEdit_" + id).prop("checked");
-            var order = $("#orderEdit_" + id).val();
-            $.ajax({
-                type: "GET",
-                dataType: "JSON",
-                url: "@Url.Action("SaveQuickEdit")",
-                data: {
-                    blogID: id,
-                    name: name,
-                    active: action
-                },
-                beforeSend: function () {
-                    $("#btnSaveEdit").prop('disabled', true);
-                    $("#btnSaveEdit").html(" Lưu thay đổi <i class=\"fa fa-refresh fa-spin fa-fw\" aria-hidden=\"true\"></i>");
-
-                },
-                success: function (data) {
-                    if (!data["error"]) {
-                        id = data.IDBlog;
-                        var idname = "#name_" + id;
-                        $("#name_" + id).html(data["Name"]);
-                        $("#active_" + id).bootstrapToggle((data["Active"] ? "on" : "off"));
-                        $("#btnSaveEdit").prop('disabled', false);
-                        $("#btnSaveEdit").html(" Lưu thay đổi ");
-                        $("#modalEdit_" + id).modal('hide');;
-                    }
-                    else {
-                        $("#alertError").html('<div class="alert alert-error"><strong>Lỗi!</strong>mời bạn xem lại.</div>');
-                        $("#btnSaveEdit").prop('disabled', false);
-                        $("#btnSaveEdit").html(" Lưu thay đổi ");
-                    }
-                }
-            });
-        }
+    }
         function DeleteQuestion(id){
             $("#modalDetails_"+id).modal('hide');
             $("#modalDelete_"+id).modal();
         }
 
+        function DeleteNotice(id) {
+            RequestVerificationToken =$("input[name=__RequestVerificationToken]").val();
+            $.ajax({
+                type: "Post",
+                url: "@Url.Action("Delete")",
+                data: {
+                id: id,
+                __RequestVerificationToken: RequestVerificationToken
+                },
+            success: function (data) {
+                if (data == "true") {
+                    $("#contentNotice").html("Bạn đã xóa thành công !!!");
+                } else {
+                    $("#contentNotice").html("Xóa thất bại !!!");
+                    
+                }
+                $("#modalDelete_" + id).modal('hide');
+                $("#modalNotice").modal();
+            },
+            error: function (data) {
+                console.log(data);
+            }
+            });
+            
+        }
+        function ChangeAcitve(id) {
+            var active = $("#active_"+id).prop('checked');
+
+            $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("SetActive")",
+                    data: {
+                    blogID: id,
+                    active: active
+                    },
+                success: function (data) {
+                    //$("#active_delete_" + id).prop('checked', active).change();
+                    //$("#active_detail_" + id).prop('checked', active).change();
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        
+        $(document).ready(function () {
+                $('#modalNotiDelete').on('hidden', function () {
+                    window.location.replace("@Url.Action("Index")");
+                });
+        });
+        
     </script>
+@* notice *@
+<div id="modalNotice" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title"><b>Thông báo</b></h2>
+            </div>
+            <div class="modal-body">
+                <p id="contentNotice"/>
+            </div>
+            <div class="modal-footer">
+                <a href="@Url.Action("Index")"  class="btn btn-default">OK</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+@*Edit*@
+<div class="modal fade" id="modalEdit" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title"><b>Sửa nhanh Blog</b></h3>
+            </div>
+            <div class="modal-body" id="contentModalEdit">
+               
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="SaveEdit" class="btn btn-warning" id="btnSaveEdit"><i class="fa fa-floppy-o" aria-hidden="true"></i>Lưu thay đổi</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 
 

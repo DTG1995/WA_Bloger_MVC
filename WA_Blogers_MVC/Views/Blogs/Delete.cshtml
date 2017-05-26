@@ -4,51 +4,83 @@
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
-<h2>Xóa Blog</h2>
-<h3>Bạn có chắc muốn xóa Blog này không?</h3>
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+<h2><b>Xóa Blog</b></h2>
+<h3 style="color:red;">Bạn có chắc muốn xóa Blog này không?</h3>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Parent)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Parent)
-        </dd>
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Tên Blog</th>
+        <td>@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <th>Parent</th>
+        <td>@Html.DisplayFor(model => model.WA_Blogs2.Name)</td>
+    </tr>
+    <tr>
+        <th>Order</th>
+        <td>@Html.DisplayFor(model => model.Order)</td>
+    </tr>
+    <tr>
+            <th>Active</th>
+            <td>@Html.CheckBoxFor(modelItem => modelItem.Active, new { data_toggle = "toggle", disable = true })</td>
+            <th></th>
+        </tr>
+</table>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Order)
-        </dt>
+   <p>
+       <div class="form-group form-inline">
+           <div class="col-xs-2" style="padding:2px">
+               @Html.AntiForgeryToken()
+               <button type="submit" class="btn btn-block btn-danger col-xs-2" onclick="DeleteNotice()" data-dismiss="modal" id=" btndelete"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+           </div>           
+         
+           <div class="col-xs-2" style="padding:2px">
+               <a href="@Url.Action("Index")" type="button" class="btn btn-block btn-default col-xs-2">Quay lại</a>
+           </div>
+       </div>
+   </p>
 
-        <dd>
-            @Html.DisplayFor(model => model.Order)
-        </dd>
+<div id="modalNotice" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Active)
-        </dt>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title"><b>Thông báo</b></h2>
+            </div>
+            <div class="modal-body">
+                <p id="contentNotice" />
+            </div>
+            <div class="modal-footer">
+                <a href="@Url.Action("Index")" class="btn btn-default">OK</a>
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Active)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Xóa" class="btn btn-danger" /><span>&nbsp;</span>
-    @Html.ActionLink("Quay lại", "Index",null, new { @class="btn btn-default"})
+    </div>
 </div>
+<script>
+    function DeleteNotice() {
+        RequestVerificationToken = $("input[name=__RequestVerificationToken]").val();
+        $.ajax({
+            type: "Post",
+            data: {
+                __RequestVerificationToken: RequestVerificationToken
+            },
+            success: function (data) {
+                if (data == "true") {
+                    $("#contentNotice").html("Bạn đã xóa thành công !!!");
+                } else {
+                    $("#contentNotice").html("Xóa thất bại !!!");
+
+                }
+                $("#modalNotice").modal();
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
     }
-</div>
+            
+</script>

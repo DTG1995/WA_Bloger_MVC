@@ -24,8 +24,12 @@ namespace WA_Blogers_MVC.Models
         public int BlogID { get; set; }
         [Display(Name="Tên Blog")]
         [StringLength(100)]
+        [Required]
         public string Name { get; set; }
+        
         public Nullable<int> Parent { get; set; }
+
+        [Range(1,100)]
         public Nullable<int> Order { get; set; }
         public bool Active { get; set; }
 
