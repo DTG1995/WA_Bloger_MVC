@@ -2,8 +2,24 @@
 
 @{
     ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="content-wrapper main-content">
+    <div class="inner container" style="max-width: 100%;">
+        <div class="row">
+            <div id="tl-error-page">
+                <h1 class="errorsymbol">4<span class="fa fa-frown-o"></span>4
+                </h1>
+                <br>
+                <h2 class="tl-error">No Results Found!</h2>
+                <br>
+                <p>The page you requested could not be found.</p>
+                <p>Go To Homepage</p>
+                <span class="fa fa-hand-o-down"></span>
+                <div class="clear"></div>
+                <a class="button medium peter-river" href="http://magpress1-themelet.blogspot.com/">Homepage</a>
+            </div>
+        </div>
+    </div>
+</div>
 

@@ -3,49 +3,63 @@
 <div class="tl-headerwrap" id="header-wrapper">
     <div class="header-section header-contents">
         @* Top nav *@
-        <div class="topnav">
-            <div class="topnav-block" style="width: 100%; padding-left: 0; margin-left: 0;">
-                <div class="navigation section" id="StaticPages">
-                    <div class="widget PageList" data-version="1" id="PageList1">
-                        <h2>Pages</h2>
-                        <div class="navigation-button"></div>
-                        <div class="widget-content">
-                            <ul>
-                                <li><a href="@Url.Action("Index", "Home")">Home</a></li>
-                                <li><a href="#">Liên Hệ</a></li>
-                            </ul>
+        @{
+            var listTopNav = db.WA_Options.Where(x => x.Group.Equals("Topnav")).ToList();
+            var listsocial = db.WA_Options.Where(x => x.Group.Equals("TopnavSocical")).ToList();
+            var display = listsocial.Count > 0 || listTopNav.Count > 0 ? "" : "none";
+        }
+        
+            <div class="topnav" style="display:@display; ">
+                <div class="topnav-block" style="width: 100%; padding-left: 0; margin-left: 0;">
+                    <div class="navigation section" id="StaticPages">
+                        <div class="widget PageList" data-version="1" id="PageList1">
+                            <h2>Pages</h2>
+                            <div class="navigation-button"></div>
+                            <div class="widget-content">
+                                <ul id="topMenuNav">
+                                    @{
+
+                                        if (listTopNav != null)
+                                        {
+                                            for (int i = 0; i < listTopNav.Count; i++)
+                                            {
+                                                <li><a href="@listTopNav[i].Value">@listTopNav[i].Name</a></li>
+                                            }
+                                        }
+                                    }
+                                </ul>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tl-topsocial section" id="Socialicons">
+                        <div class="widget HTML" data-version="1" id="HTML118">
+                            <div class="widget-content">
+                                <div class="top-social">
+                                    <ul class="tl-social-icons icon-flat list-unstyled list-inline" id="listsocial" itemscope="" itemtype="http://schema.org/SiteNavigationElement">
+                                        @{
+
+                                            if (listsocial != null)
+                                            {
+                                                for (int i = 0; i < listsocial.Count; i++)
+                                                {
+                                                    <li>
+                                                         <a href="@listsocial[i].Value"><i class="fa @("fa-"+listsocial[i].Name)"></i></a>
+                                                   </li>
+                                                }
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+
                             <div class="clear"></div>
                         </div>
                     </div>
                 </div>
-                <div class="tl-topsocial section" id="Socialicons">
-                    <div class="widget HTML" data-version="1" id="HTML118">
-                        <div class="widget-content">
-                            <div class="top-social">
-                                <ul class="tl-social-icons icon-flat list-unstyled list-inline" itemscope="" itemtype="http://schema.org/SiteNavigationElement">
-                                    <li>
-                                        <a href="#"><i class="fa fa-facebook"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-google-plus"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-pinterest"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-github"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                <div style="clear: both"></div>
 
-                        <div class="clear"></div>
-                    </div>
-                </div>
             </div>
-            <div style="clear: both"></div>
-
-        </div>
         @* Logo mid *@
         <div class="tl-midheader">
             <div class="inner">
