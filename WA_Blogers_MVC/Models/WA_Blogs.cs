@@ -24,7 +24,7 @@ namespace WA_Blogers_MVC.Models
         public int BlogID { get; set; }
         [Display(Name="Tên Blog")]
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage="Bắt buộc phải nhập tên Blog")]
         public string Name { get; set; }
         
         public Nullable<int> Parent { get; set; }

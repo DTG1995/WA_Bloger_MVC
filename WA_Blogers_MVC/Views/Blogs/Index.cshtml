@@ -3,16 +3,14 @@
 @model PagedList.IPagedList<WA_Blogers_MVC.Models.WA_Blogs>
 <link href="~/Content/PageList.css" rel="stylesheet" type="text/css"/>
 @{
-    ViewBag.Title = "Quản lý Blog";
+    ViewBag.Title = "QuanLyBlog";
     Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 <h2>Quản lý Blog</h2>
-<span>
-    <a href="@Url.Action()"></a>
-</span>
-<div class="form-group form-inline">
 
-    @Html.ActionLink("Thêm Blog", "Create", null, new { @class = "btn btn-primary pull-left" })
+<div class="form-group form-inline">
+    <a href="@Url.RouteUrl("ThemBlogMoi")" type="button" class="btn btn-primary" >Thêm mới</a>
+
     <form class="form-inline pull-right" style="margin-right:40px;">
         <label for="numDisplay">Hiển thị: &nbsp;</label>
         <div class="form-group">
@@ -59,7 +57,8 @@
         {
             <tr>
                 <td id="name_@item.BlogID">
-                    @Html.ActionLink(item.Name, "Details", new { id = item.BlogID }, new { @class = "btn btn-link" })
+                    <a href="@Url.RouteUrl("ChiTietBlog", new{id=item.BlogID,title = UrlEncode.ToFriendlyUrl(item.Name)})" class="btn btn-link"/>
+                    @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.WA_Blogs2.Name)
@@ -107,7 +106,7 @@
                                     <div class="form-group form-inline">
                                         <div class="col-xs-6"></div>
                                         <div class="col-xs-2" style="padding:2px">
-                                            <a type="button" class="btn btn-block btn-warning " href="@Url.Action("Edit", new { id=item.BlogID})"><i class="fa fa-pencil" aria-hidden="true"></i> Sửa</a>
+                                            <a type="button" class="btn btn-block btn-warning " href="@Url.RouteUrl("ChinhSuaBlog", new { id = item.BlogID, title=UrlEncode.ToFriendlyUrl(item.Name) })"><i class="fa fa-pencil" aria-hidden="true"></i> Sửa</a>
                                         </div>
                                         <div class="col-xs-2" style="padding:2px">
                                             <button type="button" onclick="DeleteQuestion(@item.BlogID);" class="btn btn-block btn-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
@@ -159,7 +158,7 @@
                                         @Html.AntiForgeryToken()
                                         <button type="submit" class="btn btn-block btn-danger" onclick="DeleteNotice(@item.BlogID);" data-toggle="modal" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
                                     }
-                                    <div class="col-xs-2">
+                                    <div class="col-xs-2" style="padding:2px">
                                         <button type="button" class="btn btn-block btn-default" data-dismiss="modal">Đóng</button>
                                     </div>
                                 </div>
@@ -176,7 +175,7 @@
     </table>
     <div>
         Trang @(Model.PageCount<Model.PageNumber?0:Model.PageNumber) trong tổng số @Model.PageCount
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter =ViewBag.CurrentFilter}))
+        @Html.PagedListPager(Model, page => @Url.RouteUrl("QuanLyBlog", new { page, sortOrder = ViewBag.CurrentSort, currentFilter =ViewBag.CurrentFilter}))
     </div>
 
     <script>
@@ -251,7 +250,7 @@
         
         $(document).ready(function () {
                 $('#modalNotiDelete').on('hidden', function () {
-                    window.location.replace("@Url.Action("Index")");
+                    window.location.replace("@Url.RouteUrl("QuanLyBlog")");
                 });
         });
         
@@ -269,7 +268,7 @@
                 <p id="contentNotice"/>
             </div>
             <div class="modal-footer">
-                <a href="@Url.Action("Index")"  class="btn btn-default">OK</a>
+                <a href="@Url.RouteUrl("QuanLyBlog")" class="btn btn-default">OK</a>
             </div>
         </div>
 

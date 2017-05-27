@@ -1,7 +1,7 @@
 ﻿@model WA_Blogers_MVC.Models.WA_Blogs
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "XoaBlog";
     Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
@@ -37,7 +37,7 @@
            </div>           
          
            <div class="col-xs-2" style="padding:2px">
-               <a href="@Url.Action("Index")" type="button" class="btn btn-block btn-default col-xs-2">Quay lại</a>
+               <a href="@Url.RouteUrl("QuanLyBlog")" type="button" class="btn btn-block btn-default col-xs-2">Quay lại</a>
            </div>
        </div>
    </p>
@@ -54,7 +54,7 @@
                 <p id="contentNotice" />
             </div>
             <div class="modal-footer">
-                <a href="@Url.Action("Index")" class="btn btn-default">OK</a>
+                <a href="@Url.RouteUrl("QuanLyBlog")" class="btn btn-default">OK</a>
             </div>
         </div>
 

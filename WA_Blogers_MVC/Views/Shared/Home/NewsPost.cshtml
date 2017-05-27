@@ -21,7 +21,7 @@
                              {   top = -60;}
                              string title = (waPosts.Title.Length > 150 ? waPosts.Title.Substring(0, 150) + "..." : waPosts.Title);
                              WA_Blogs blog = waPosts.WA_Blogs.FirstOrDefault();
-                             <li style="top: @(top.ToString()+"px"); display: block;"><span>@blog.Name</span> - <a href="@Url.RouteUrl("ViewPost", new{id = blog.BlogID, title=UrlEncode.ToFriendlyUrl(title)})" style="display: unset;">@title</a></li>
+                             <li style="top: @(top.ToString()+"px"); display: block;"><span>@blog.Name</span> - <a href="@Url.RouteUrl("ViewPost", new{id = waPosts.PostID, title=UrlEncode.ToFriendlyUrl(title)})" style="display: unset;">@title</a></li>
                          }
                     </ul>
                     <div class="bn-navi">
