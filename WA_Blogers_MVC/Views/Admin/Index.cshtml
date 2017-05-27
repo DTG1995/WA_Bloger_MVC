@@ -271,32 +271,52 @@
                         img = logoPage.Value;
                     }
                 }
-                <label id="lbLogo" style="width: 300px; height: 90px; display: block; text-align: center; background-image: url(@Url.Content(img));">
-                    <input type="file" name="logoPage" id="uploadLogo" class="hidden"/>
-                    <p style="padding-top: 60px; color: red;">Click vào hình để có thể chọn hình</p>
-                </label>
+                @using (Html.BeginForm("ChangeMidleTop", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmMiddle" }))
+{
+    <label id="lbLogo" style="width: 300px; height: 90px; display: block; text-align: center;background-image: url(@Url.Content("~/Public/"+img)) ; background-size:100%;">
+        <input type="file" name="logoPage" id="uploadLogo" class="hidden" />
+        <p style="padding-top: 60px; color: red;">Click vào hình để có thể chọn hình</p>
+    </label>
                 <div class="col-md-10 col-xs-10" style="padding: 0">
                     <h2 style="margin: 5px 0px;">Sử dụng đồng hồ</h2>
                 </div>
-                <input class="col-md-2 col-xs-2" type="checkbox" id="useClock" name="useClock" @(time != null ? "checked" : "") data-toggle="toggle">
-                <div id="contenAd">
-                    <input type="text" na/>
+
+    <input class="col-md-2 col-xs-2" type="checkbox" id="useClock" name="useClock" @(time != null ? "checked" : "") value="@(time != null ? "true" : "false")" data-toggle="toggle">
+    <input type="text" id="useClock" name="useClock" value="@(time != null ? "true" : "false")" hidden />
+                <div id="contenAd" style="display:@(time == null ? "block" : "none");">
+                    @{
+    var linkAd = db.WA_Options.Where(x => x.Group.Equals("Ads") && x.Name.Equals("AdsLink")).Select(x => x.Value).FirstOrDefault();
+    var imageAd = db.WA_Options.Where(x => x.Group.Equals("Ads") && x.Name.Equals("AdsImage")).Select(x => x.Value).FirstOrDefault();
+                    }
+                    <label id="lbAd" style="width: 100%; height: 90px; display: block; text-align: center; background-image: url(@Url.Content("~/Public/" + imageAd)) ; background-size:100%;">
+                        <input type="file" name="imgAd" id="uploadAd" class="hidden" />
+                        <p style="padding-top: 60px; color: red;" id="smallLogo">Click vào hình để có thể chọn hình</p>
+                    </label>
+                    <div class="form-group">
+                        <label for="txtUrlAd" class="col-md-4 col-xs-4" >Đường dẫn Ads</label>
+                        <div class="col-md-8 col-xs-8">
+                            <input name="txtUrlAd" id="txtUrlAd" value="@linkAd" placeholder="Đường dẫn Ads" type="url" class="form-control" />
+                        </div>
+                    </div>
+
                 </div>
+                }
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" form="frmMiddle" class="btn btn-warning" >Lưu tùy chọn</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
             </div>
         </div>
 
     </div>
     <script>
-        function readURL(input) {
+        function readURL(input, label) {
 
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
                 reader.onload = function (e) {
-                    $('#lbLogo').css('background-image',"url("+e.target.result+")");
+                    $(label).css('background-image',"url("+e.target.result+")");
                 }
 
                 reader.readAsDataURL(input.files[0]);
@@ -304,8 +324,24 @@
         }
 
         $("#uploadLogo").change(function () {
-            readURL(this);
+            readURL(this,'#lbLogo');
         });
+        $("#uploadAd").change(function () {
+            readURL(this,'#lbAd');
+        });
+        $('#useClock').change(function() {
+            if($(this).prop('checked'))
+            {
+                $("#contenAd").hide();
+                $("input[name=useClock]").val("true");
+            }
+            else {
+                $("#contenAd").show();
+                $("input[name=useClock]").val("false");
+            }
+
+        });
+
     </script>
 </div>
 

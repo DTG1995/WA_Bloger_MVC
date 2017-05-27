@@ -69,8 +69,11 @@
                             <div class="widget Header" data-version="1" id="Header1">
                                 <div id="header-inner">
                                     <h2 itemprop="name">
+                                        @{
+                                            var logo = db.WA_Options.Where(x=>x.Name.Equals("logo")).Select(x => x.Value).FirstOrDefault();
+                                        }
                                         <a href="@Url.Action("Index", "Home")" style="display: block">
-                                            <img alt="Nhóm 8 - CTK37" height="90px; " id="Header1_headerimg" itemprop="logo" src="@Url.Content("~/Public/Logo.jpg")"
+                                            <img alt="Nhóm 8 - CTK37" height="90px; " id="Header1_headerimg" itemprop="logo" src="@Url.Content("~/Public/"+logo)"
                                                  style="display: block" width="300px; "><span>Nhóm 8 - CTK37</span>
                                         </a>
                                     </h2>
@@ -85,10 +88,8 @@
                     if (option != null)
                     {
                         @Styles.Render("~/Content/FlipClock/flipclock.css")
-                        ;
                         @Scripts.Render("~/Scripts/FlipClock/flipclock.min.js")
-                        ;
-                        @*<div class="clock" style="margin:0px;width:460px;float:right;max-height: 90px;" ></div>*@
+                       
                         @Html.Raw(new HtmlString(option.Value))
                         <div class="clear"></div>
                         <script type="text/javascript">
@@ -102,12 +103,13 @@
                     }
                     else
                     {
+                        var link = db.WA_Options.Where(x => x.Group.Equals("Ads") && x.Name.Equals("AdsLink")).Select(x => x.Value).FirstOrDefault();
+                        var image = db.WA_Options.Where(x => x.Group.Equals("Ads") && x.Name.Equals("AdsImage")).Select(x => x.Value).FirstOrDefault();
                         <div class="adbanner section" id="Ad728x90">
                             <div class="widget HTML" data-version="1" id="HTML198">
                                 <div class="widget-content">
-                                    <a href="#" target="_blank">
-                                        <img src="https://3.bp.blogspot.com/-CfD9IY5Rjvg/V1ZIDx9aWmI/AAAAAAAAAfw/BKAqbCxVwnkx7g6xrb9PEf05LXE-JL1uwCLcB/s1600/mp-728.png"
-                                             alt="themelet">
+                                    <a href="@(link==null?"#":link)" target="_blank">
+                                        <img src="@(link==null?"#":Url.Content("~/Public/"+ image))"  alt="themelet">
                                     </a>
                                 </div>
                             </div>
