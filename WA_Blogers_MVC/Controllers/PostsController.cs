@@ -219,6 +219,32 @@ namespace WA_Blogers_MVC.Controllers
             }
             return View(wa_posts);
         }
+        public ActionResult DetailsAjax(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            WA_Posts wa_posts = db.WA_Posts.Find(id);
+            if (wa_posts == null)
+            {
+                return HttpNotFound();
+            }
+            return View(wa_posts);
+        }
+        public ActionResult DeleteAjax(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            WA_Posts wa_posts = db.WA_Posts.Find(id);
+            if (wa_posts == null)
+            {
+                return HttpNotFound();
+            }
+            return View(wa_posts);
+        }
 
         // GET: /Posts/Create
         public ActionResult Create()
@@ -347,8 +373,7 @@ namespace WA_Blogers_MVC.Controllers
         
         // POST: /Posts/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id,string title)
         {
             WA_Posts wa_posts = db.WA_Posts.Single(n=>n.PostID==id);
             if (wa_posts != null)

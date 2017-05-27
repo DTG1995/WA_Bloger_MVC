@@ -1265,6 +1265,8 @@
     <Content Include="Views\Shared\Post\CommentPost.cshtml" />
     <Content Include="Views\Shared\Post\RelatedPosts.cshtml" />
     <Content Include="Views\Shared\Post\PostShares.cshtml" />
+    <Content Include="Views\Posts\DetailsAjax.cshtml" />
+    <Content Include="Views\Posts\DeleteAjax.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

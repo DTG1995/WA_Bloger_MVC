@@ -155,19 +155,15 @@
             @Html.DisplayFor(modelItem => item.WA_Users.UserName)
         </td>
         <td>
-            <a href="#" onclick="Edit(@item.PostID)" @*data-toggle="modal" data-target="#modalEdit_@item.PostID"*@><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
-            <a href="@Url.RouteUrl("ChiTietPost", new { id = @item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title) })"><i class="fa fa-info-circle" aria-hidden="true"></i> </a> |
-            <a href="@Url.RouteUrl("XoaPost", new { id = @item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title) })"><i class="fa fa-trash" aria-hidden="true"></i></a>
-            @*@Html.ActionLink("Edit", "Edit", new { id=item.PostID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PostID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PostID })*@
+            <span onclick="Edit(@item.PostID)" style="color:blue;cursor:pointer"><i class="fa fa-pencil" aria-hidden="true"></i> </span> |
+            <span onclick="Detail(@item.PostID)" style="color:blue;cursor:pointer"><i class="fa fa-info-circle" aria-hidden="true"></i> </span> |
+            <span onclick="Delete(@item.PostID)" style="color:blue;cursor:pointer"> <i class="fa fa-trash" aria-hidden="true"></i></span>
+           
 
             
         </td>
     </tr>
-    
 }
-
 </table>
 
 
@@ -203,6 +199,38 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
             }
         });
     }
+    function Detail(id) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("DetailsAjax")",
+            data: {
+            id: id
+            },
+        beforeSend: function () {
+            $("#modalDetail").modal();
+        },
+        success: function (data) {
+            $("#contentModalDetail").html(data);
+
+        }
+    });
+    }
+    function Delete(id) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("DeleteAjax")",
+            data: {
+            id: id
+            },
+        beforeSend: function () {
+            $("#modalDelete").modal();
+        },
+        success: function (data) {
+            $("#contentModalDelete").html(data);
+
+        }
+    });
+    }
     function SaveEdit() {
         var PostID =$("edit").val() ;
         var title = $("#title_"+id).val();
@@ -237,35 +265,26 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                 <h4 class="modal-title">Sửa Post</h4>
             </div>
             <div class="modal-body" id="contentModalEdit">
-                @*<div class="form-horizontal">
-                    <div class="form-group">
-                        @Html.LabelFor(modelItem => item.Title, new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(modelItem => item.Title, new { @class = "form-control", id = "title_" + item.PostID })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(modelItem => item.Description, new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.TextAreaFor(modelItem => item.Description, new { @class = "form-control", id = "des_" + item.PostID })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(modelItem => item.Active, new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <input type="checkbox" data-toggle="toggle" />
-                            @Html.CheckBoxFor(modelItem => item.Active, new { data_toggle = "toggle", id = "active_" + item.PostID })
-                        </div>
-                    </div>
-                    
-                </div>*@
-
+                
             </div>
             <div class="modal-footer">
                 <button type="submit" form="frmEdit" class="btn btn-warning">Lưu thay đổi</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
             </div>
+        </div>
+    </div>
+</div>
+@* modal Detail *@
+<div class="modal fade" id="modalDetail" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="contentModalDetail">
+        </div>
+    </div>
+</div>
+@* modal Delete *@
+<div class="modal fade" id="modalDelete" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="contentModalDelete">
         </div>
     </div>
 </div>
