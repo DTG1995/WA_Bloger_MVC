@@ -61,13 +61,16 @@ namespace WA_Blogers_MVC.Controllers
 
             //sort
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" :"";
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "parent_sc" : "";
+            ViewBag.ParentSortParm = sortOrder =="Parent" ? "parent_asc" : "Parent";
             switch (sortOrder)
             {
-                case "name_asc":
+                case "name_desc":
                     blog = blog.OrderByDescending(b => b.Name);
                     break;
-                case "parent_asc":
+                case "Parent":
+                    blog = blog.OrderBy(b => b.Parent);
+                    break;
+                case "parent_desc":
                     blog = blog.OrderByDescending(b => b.Parent);
                     break;
                 default:
@@ -167,6 +170,7 @@ namespace WA_Blogers_MVC.Controllers
                 WA_Blogs change = db.WA_Blogs.Find(wa_blogs.BlogID);
                 change.Name = wa_blogs.Name;
                 change.Parent = wa_blogs.Parent;
+                change.Order = wa_blogs.Order;
                 change.Active = wa_blogs.Active;
 
                 db.Entry(change).State = EntityState.Modified;
@@ -177,7 +181,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Blogs/Delete/5
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult Delete(int? id)
         {
             if (id == null)

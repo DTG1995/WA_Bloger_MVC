@@ -1,7 +1,7 @@
 ﻿@model WA_Blogers_MVC.Models.WA_Blogs
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "ChiTietBlog";
     Layout = "~/Views/Shared/Admin/Layout.cshtml";
 }
 
@@ -37,13 +37,13 @@
    
     <div class="form-group form-inline">
         <div class="col-xs-2" style="padding:2px">
-            <a type="button" class="btn btn-block btn-warning " href="@Url.Action("Edit", new { id=Model.BlogID})"><i class="fa fa-pencil" aria-hidden="true"></i> Sửa</a>
+            <a type="button" class="btn btn-block btn-warning " href="@Url.RouteUrl("ChinhSuaBlog", new { id = Model.BlogID, title=UrlEncode.ToFriendlyUrl(Model.Name) })"><i class="fa fa-pencil" aria-hidden="true"></i> Sửa</a>
         </div>
         <div class="col-xs-2" style="padding:2px">
-            <a type="button" href="@Url.Action("Delete", new { id=Model.BlogID})" class="btn btn-block btn-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</a>
+            <a type="button" href="@Url.RouteUrl("XoaBlog", new { id = Model.BlogID, title=UrlEncode.ToFriendlyUrl(Model.Name) })" class="btn btn-block btn-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</a>
         </div>
         <div class="col-xs-2" style="padding:2px">
-            <a href="@Url.Action("Index")" type="button" class="btn btn-block btn-default col-xs-2" data-dismiss="modal">Quay lại</a>
+            <a href="@Url.RouteUrl("QuanLyBlog") " type=" button" class="btn btn-block btn-default col-xs-2" data-dismiss="modal">Quay lại</a>
         </div>
     </div>
 </p>

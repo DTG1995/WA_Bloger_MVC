@@ -41,7 +41,7 @@
                                                             <a class="timestamp-link" href="#" rel="bookmark" title="permanent link">
                                                                 @{
                                                                     DateTime a = DateTime.Now;
-                                                                    a = Model.Created ?? DateTime.Now;
+                                                                    a = Model.Created;
                                                                 }
                                                                 <abbr class="updated published" title="@a.ToString("F")">
 
