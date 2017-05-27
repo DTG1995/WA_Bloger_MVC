@@ -35,20 +35,20 @@ namespace WA_Blogers_MVC
                 );
             routes.MapRoute(
                 name: "EditPost",
-                url: "Admin/chinh-sua-post/{title}-{id}",
+                url: "admin/chinh-sua-bai-viet/{title}-{id}",
                 defaults: new { controller = "Posts", action = "Edit", id = UrlParameter.Optional, title=UrlParameter.Optional }
                 );
 
             routes.MapRoute(
                 name: "ChiTietPost",
-                url: "Admin/chi-tiet-post/{title}-{id}",
-                defaults: new { controller = "Posts", action = "Details", id = UrlParameter.Optional, title = UrlParameter.Optional }
+                url: "admin/chi-tiet-bai-viet/{title}-{id}",
+                defaults: new { controller = "Posts", action = "Details", id = UrlParameter.Optional }
                 );
 
             routes.MapRoute(
                 name: "XoaPost",
-                url: "Admin/Xoa-post/{title}-{id}",
-                defaults: new { controller = "Posts", action = "Delete", id = UrlParameter.Optional, title = UrlParameter.Optional }
+                url: "admin/xoa-bai-viet-{id}",
+                defaults: new { controller = "Posts", action = "Delete", id = UrlParameter.Optional}
                 );
 
             routes.MapRoute(
@@ -57,8 +57,8 @@ namespace WA_Blogers_MVC
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-          
 
+            //
             
         }
     }
