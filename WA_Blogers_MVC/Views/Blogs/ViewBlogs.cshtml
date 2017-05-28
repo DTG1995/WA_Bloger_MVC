@@ -126,7 +126,8 @@
                                         <!--Can't find substitution for tag [defaultAdStart]-->
                                         @foreach (var item in Model)
                                         {
-                                            @RenderHtmlPost(item);
+                                            @RenderHtmlPost(item)
+                                            ;
                                             <script type="text/javascript">
                                                 var rr = "@item.PostID",
                                                     s = document.getElementById(rr + "bp_f"),
@@ -143,6 +144,14 @@
                     @* Content rigth *@
                     <div></div>
                 </div>
+                <aside class="tl-sidebar sidebar" id="sidebar-wrapper" itemscope="" itemtype="http://schema.org/WPSideBar">
+                    <div class="sidebar-inner">
+
+                        @Html.Partial("RecentPopularPost")
+
+                    </div>
+                </aside>
+                <div style="clear: both"></div>
             </div>
         </div>
     </div>

@@ -47,19 +47,20 @@
                             <div class="top-main-section mag-layout">
                                 @Html.Partial("Home/PostsPopular")
                             </div>
+
                         </div>
                     </div>
                 </div>
-                <aside class="tl-sidebar sidebar" id="sidebar-wrapper" itemscope="" itemtype="http://schema.org/WPSideBar"></aside>
-                <div style="clear:both"></div>
+                <aside class="tl-sidebar sidebar" id="sidebar-wrapper" itemscope="" itemtype="http://schema.org/WPSideBar">
+                    <div class="sidebar-inner">
+
+                        @Html.Partial("RecentPopularPost")
+
+                    </div>
+                </aside>
+                <div style="clear: both"></div>
             </div>
-            <aside class="tl-sidebar sidebar" id="sidebar-wrapper" itemscope="" itemtype="http://schema.org/WPSideBar">
-                <div class="sidebar-inner">
-
-                    
-
-                </div>
-            </aside>
+            
         </div>
     </div>
 </div>

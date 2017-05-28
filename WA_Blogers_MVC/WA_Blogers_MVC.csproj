@@ -1290,6 +1290,7 @@
     <Content Include="Views\Shared\TopHeader.cshtml" />
     <Content Include="Views\Posts\DetailsAjax.cshtml" />
     <Content Include="Views\Posts\DeleteAjax.cshtml" />
+    <Content Include="Views\Shared\RecentPopularPost.cshtml" />
     <Content Include="Views\Shared\Home\PostsPopular.cshtml" />
   </ItemGroup>
   <ItemGroup>
