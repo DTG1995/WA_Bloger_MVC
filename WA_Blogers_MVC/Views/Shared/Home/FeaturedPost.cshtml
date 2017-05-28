@@ -2,76 +2,84 @@
 @{
     List<WA_Posts> listPostFeatured = ViewBag.ListPostFeatured;
 }
-@Scripts.Render("~/Scripts/owlcarousel/owl.carousel.min.js")
-@Scripts.Render("~/Content/owlcarousel/owl.carousel.min.css")
+
 <div class="featured-left-n-right">
     <div class="featured-left">
         <div class="featured-inner">
             <div class="featured-content section" id="FeaturedXLarge-2">
-                    <div class="widget-content">
-                        <div class="tl-recentMag tl-postCarousel topCar" data-label="Entertainment" data-results="6">
-                            
-                            <div class="tl-wspace">
-                                <div class="car-inner owl-carousel owl-theme owl-loaded">
-                                    <div class="owl-stage-outer">
-                                        <div class="owl-stage">
-                                            @helper RenderPostFeatured(WA_Posts post)
-                                            {
-                                                string img = "#";
-                                                img = post.Picture ?? "#";
-                                                <div class="car-item">
-                                                    <div class="tl-magMedia">
-                                                        <a class="featured-thumb" title="@post.Title" href="@Url.RouteUrl("ViewPost", new {id = post.PostID, title = UrlEncode.ToFriendlyUrl(post.Title)})">
-                                                            <img src="@Url.Content(img)">
-                                                        </a>
-                                                    </div>
-                                                    <div class="topCaro-meta">
-                                                        <h3><a title="@post.Title" href="@Url.RouteUrl("ViewPost", new {id = post.PostID, title = UrlEncode.ToFriendlyUrl(post.Title)})">@post.Title</a>
-                                                        </h3><span class="car-author"><span class="authorname"><i class="fa fa-user"></i> @(post.WA_Users == null ? "Người nặc danh" : post.WA_Users.UserName)</span></span>
-                                                    </div>
-                                                </div>
-                                            }
-                                            @for (int i = 3; i < listPostFeatured.Count; i++)
-                                            {
-                                                @RenderPostFeatured(listPostFeatured[i])
-                                            }
-                                        </div>
-                                    </div>
-                                    <div class="owl-controls">
-                                        <div class="owl-nav">
-                                            <div class="owl-prev" style=""><i class="fa fa-angle-left"></i>
-                                            </div>
-                                            <div class="owl-next" style=""><i class="fa fa-angle-right"></i>
-                                            </div>
-                                        </div>
-                                        <div class="owl-dots" style="display: none;"></div>
-                                    </div>
+                <div class="widget-content">
+                    <div class="tl-recentMag tl-postCarousel topCar" data-label="Entertainment" data-results="6">
+                        @helper RenderPostFeatured(WA_Posts post)
+                        {
+                            string img = "#";
+                            img = post.Picture ?? "#";
+                            <div class="car-item">
+                                <div class="tl-magMedia">
+                                    <a class="featured-thumb" title="@post.Title" href="@Url.RouteUrl("ViewPost", new {id = post.PostID, title = UrlEncode.ToFriendlyUrl(post.Title)})">
+                                        <img src="@Url.Content(img)">
+                                    </a>
+                                </div>
+                                <div class="topCaro-meta">
+                                    <h3>
+                                        <a title="@post.Title" href="@Url.RouteUrl("ViewPost", new {id = post.PostID, title = UrlEncode.ToFriendlyUrl(post.Title)})">@post.Title</a>
+                                    </h3><span class="car-author"><span class="authorname"><i class="fa fa-user"></i> @(post.WA_Users == null ? "Người nặc danh" : post.WA_Users.UserName)</span></span>
                                 </div>
                             </div>
+                        }
+                        <div class="tl-wspace">
+                            <div class="car-inner owl-carousel owl-theme owl-loaded">
+
+                                @for (int i = 3; i < listPostFeatured.Count; i++)
+                                {
+                                    @RenderPostFeatured(listPostFeatured[i])
+                                }
+                            </div>
+
                         </div>
                     </div>
-                    <script>
-                        $(document).ready(function() {
-                            var owl=$('.owl-stage').owlCarousel({
-                                autoplay: true,
-                                autoplayTimeout:5000,
-                                items:1,
-                                loop:true,
-                                dotsClass: ""
+                </div>
 
-                            });
-                            
-                            // Go to the next item
-                            $('.owl-next').click(function() {
-                                owl.trigger('next.owl.carousel');
-                            })
-                            // Go to the previous item
-                            $('.owl-prev').click(function() {
-                                // With optional speed parameter
-                                // Parameters has to be in square bracket '[]'
-                                owl.trigger('prev.owl.carousel', [300]);
-                            })
+                <script>
+                    $(document).ready(function () {
+                        
+                        $(".tl-postCarousel.topCar .car-inner").owlCarousel(
+                        {
+                            autoplay: true,
+                            loop: true,
+                            rtl: false,
+                            autoplayHoverPause: true,
+                            nav: true,
+                            navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+                            items: 1,
+                            autoHeight: false,
+                            dots: false,
+                            transitionStyle: "fade"
                         });
+                    });
+                </script>
+
+                <script>
+                        //$(document).ready(function() {
+                        //    var owl = $('.tl-postCarousel').owlCarousel({
+                        //        autoplay: true,
+                        //        autoplayTimeout:5000,
+                        //        items:1,
+                        //        loop:true,
+                        //        dotsClass: ""
+
+                        //    });
+                            
+                        //    // Go to the next item
+                        //    $('.owl-next').click(function() {
+                        //        owl.trigger('next.owl.carousel');
+                        //    });
+                        //    // Go to the previous item
+                        //    $('.owl-prev').click(function() {
+                        //        // With optional speed parameter
+                        //        // Parameters has to be in square bracket '[]'
+                        //        owl.trigger('prev.owl.carousel', [300]);
+                        //    })
+                        //});
                     </script>
 
                     <div class="clear"></div>

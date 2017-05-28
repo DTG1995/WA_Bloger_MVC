@@ -18,6 +18,7 @@ namespace WA_Blogers_MVC.Controllers
         private WA_BlogerEntities db = new WA_BlogerEntities();
 
         // GET: /Blogs/
+        [AdminFilter]
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, string numDisplay, int? page)
         {
             //Hiển thị
@@ -88,6 +89,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Blogs/Details/5
+        [AdminFilter]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -104,6 +106,7 @@ namespace WA_Blogers_MVC.Controllers
 
         // GET: /Blogs/Create
         //[AdminFilter]
+        [AdminFilter]
         public ActionResult Create()
         {
             List<SelectListItem> selectlist = new SelectList(db.WA_Blogs.Where(x => x.Active == true).ToList(), "BlogID", "Name").ToList();
@@ -123,7 +126,8 @@ namespace WA_Blogers_MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="BlogID,Name,Parent,Order,Active")] WA_Blogs wa_blogs)
+        [AdminFilter]
+        public ActionResult Create([Bind(Include = "BlogID,Name,Parent,Order,Active")] WA_Blogs wa_blogs)
         {
             if (ModelState.IsValid)
             {
@@ -136,6 +140,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Blogs/Edit/5
+        [AdminFilter]
         public ActionResult Edit(int? id)
         {
             List<SelectListItem> selectlist = new SelectList(db.WA_Blogs.Where(x => x.Active == true).ToList(), "BlogID", "Name").ToList();
@@ -163,7 +168,8 @@ namespace WA_Blogers_MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="BlogID,Name,Parent,Order,Active")] WA_Blogs wa_blogs)
+        [AdminFilter]
+        public ActionResult Edit([Bind(Include = "BlogID,Name,Parent,Order,Active")] WA_Blogs wa_blogs)
         {
             if (ModelState.IsValid)
             {
@@ -182,6 +188,7 @@ namespace WA_Blogers_MVC.Controllers
 
         // GET: /Blogs/Delete/5
         //[AdminFilter]
+        [AdminFilter]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -242,6 +249,7 @@ namespace WA_Blogers_MVC.Controllers
         // POST: /Blogs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AdminFilter]
         public string DeleteConfirmed(int? id)
         {
 
@@ -303,6 +311,7 @@ namespace WA_Blogers_MVC.Controllers
             return View(listPost);
         }
 
+        [AdminFilter]
         public ActionResult QuickEdit(int? blogID)
         {
             ViewBag.Parent = new SelectList(db.WA_Blogs.Where(x => x.Active == true).ToList(), "BlogID", "Name");
@@ -311,7 +320,8 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult QuickEdit([Bind(Include="BlogID,Name,Parent,Order")] WA_Blogs wa_blogs,HttpPostedFileBase filebase)
+        [AdminFilter]
+        public ActionResult QuickEdit([Bind(Include = "BlogID,Name,Parent,Order")] WA_Blogs wa_blogs, HttpPostedFileBase filebase)
         {
             
             if (ModelState.IsValid)
@@ -329,7 +339,8 @@ namespace WA_Blogers_MVC.Controllers
             
         }
 
-        
+
+        [AdminFilter]
         public string SaveQuickEdit(int? blogID, string name, int? parent, int? order, string active)
         {
             bool Active = !String.IsNullOrEmpty(active);

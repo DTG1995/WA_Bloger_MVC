@@ -11,6 +11,7 @@ using PagedList;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using WA_Blogers_MVC.Filter;
 
 namespace WA_Blogers_MVC.Controllers
 {
@@ -19,7 +20,8 @@ namespace WA_Blogers_MVC.Controllers
         private WA_BlogerEntities db = new WA_BlogerEntities();
 
         // GET: /Users/
-        public ActionResult Index(string q, int? numDisplay, string sort,int? page)
+        [AdminFilter]
+        public ActionResult Index(string q, int? numDisplay, string sort, int? page)
         {
             
             var user = from u in db.WA_Users
@@ -68,6 +70,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Users/Details/5
+        [AdminFilter]
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -83,6 +86,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Users/Create
+        [AdminFilter]
         public ActionResult Create()
         {
             return View();
@@ -93,7 +97,8 @@ namespace WA_Blogers_MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="UserID,UserName,Email,Password,DisplayName,Created,Modified,Avatar,LastLogin,IPLast,IPCreated")] WA_Users wa_users, HttpPostedFileBase filebase)
+        [AdminFilter]
+        public ActionResult Create([Bind(Include = "UserID,UserName,Email,Password,DisplayName,Created,Modified,Avatar,LastLogin,IPLast,IPCreated")] WA_Users wa_users, HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
             {
@@ -114,6 +119,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Users/Edit/5
+        [AdminFilter]
         public ActionResult Edit(int id)
         {
             if (id == null)
@@ -133,6 +139,7 @@ namespace WA_Blogers_MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdminFilter]
         public ActionResult Edit([Bind(Include = "UserID,UserName,Email,DisplayName")] WA_Users wa_users, HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
@@ -157,6 +164,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Users/Delete/5
+        [AdminFilter]
         public ActionResult Delete(int id)
         {
             if (id == null)
@@ -174,6 +182,7 @@ namespace WA_Blogers_MVC.Controllers
         // POST: /Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AdminFilter]
         public ActionResult DeleteConfirmed(int id)
         {
             WA_Users wa_users = db.WA_Users.Find(id);
@@ -182,12 +191,14 @@ namespace WA_Blogers_MVC.Controllers
             return RedirectToAction("Index");
         }
 
+        [AdminFilter]
         public ActionResult QuickEdit(int? userID)
         {
             var user = db.WA_Users.Find(userID);
             return View(user);
         }
         [HttpPost]
+        [AdminFilter]
         public ActionResult QuickEdit(int UserID, string UserName, string Email, string DisplayName)
         {
             WA_Users user = db.WA_Users.Find(UserID);
@@ -202,6 +213,7 @@ namespace WA_Blogers_MVC.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
+        [AdminFilter]
         public JsonResult SaveQuickEdit(int? userID, string userName, string email, string nameDisplay)
         {
             var user = db.WA_Users.Find(userID);
@@ -236,6 +248,7 @@ namespace WA_Blogers_MVC.Controllers
             // Return the hexadecimal string.
             return sBuilder.ToString();
         }
+        [AdminFilter]
         public void Reset(int id)
         {
             WA_Users user = db.WA_Users.Find(id);

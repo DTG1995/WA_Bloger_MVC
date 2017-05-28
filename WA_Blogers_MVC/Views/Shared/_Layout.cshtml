@@ -15,6 +15,8 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Styles.Render("~/Content/test/style.css")
+    @Scripts.Render("~/Scripts/owlcarousel/owl.carousel.min.js")
+    @Scripts.Render("~/Content/owlcarousel/owl.carousel.min.css")
     @* @Scripts.Render("~/Scripts/test/script.js")*@
     <script>
         $(function () {
@@ -31,13 +33,35 @@
 </head>
 
 <body class="index">
-    <div class="inner" id="outer-wrapper">
-        @Html.Partial("TopHeader")
-        @* Body *@
+<div class="inner" id="outer-wrapper">
+    @Html.Partial("TopHeader")
+    @* Body *@
 
-        @RenderBody()
-        
-    </div>
+    @RenderBody()
+
+    @Html.Partial("_Footer")
+    <span class="backtotop"><i class="fa fa-angle-up"></i> Back To Top</span>
+</div>
+<script>
+    $(function() {
+        $(".backtotop").click(function() {
+            $('html, body').animate({
+                scrollTop: 0
+            }, 800);
+            return false;
+        });
+    });
+</script>
+    <div id="fb-root"></div>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.9";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
 </body>
 
 </html>

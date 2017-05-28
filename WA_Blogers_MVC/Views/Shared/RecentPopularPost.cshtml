@@ -122,12 +122,14 @@
                                         List<WA_Posts> randomPost = new List<WA_Posts>();
                                         if (db.WA_Posts.Count() > 5)
                                         {
+                                            int num = 0;
                                             Random rd = new Random();
                                             do
                                             {
                                                 randomPost.Add(db.WA_Posts.ElementAt(rd.Next(db.WA_Blogs.Count())));
                                                 randomPost.Distinct();
-                                            } while (randomPost.Count < 5);
+                                                num++;
+                                            } while (randomPost.Count < 5 && num < 10);
                                         }
                                         else
                                         {

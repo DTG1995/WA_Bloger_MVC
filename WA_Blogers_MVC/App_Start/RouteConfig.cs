@@ -67,6 +67,7 @@ namespace WA_Blogers_MVC
               url: "Admin/chi-tiet-blog/{title}-{id}",
               defaults: new { controller = "Blogs", action = "Details", id = UrlParameter.Optional, title = UrlParameter.Optional }
           );
+            routes.MapRoute(
                 name: "SuaNguoiDung",
                 url: "nguoi-dung/sua-nguoi-dung-{id}",
                 defaults: new { controller = "Users", action = "Edit", id = UrlParameter.Optional }

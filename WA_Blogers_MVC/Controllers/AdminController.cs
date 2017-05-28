@@ -7,6 +7,8 @@ using PagedList;
 using WA_Blogers_MVC.Models;
 using System.IO;
 using System.Data.Entity;
+using WA_Blogers_MVC.Filter;
+
 namespace WA_Blogers_MVC.Controllers
 {
     public class AdminController : Controller
@@ -14,10 +16,13 @@ namespace WA_Blogers_MVC.Controllers
         private WA_BlogerEntities db = new WA_BlogerEntities();
         //
         // GET: /Admin/
+
+        [AdminFilter]
         public ActionResult Index()
         {
             return View();
         }
+        [AdminFilter]
         public JsonResult ChangeTopNav(List<string> listNameTopNav, List<string> listUrlTopNav, List<string> txtUrlAd, List<string> listSocialName, List<string> listSocialUrl)
         {
             var list = db.WA_Options.Where(x=>x.Group.Equals("Topnav") || x.Group.Equals("TopnavSocical"));
@@ -61,6 +66,7 @@ namespace WA_Blogers_MVC.Controllers
 
         }
         [HttpPost]
+        [AdminFilter]
         public ActionResult ChangeMidleTop(HttpPostedFileBase fileBase, string txtUrlAd, string useClock)
         {
             var time = db.WA_Options.Where(x => x.Name.Equals("timeclock")).FirstOrDefault();
@@ -136,6 +142,103 @@ namespace WA_Blogers_MVC.Controllers
                 }
             }
             return RedirectToAction("Index");
+        }
+
+        [AdminFilter]
+        public JsonResult ChangeHotNew(string title, int[] Blogs)
+        {
+            var titleOption =db.WA_Options.FirstOrDefault(x => x.Group.Equals("NewsHot") && x.Name.Equals("Title"));
+            if (String.IsNullOrEmpty(title))
+            {
+                db.WA_Options.Remove(titleOption);
+                db.SaveChanges();
+            }
+            else
+            {
+                if (titleOption == null)
+                {
+                    db.WA_Options.Add(new WA_Options { Name = "Title", Group = "NewsHot", Value = title });
+                    db.SaveChanges();
+                }
+                else
+                {
+                    titleOption.Value = title;
+                    db.Entry(titleOption).State = EntityState.Modified;
+                    db.SaveChanges();
+                }    
+            }
+            
+            string blogs = "";
+            foreach (var item in Blogs)
+            {
+                blogs += item+";";
+            }
+            blogs = blogs.Substring(0, blogs.Length - 1);
+            var blogsOption = db.WA_Options.FirstOrDefault(x => x.Group.Equals("NewsHot") && x.Name.Equals("Blogs"));
+            if (blogsOption == null)
+            {
+                db.WA_Options.Add(new WA_Options {Name = "Blogs", Group = "NewsHot", Value = blogs});
+                db.SaveChanges();
+            }
+            else
+            {
+                blogsOption.Value = blogs;
+                db.Entry(blogsOption).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            List<WA_Options> list = new List<WA_Options>(){titleOption,blogsOption};
+            
+            return Json(list,JsonRequestBehavior.AllowGet);
+        }
+
+        [AdminFilter]
+        public JsonResult SavePostPopular(int[] BlogsPopular)
+        {
+            var blogsid = db.WA_Options.FirstOrDefault(x => x.Name.Equals("listIDTopNewBlog"));
+            string value = "";
+            foreach (var item in BlogsPopular)
+            {
+                value += item + ";";
+            }
+            value = value.Substring(0, value.Length - 1);
+            if (blogsid==null)
+            {
+                blogsid = new WA_Options {Name = "listIDTopNewBlog", Value = value};
+                db.WA_Options.Add(blogsid);
+                db.SaveChanges();
+            }
+            else
+            {
+                blogsid.Value = value;
+                db.Entry(blogsid).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return Json(blogsid, JsonRequestBehavior.AllowGet);
+        }
+
+        [AdminFilter]
+        public JsonResult SaveBlogShowHome(int[] BlogsShowHome)
+        {
+            var blogsid = db.WA_Options.FirstOrDefault(x => x.Name.Equals("ListBlogsPopular"));
+            string value = "";
+            foreach (var item in BlogsShowHome)
+            {
+                value += item + ";";
+            }
+            value = value.Substring(0, value.Length - 1);
+            if (blogsid == null)
+            {
+                blogsid = new WA_Options { Name = "ListBlogsPopular", Value = value };
+                db.WA_Options.Add(blogsid);
+                db.SaveChanges();
+            }
+            else
+            {
+                blogsid.Value = value;
+                db.Entry(blogsid).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return Json(blogsid, JsonRequestBehavior.AllowGet);
         }
 	}
 }

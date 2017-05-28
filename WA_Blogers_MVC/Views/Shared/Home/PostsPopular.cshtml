@@ -54,7 +54,7 @@
                                         <p>@listPost[0].Description</p>
                                         <div class="tl-headm">
                                             <span class="recentdate">
-                                                <i class="fa fa-calendar"></i> @listPost[0].Created.ToString("dd-MM-yyyy")</span>  - <span class="authorname"><i class="fa fa-user"></i> username</span>
+                                                <i class="fa fa-calendar"></i> @listPost[0].Created.ToString("dd-MM-yyyy")</span>  - <span class="authorname"><i class="fa fa-user"></i>@(listPost[0].WA_Users==null?"Người nặc danh":listPost[0].WA_Users.DisplayName)</span>
                                         </div>
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                                                 <h3>
                                                     <a href="@Url.RouteUrl("ViewPost",new{id=listPost[j].PostID, title=UrlEncode.ToFriendlyUrl(listPost[j].Title)})">@listPost[j].Title </a>
                                                 </h3>
-                                                <div class="metadata"><span class="recentdate"><i class="fa fa-calendar"></i> @listPost[j].Created.ToString("dd-MM-yyyy")</span>  - <span class="authorname"><i class="fa fa-user"></i> Mohammad Qasim</span></div>
+                                                <div class="metadata"><span class="recentdate"><i class="fa fa-calendar"></i> @listPost[j].Created.ToString("dd-MM-yyyy")</span>  - <span class="authorname"><i class="fa fa-user"></i> @(listPost[j].WA_Users == null ? "Người nặc danh" : listPost[j].WA_Users.DisplayName)</span></div>
                                             </div>
                                         </div>
                                         }

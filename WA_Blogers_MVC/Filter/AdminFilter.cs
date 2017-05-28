@@ -12,12 +12,16 @@ namespace WA_Blogers_MVC.Filter
         {
             if (!Convert.ToBoolean(filterContext.HttpContext.Session["IsAdmin"]))
             {
-                filterContext.Result = new ContentResult()
+                filterContext.Result = new ViewResult
                 {
-                    Content = "Không có quyền truy cập!"
+                    ViewName = "Error",
+                    ViewData = filterContext.Controller.ViewData,
+                    TempData = filterContext.Controller.TempData
                 };
 
             }
         }
+
+        
     }
 }

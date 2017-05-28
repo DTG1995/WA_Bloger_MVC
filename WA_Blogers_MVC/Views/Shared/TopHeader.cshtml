@@ -1,5 +1,8 @@
 ﻿@using WA_Blogers_MVC.Models;
-@{WA_BlogerEntities db = new WA_BlogerEntities();}
+@{
+    WA_BlogerEntities db = new WA_BlogerEntities();
+    
+}
 <div class="tl-headerwrap" id="header-wrapper">
     <div class="header-section header-contents">
         @* Top nav *@
@@ -38,7 +41,7 @@
                                 <div class="top-social">
                                     <ul class="tl-social-icons icon-flat list-unstyled list-inline" id="listsocial" itemscope="" itemtype="http://schema.org/SiteNavigationElement">
                                         @{
-
+                                           
                                             if (listsocial != null)
                                             {
                                                 for (int i = 0; i < listsocial.Count; i++)

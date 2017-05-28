@@ -3,11 +3,34 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Admin/Layout.cshtml";
     WA_BlogerEntities db = new WA_BlogerEntities();
+    var listAllBlogs = db.WA_Blogs.Where(x => x.Active && x.Parent == null).ToList();
 }
-
+@helper RenderHtmlBlogs(WA_Blogers_MVC.Models.WA_Blogs blog, string[] arr, string strclass)
+{
+    string check = "";
+    for (int i = 0; i < arr.Length; i++)
+    {
+        if (blog.BlogID.ToString().Equals(arr[i]))
+        {
+            check = "checked";
+            break;
+        }
+    }
+    <li class="list-group-item ">
+        <div class="checkbox">
+            <label class="btn btn-link"><input type="checkbox" @check name="@strclass" value="@blog.BlogID" />@blog.Name </label> <span class="badge pull-right">@blog.WA_Posts.Count</span>
+        </div>
+        <ul class="list-group">
+            @foreach (var item in blog.WA_Blogs1)
+            {
+                @RenderHtmlBlogs(item, arr,strclass)
+            }
+        </ul>
+    </li>
+}
 @Styles.Render("~/Content/test/style.css")
 <h3>Tùy chỉnh trang chủ</h3>
-<div class="container">
+<div class="container" style="margin-bottom: 50px;">
     <script>
         $(function () {
             $('.navigation-button').click(function () {
@@ -24,12 +47,125 @@
             <div class="form-group">
                 <button class="btn btn-default" data-toggle="modal" data-target="#modalOptionTopMenu">Tùy chỉnh TopMenu</button>
                 <button class="btn btn-default" data-toggle="modal" data-target="#modalOptionLogo">Tùy chỉnh Logo &amp; Adbanner</button>
-                <button class="btn btn-default">Tùy chỉnh TopNew</button>
+                <button class="btn btn-default" data-toggle="modal" data-target="#modalOptionHotnews">Tùy chỉnh TopNew</button>
             </div>
-        <div class="container">
-            <h4>Header trang chủ</h4>
-            @Html.Partial("TopHeader")
+    <div class="container">
+        <h4>Header trang chủ</h4>
+        @Html.Partial("TopHeader")
+    </div>
+    <h2>Quản lý nội dung trang chủ</h2>
+    <div>
+        <div class="col-md-6 col-xs-6">
+            <h4>Tùy chọn chủ đề tiêu biểu</h4>
+            <ul class="list-group ">
+                @{
+                    var topNew = db.WA_Options.FirstOrDefault(x => x.Name.Equals("listIDTopNewBlog"));
+                    string[] arrstrblogsPopular = new string[0];
+                    if (topNew != null)
+                    {
+
+                        arrstrblogsPopular = topNew.Value.Split(';');
+
+                    }
+                    foreach (var item in listAllBlogs)
+                    {
+                        @RenderHtmlBlogs(item, arrstrblogsPopular, "BlogsPopular")
+                    }
+                }
+            </ul>
+            <button class="btn btn-default" id="btnSaveBlogPopular" onclick=" SaveBlogPopular() ">Lưu chủ đề tiêu biểu</button>
+
         </div>
+        <div class="col-md-6 col-xs-6">
+            <h4>Tùy chọn chủ đề hiển thị trên trang chủ</h4>
+            <ul class="list-group">
+                @{
+                    var blogshowhome = db.WA_Options.FirstOrDefault(x => x.Name.Equals("ListBlogsPopular"));
+                    arrstrblogsPopular = new string[0];
+                    if (blogshowhome != null)
+                    {
+
+                        arrstrblogsPopular = blogshowhome.Value.Split(';');
+
+                    }
+                    foreach (var item in listAllBlogs)
+                    {
+                        @RenderHtmlBlogs(item, arrstrblogsPopular, "BlogsShowHome")
+                    }
+                }
+            </ul>
+            <button class="btn btn-default" id="btnSaveBlogShowHome" onclick=" SaveBlogShowHome() ">Lưu chủ đề trên home</button>
+        </div>
+
+    </div>
+    <script>
+        function SaveBlogPopular() {
+            jQuery.ajaxSettings.traditional = true;
+            var listBlogs = [];
+            $("input[name=BlogsPopular]").each(function() {
+                if(this.checked)
+                    listBlogs.push($(this).val());
+            });
+            $.ajax({
+                type: "GET",
+                dataType: "JSON",
+                url: "@Url.Action("SavePostPopular")",
+                data: {
+                'BlogsPopular':listBlogs
+            },
+            beforeSend: function () {
+                $("#btnSaveBlogPopular").prop('disabled', true);
+                $("#btnSaveBlogPopular").html(" Lưu chủ đề tiêu biểu <i class=\"fa fa-refresh fa-spin fa-fw\" aria-hidden=\"true\"></i>");
+
+            },
+            success: function (data) {
+                
+                $("#btnSaveBlogPopular").prop('disabled', false);
+                $("#btnSaveBlogPopular").html(" Lưu chủ đề tiêu biểu ");
+                alert("Đã lưu chủ đề tiêu biểu");
+            },
+            error:function(data) {
+                $("#btnSaveBlogPopular").prop('disabled', false);
+                $("#btnSaveBlogPopular").html(" Lưu chủ đề tiêu biểu  ");
+                alert("Đã có lỗi xảy ra khi lưu chủ đề tiêu biểu");
+            }
+
+        });
+        }
+        function SaveBlogShowHome() {
+            jQuery.ajaxSettings.traditional = true;
+            var listBlogs = [];
+            $("input[name=BlogsShowHome]").each(function() {
+                if(this.checked)
+                    listBlogs.push($(this).val());
+            });
+            $.ajax({
+                type: "GET",
+                dataType: "JSON",
+                url: "@Url.Action("SaveBlogShowHome")",
+                data: {
+                    'BlogsShowHome':listBlogs
+                },
+            beforeSend: function () {
+                $("#btnSaveBlogShowHome").prop('disabled', true);
+                $("#btnSaveBlogShowHome").html(" Lưu chủ đề trên home <i class=\"fa fa-refresh fa-spin fa-fw\" aria-hidden=\"true\"></i>");
+
+            },
+            success: function (data) {
+                
+                $("#btnSaveBlogShowHome").prop('disabled', false);
+                $("#btnSaveBlogShowHome").html(" Lưu chủ đề trên home");
+                alert("Đã lưu chủ đề show home");
+            },
+            error:function(data) {
+                $("#btnSaveBlogShowHome").prop('disabled', false);
+                $("#btnSaveBlogShowHome").html(" Lưu chủ đề trên home");
+                alert("Đã có lỗi xảy ra khi lưu chủ đề show home");
+            }
+
+        });
+        }
+    </script>
     </div>
 @* Modal Option TopMenu *@
 <div class="modal fade" id="modalOptionTopMenu" role="dialog">
@@ -139,77 +275,77 @@
     @* Options TopNav *@
 <script>
  
-        function AddPageTopNew(){
-            var div = `
-                <div class="row" style="margin-left: auto; margin-right: auto;">
-                        <div class="col-md-4 col-xs-4">
-                            <input class="form-control" placeholder="Tên hiển thị" name="listNameTopNav"/>
-                        </div>
-                        <div class="col-md-7 col-xs-7">
-                            <input class="form-control" placeholder="Đường dẫn" name="listUrlTopNav" />
-                        </div>
-                        <div class="col-md-1 col-xs-1">
-                                    <a href="#" class="removeMenuTopNav"><span><i class="fa fa-times" aria-hidden="true"></i></span></a>
-                                </div></div>`;
-                                    $("#contentTopNavOption").append(div);
-                                    $(".removeMenuTopNav").click(function(event) {
-                                        event.preventDefault();
-                                        $(this).closest('.row').remove();
-                                    });
-      
-        }
-        function AddSocial() {
-            var tr = `<tr class="social">
-                                <td>@Html.DropDownList("MXH", selectList, new { @class = "form-control" })</td>
-                                <td><input type="url" name="socialUrl" placeholder="Đường dẫn" class="form-control" /></td>
-                                <td style="vertical-align: middle;"><a href="#" class="removeSocial"><span><i class="fa fa-times" aria-hidden="true"></i></span></a></td>
-                            </tr>`;
-                                $("#tableSocical").append(tr);
-                                $(".removeSocial").click(function(event) {
-                                    event.preventDefault();
-                                    $(this).closest('.social').remove();
-                                });
-        }
-        $(function() {
-            $(".removeMenuTopNav").click(function(event) {
-                event.preventDefault();
-                $(this).closest('.row').remove();
-            });
-            
-            $(".removeSocial").click(function(event) {
-                event.preventDefault();
-                $(this).closest('.social').remove();
-            });
+    function AddPageTopNew(){
+        var div = `
+        <div class="row" style="margin-left: auto; margin-right: auto;">
+            <div class="col-md-4 col-xs-4">
+            <input class="form-control" placeholder="Tên hiển thị" name="listNameTopNav"/>
+            </div>
+            <div class="col-md-7 col-xs-7">
+            <input class="form-control" placeholder="Đường dẫn" name="listUrlTopNav" />
+            </div>
+            <div class="col-md-1 col-xs-1">
+            <a href="#" class="removeMenuTopNav"><span><i class="fa fa-times" aria-hidden="true"></i></span></a>
+            </div></div>`;
+        $("#contentTopNavOption").append(div);
+        $(".removeMenuTopNav").click(function(event) {
+            event.preventDefault();
+            $(this).closest('.row').remove();
         });
-        function SaveEditTopNav(){
-            jQuery.ajaxSettings.traditional = true;
-            var listNameTop =[];
+      
+    }
+    function AddSocial() {
+        var tr = `<tr class="social">
+            <td>@Html.DropDownList("MXH", selectList, new { @class = "form-control" })</td>
+            <td><input type="url" name="socialUrl" placeholder="Đường dẫn" class="form-control" /></td>
+            <td style="vertical-align: middle;"><a href="#" class="removeSocial"><span><i class="fa fa-times" aria-hidden="true"></i></span></a></td>
+            </tr>`;
+        $("#tableSocical").append(tr);
+        $(".removeSocial").click(function(event) {
+            event.preventDefault();
+            $(this).closest('.social').remove();
+        });
+    }
+    $(function() {
+        $(".removeMenuTopNav").click(function(event) {
+            event.preventDefault();
+            $(this).closest('.row').remove();
+        });
             
-            $("input[name=listNameTopNav]").each(function() {
-                listNameTop.push($(this).val());
-            });
-            var listUrlTop=[];
-            $("input[name=listUrlTopNav]").each(function() {
-                listUrlTop.push($(this).val());
-            });
-            var listSocialName = [];
-            $("select[name=MXH]").each(function() {
-                listSocialName.push($(this).val());
-            });
-            var listUrlSocial = [];
-            $("input[name=socialUrl]").each(function() {
-                listUrlSocial.push($(this).val());
-            });
-            $.ajax({
-                type: "GET",
-                dataType: "JSON",
-                url: "@Url.Action("ChangeTopNav")",
-                data: {
-                    'listNameTopNav': listNameTop,
-                    'listUrlTopNav': listUrlTop,
-                    'listSocialName':listSocialName,
-                    'listSocialUrl':listUrlSocial
-                },
+        $(".removeSocial").click(function(event) {
+            event.preventDefault();
+            $(this).closest('.social').remove();
+        });
+    });
+    function SaveEditTopNav(){
+        jQuery.ajaxSettings.traditional = true;
+        var listNameTop =[];
+            
+        $("input[name=listNameTopNav]").each(function() {
+            listNameTop.push($(this).val());
+        });
+        var listUrlTop=[];
+        $("input[name=listUrlTopNav]").each(function() {
+            listUrlTop.push($(this).val());
+        });
+        var listSocialName = [];
+        $("select[name=MXH]").each(function() {
+            listSocialName.push($(this).val());
+        });
+        var listUrlSocial = [];
+        $("input[name=socialUrl]").each(function() {
+            listUrlSocial.push($(this).val());
+        });
+        $.ajax({
+            type: "GET",
+            dataType: "JSON",
+            url: "@Url.Action("ChangeTopNav")",
+            data: {
+                'listNameTopNav': listNameTop,
+                'listUrlTopNav': listUrlTop,
+                'listSocialName':listSocialName,
+                'listSocialUrl':listUrlSocial
+            },
             beforeSend: function () {
                 $("#btnSaveEditTopNav").prop('disabled', true);
                 $("#btnSaveEditTopNav").html(" Lưu thay đổi <i class=\"fa fa-refresh fa-spin fa-fw\" aria-hidden=\"true\"></i>");
@@ -229,24 +365,24 @@
                     for (var i = 0; i < data.length; i++) {
                         if(data[i]["Group"]=="Topnav")
                             $("#topMenuNav").append(`<li><a href="`+data[i]["Value"]+`">`+data[i]["Name"]+`</a></li>`);
-                        else $("#listsocial").append(`<li><a href="`+data[i]["Value"]+`"><i class="fa fa-`+data[i]["Name"]+`"></i></a>
-                                                   </li>`);
-                    }
-                    $("#btnSaveEditTopNav").prop('disabled', false);
-                    $("#btnSaveEditTopNav").html(" Lưu thay đổi ");
-                    $("#modalOptionTopMenu").modal('hide');
-                    }
+        else $("#listsocial").append(`<li><a href="`+data[i]["Value"]+`"><i class="fa fa-`+data[i]["Name"]+`"></i></a>
+            </li>`);
+    }
+    $("#btnSaveEditTopNav").prop('disabled', false);
+    $("#btnSaveEditTopNav").html(" Lưu thay đổi ");
+    $("#modalOptionTopMenu").modal('hide');
+    }
 
-            },
-                error:function(data) {
-                    alert(data);
-                    $("#btnSaveEditTopNav").prop('disabled', false);
-                    $("#btnSaveEditTopNav").html(" Lưu thay đổi ");
-                }
+    },
+    error:function(data) {
+        alert(data);
+        $("#btnSaveEditTopNav").prop('disabled', false);
+        $("#btnSaveEditTopNav").html(" Lưu thay đổi ");
+    }
 
-        });
-        }
-    </script>
+    });
+    }
+</script>
 </div>
 
 @* Modal Option Logo & Ad *@
@@ -271,39 +407,39 @@
                         img = logoPage.Value;
                     }
                 }
-                @using (Html.BeginForm("ChangeMidleTop", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmMiddle" }))
-{
-    <label id="lbLogo" style="width: 300px; height: 90px; display: block; text-align: center;background-image: url(@Url.Content("~/Public/"+img)) ; background-size:100%;">
-        <input type="file" name="logoPage" id="uploadLogo" class="hidden" />
-        <p style="padding-top: 60px; color: red;">Click vào hình để có thể chọn hình</p>
-    </label>
-                <div class="col-md-10 col-xs-10" style="padding: 0">
-                    <h2 style="margin: 5px 0px;">Sử dụng đồng hồ</h2>
-                </div>
-
-    <input class="col-md-2 col-xs-2" type="checkbox" id="useClock" name="useClock" @(time != null ? "checked" : "") value="@(time != null ? "true" : "false")" data-toggle="toggle">
-    <input type="text" id="useClock" name="useClock" value="@(time != null ? "true" : "false")" hidden />
-                <div id="contenAd" style="display:@(time == null ? "block" : "none");">
-                    @{
-    var linkAd = db.WA_Options.Where(x => x.Group.Equals("Ads") && x.Name.Equals("AdsLink")).Select(x => x.Value).FirstOrDefault();
-    var imageAd = db.WA_Options.Where(x => x.Group.Equals("Ads") && x.Name.Equals("AdsImage")).Select(x => x.Value).FirstOrDefault();
-                    }
-                    <label id="lbAd" style="width: 100%; height: 90px; display: block; text-align: center; background-image: url(@Url.Content("~/Public/" + imageAd)) ; background-size:100%;">
-                        <input type="file" name="imgAd" id="uploadAd" class="hidden" />
-                        <p style="padding-top: 60px; color: red;" id="smallLogo">Click vào hình để có thể chọn hình</p>
+                @using (Html.BeginForm("ChangeMidleTop", "Admin", FormMethod.Post, new {enctype = "multipart/form-data", id = "frmMiddle"}))
+                {
+                    <label id="lbLogo" style="width: 300px; height: 90px; display: block; text-align: center; background-image: url(@Url.Content("~/Public/" + img)); background-size: 100%;">
+                        <input type="file" name="logoPage" id="uploadLogo" class="hidden"/>
+                        <p style="padding-top: 60px; color: red;">Click vào hình để có thể chọn hình</p>
                     </label>
-                    <div class="form-group">
-                        <label for="txtUrlAd" class="col-md-4 col-xs-4" >Đường dẫn Ads</label>
-                        <div class="col-md-8 col-xs-8">
-                            <input name="txtUrlAd" id="txtUrlAd" value="@linkAd" placeholder="Đường dẫn Ads" type="url" class="form-control" />
-                        </div>
+                    <div class="col-md-10 col-xs-10" style="padding: 0">
+                        <h2 style="margin: 5px 0px;">Sử dụng đồng hồ</h2>
                     </div>
 
-                </div>
+                    <input class="col-md-2 col-xs-2" type="checkbox" id="useClock" name="useClock" @(time != null ? "checked" : "") value="@(time != null ? "true" : "false")" data-toggle="toggle">
+                    <input type="text" id="useClock" name="useClock" value="@(time != null ? "true" : "false")" hidden/>
+                    <div id="contenAd" style="display: @(time == null ? "block" : "none");">
+                        @{
+                            var linkAd = db.WA_Options.Where(x => x.Group.Equals("Ads") && x.Name.Equals("AdsLink")).Select(x => x.Value).FirstOrDefault();
+                            var imageAd = db.WA_Options.Where(x => x.Group.Equals("Ads") && x.Name.Equals("AdsImage")).Select(x => x.Value).FirstOrDefault();
+                        }
+                        <label id="lbAd" style="width: 100%; height: 90px; display: block; text-align: center; background-image: url(@Url.Content("~/Public/" + imageAd)); background-size: 100%;">
+                            <input type="file" name="imgAd" id="uploadAd" class="hidden"/>
+                            <p style="padding-top: 60px; color: red;" id="smallLogo">Click vào hình để có thể chọn hình</p>
+                        </label>
+                        <div class="form-group">
+                            <label for="txtUrlAd" class="col-md-4 col-xs-4">Đường dẫn Ads</label>
+                            <div class="col-md-8 col-xs-8">
+                                <input name="txtUrlAd" id="txtUrlAd" value="@linkAd" placeholder="Đường dẫn Ads" type="url" class="form-control"/>
+                            </div>
+                        </div>
+
+                    </div>
                 }
             </div>
             <div class="modal-footer">
-                <button type="submit" form="frmMiddle" class="btn btn-warning" >Lưu tùy chọn</button>
+                <button type="submit" form="frmMiddle" class="btn btn-warning">Lưu tùy chọn</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
             </div>
         </div>
@@ -315,27 +451,25 @@
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    $(label).css('background-image',"url("+e.target.result+")");
+                reader.onload = function(e) {
+                    $(label).css('background-image', "url(" + e.target.result + ")");
                 }
 
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        $("#uploadLogo").change(function () {
-            readURL(this,'#lbLogo');
+        $("#uploadLogo").change(function() {
+            readURL(this, '#lbLogo');
         });
-        $("#uploadAd").change(function () {
-            readURL(this,'#lbAd');
+        $("#uploadAd").change(function() {
+            readURL(this, '#lbAd');
         });
         $('#useClock').change(function() {
-            if($(this).prop('checked'))
-            {
+            if ($(this).prop('checked')) {
                 $("#contenAd").hide();
                 $("input[name=useClock]").val("true");
-            }
-            else {
+            } else {
                 $("#contenAd").show();
                 $("input[name=useClock]").val("false");
             }
@@ -345,4 +479,114 @@
     </script>
 </div>
 
+@* Modal hot news *@
+@{
+    var strblogsID = db.WA_Options.FirstOrDefault(x => x.Group.Equals("NewsHot") && x.Name.Equals("Blogs"));
+    
+}
+
+
+
+<div id="modalOptionHotnews" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tùy chỉnh Tin Nóng</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form">
+                    <div class="form-group form-inline">
+                        @{
+                            var title = db.WA_Options.FirstOrDefault(x => x.Group.Equals("NewsHot") && x.Name.Equals("Title"));
+                            string display = "";
+                            if (title == null)
+                            {
+                                display = "none";
+                            }
+                            
+                        }
+                        @Html.Label("Tiêu đề", new {@for = "txtTitleTopNew", @class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            <input class="form-control" id="txtTitleTopNew" name="txtTitleTopNew" value="@title.Value"/>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("DS các chủ đề", new { @for = "txtTitleTopNew", @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <ul class="list-group ">
+                                @{
+                                    
+                                    string[] arrstrblogsID=new string[0];
+                                    if (strblogsID != null)
+                                    {
+                                        
+                                        arrstrblogsID = strblogsID.Value.Split(';');
+                                        
+                                    }
+                                    foreach (var item in listAllBlogs)
+                                        {
+                                            @RenderHtmlBlogs(item, arrstrblogsID,"Blogs")
+                                        }
+                                }   
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="SaveChangeHotNew()" id="btnSaveHotNews" class="btn btn-warning">Lưu tùy chọn</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+        <script>
+            
+            function SaveChangeHotNew() {
+                jQuery.ajaxSettings.traditional = true;
+                var title = $("#txtTitleTopNew").val();
+                var listBlogs = [];
+                $("input[name=Blogs]").each(function() {
+                    if(this.checked)
+                        listBlogs.push($(this).val());
+                });
+                $.ajax({
+                    type: "GET",
+                    dataType: "JSON",
+                    url: "@Url.Action("ChangeHotNew")",
+                    data: {
+                        'title':title,
+                        'Blogs':listBlogs
+                    },
+                    beforeSend: function () {
+                        $("#btnSaveHotNews").prop('disabled', true);
+                        $("#btnSaveHotNews").html(" Lưu thay đổi <i class=\"fa fa-refresh fa-spin fa-fw\" aria-hidden=\"true\"></i>");
+
+                    },
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i]["Name"] == "title") {
+                                $("#hotNewsTitle").html(data[i]["Value"]);
+                            }
+                        }
+                        $("#btnSaveHotNews").prop('disabled', false);
+                        $("#btnSaveHotNews").html(" Lưu thay đổi ");
+                        $("#modalOptionHotnews").modal('hide');
+                    
+
+                    },
+                    error:function(data) {
+                        
+                        $("#btnSaveHotNews").prop('disabled', false);
+                        $("#btnSaveHotNews").html(" Lưu thay đổi ");
+                    }
+
+                });
+            }
+        </script>
+    </div>
+</div>
 

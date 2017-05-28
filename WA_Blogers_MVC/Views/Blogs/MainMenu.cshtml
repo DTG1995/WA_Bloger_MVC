@@ -1,4 +1,8 @@
-﻿@*<style>
+﻿@using WA_Blogers_MVC.Models
+@{
+    WA_BlogerEntities db = new WA_BlogerEntities();
+}
+@*<style>
     @@media(min-width:768px){
     /* Dropdown Button */
     .dropbtn {
@@ -167,6 +171,7 @@
     </ul>
 </div>*@
 @using WA_Blogers_MVC.Models;
+@using WebGrease.Css.Extensions
 @model List<WA_Blogs>
 @helper RenderHtmlBlog(WA_Blogs wa_Blog, int? level)
 {
@@ -192,17 +197,37 @@
             @RenderHtmlBlog(@item,0);
         }
         <!-- Hot News Right Menu Start -->
-        <li class="submenu choose-cat">
-            <a href="#" itemprop="url"><span itemprop="name">Hot News</span></a>
+        @{
+            var title = db.WA_Options.FirstOrDefault(x => x.Group.Equals("NewsHot") && x.Name.Equals("Title"));
+            string display = "";
+            if (title == null)
+            {
+                display = "none";
+            }
+            var strblogsID = db.WA_Options.FirstOrDefault(x => x.Group.Equals("NewsHot") && x.Name.Equals("Blogs"));
+            
+        }
+        <li class="submenu choose-cat " style="display: @display">
+            
+            <a href="#" itemprop="url"><span itemprop="name" id="hotNewsTitle">@title.Value</span></a>
             <ul>
-                <li><a href="#" itemprop="url"><span itemprop="name">World News</span></a></li>
-                <li><a href="#" itemprop="url"><span itemprop="name">Travel</span></a></li>
-                <li><a href="#" itemprop="url"><span itemprop="name">Entertainment</span></a></li>
-                <li><a href="#" itemprop="url"><span itemprop="name">Sports</span></a></li>
-                <li><a href="#" itemprop="url"><span itemprop="name">Music</span></a></li>
-                <li><a href="#" itemprop="url"><span itemprop="name">Fashion</span></a></li>
-                <li><a href="#" itemprop="url"><span itemprop="name">Gallery</span></a></li>
-                <li><a href="#" itemprop="url"><span itemprop="name">Video</span></a></li>
+                @{
+                    if (strblogsID != null)
+                    {
+                        string[] arrstrblogsID = strblogsID.Value.Split(';');
+                        List<WA_Blogs> listBlogs = new List<WA_Blogs>();
+                        for (int i = 0; i < arrstrblogsID.Length; i++)
+                        {
+                            int id = int.Parse(arrstrblogsID[i]);
+                            listBlogs.Add(db.WA_Blogs.Find(id));
+                        }
+                        foreach (var item in listBlogs)
+                        {
+                            <li><a href="@Url.RouteUrl("ViewPostsInBlogs", new {id = item.BlogID, title = UrlEncode.ToFriendlyUrl(item.Name)})" itemprop="url"><span itemprop="name">@item.Name</span></a></li>
+                        }
+                    }
+                }
+                
             </ul>
         </li>
         <!-- Hot News Right Menu End -->

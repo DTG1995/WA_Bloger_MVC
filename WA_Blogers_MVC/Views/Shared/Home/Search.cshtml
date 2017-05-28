@@ -4,10 +4,10 @@
             <div class="widget HTML" data-version="1" id="HTML3">
                 <div class="widget-content">
                     @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "SearchForm" }))
-                    {
-                        <input class="SearchText" name="q" onblur="if (this.value == ''){ this.value = 'Nhập chuỗi cần tìm...'; }" onfocus="    if (this.value == 'Nhập chuỗi cần tìm...') { this.value = ''; }" placeholder="Nhập chuỗi cần tìm..." type="text" value="Nhập chuỗi cần tìm...">
-                        <button type="submit"><i class="fa fa-search"></i></button>
-                    }
+{
+    <input class="SearchText" name="q" onblur="if (this.value = ''){ this.value = 'Nhập chuỗi cần tìm...'; }" onfocus="    if (this.value == 'Nhập chuỗi cần tìm...') { this.value = ''; }" placeholder="Nhập chuỗi cần tìm..." type="text" value="@ViewBag.StringSearch">
+                                            <button type="submit"><i class="fa fa-search"></i></button>
+}
                 </div>
                 <div class="clear"></div>
             </div>

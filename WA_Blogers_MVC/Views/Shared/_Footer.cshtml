@@ -1,0 +1,340 @@
+﻿@using WA_Blogers_MVC.Models;
+@{
+    WA_BlogerEntities db = new WA_BlogerEntities();
+}
+<footer class="tl-footer footer-area" id="footer-wrapper" itemscope="" itemtype="http://schema.org/WPFooter">
+<div class="tl-bottomCar">
+    <div class="tl-footer-carousel section" id="FooterSlider">
+        <div class="widget HTML" data-version="1" id="HTML89">
+            <div class="widget-content">
+                <div class="tl-postCarousel-F fouritem" data-label="Technology" data-results="8">
+                    <div class="tl-wspace">
+                        <style>
+                            .owl-theme .owl-nav [class*="owl-"] {
+                                color: #999;
+                                font-size: 20px;
+                                padding: 5px 10px;
+                                background: #fff;
+                                display: inline-block;
+                                cursor: pointer;
+                            }
+                        </style>
+                        <div class="car-inner owl-carousel owl-theme owl-responsive-1000 owl-loaded">
+                            @{
+                                var listPostFooter = db.WA_Posts.OrderByDescending(x => x.Created).Take(8).ToList();
+                                foreach (var item in listPostFooter)
+                                {
+                                    <div class="car-item">
+                                        <div class="tl-magMedia">
+                                            <a class="featured-thumb" title="@item.Title" href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">
+                                                <img src="@Url.Content((item.Picture ?? "#"))">
+                                            </a>
+                                        </div>
+                                        <h3>
+                                            <a title="@item.Title" href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">@item.Title</a>
+                                        </h3><span class="car-author"><span class="authorname"><i class="fa fa-user"></i> @(item.WA_Users == null ? "Người nặc danh" : item.WA_Users.DisplayName)</span></span>
+                                    </div>
+                                }
+
+                            }
+
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                $(".tl-postCarousel-F.fouritem .car-inner").owlCarousel(
+                                {
+                                    autoplay: true,
+                                    loop: true,
+                                    rtl: false,
+                                    autoplayHoverPause: true,
+                                    nav: true,
+                                    navText: [
+                                        "<i class='fa fa-angle-left'></i>",
+                                        "<i class='fa fa-angle-right'></i>"
+                                    ],
+                                    items: 4,
+                                    autoHeight: false,
+                                    dots: false,
+                                    responsiveClass: true,
+                                    responsive:
+                                    {
+                                        0: { items: 1, nav: true },
+                                        600: { items: 3, nav: true },
+                                        1000: { items: 4, nav: true, loop: false }
+                                    },
+                                    afterUpdate: function() {
+                                        updateSize();
+                                    },
+                                    afterInit: function() {
+                                        updateSize();
+                                    }
+                                });
+                                $('.tl-contactpop').click(function() {
+                                    $('.overlay,.contactpop').fadeIn();
+                                });
+                                $('.overlay,.closecontact').click(function() { $('.overlay,.contactpop').fadeOut(); });
+                            });
+
+                            function updateSize() {
+                                var minHeight = parseInt($('.owl-item').eq(0).css('height'));
+                                $('.owl-item').each(function() {
+                                    var thisHeight = parseInt($(this).css('height'));
+                                    minHeight = (minHeight <= thisHeight ? minHeight : thisHeight);
+                                });
+                                $('.owl-wrapper-outer').css('height', minHeight + 'px');
+
+                                /*show the bottom part of the cropped images*/
+                                $('.owl-carousel .owl-item img').each(function() {
+                                    var thisHeight = parseInt($(this).css('height'));
+                                    if (thisHeight > minHeight) {
+                                        $(this).css('margin-top', -1 * (thisHeight - minHeight) + 'px');
+                                    }
+                                });
+
+                            }
+
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<div class="tl-footer-bar">
+    <div class="inner container">
+        <div class="footer-bar-content">
+            <div class="col2 pull-left">
+                <div class="tl-footer-social">
+                    <div class="tl-social section" id="FooterSocialIcons">
+                        <div class="widget HTML" data-version="1" id="HTML81">
+                            <div class="widget-content">
+                                <div class="top-social">
+                                    <ul class="tl-social-icons icon-flat list-unstyled list-inline" itemscope="" itemtype="http://schema.org/SiteNavigationElement">
+                                        @{
+                                            var listsocial = db.WA_Options.Where(x => x.Group.Equals("TopnavSocical")).ToList();
+                                            if (listsocial != null)
+                                            {
+                                                for (int i = 0; i < listsocial.Count; i++)
+                                                {
+                                                    <li>
+                                                        <a href="@listsocial[i].Value"><i class="fa @("fa-" + listsocial[i].Name)"></i></a>
+                                                    </li>
+                                                }
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col2 pull-right">
+                <div class="contactpop tl-contact-form section" id="contactpop">
+                    <div class="widget ContactForm" data-version="1" id="ContactForm1">
+                        <div class="contact-form-widget">
+                            <span class="closecontact"></span>
+                            <div class="form">
+                                <form name="contact-form">
+                                    Tên
+                                    <p>Tên của bạn</p>
+                                    <input class="contact-form-name" id="ContactForm1_contact-form-name" name="name" size="30" value="" type="text">
+                                    Email
+                                    <span style="font-weight: bolder;">*</span>
+                                    <p>Thư điện tử của bạn</p>
+                                    <input class="contact-form-email" id="ContactForm1_contact-form-email" name="email" size="30" value="" type="text">
+                                    Tin nhắn
+                                    <span style="font-weight: bolder;">*</span>
+                                    <p>Tin nhắn của bạn</p>
+                                    <textarea class="contact-form-email-message" cols="25" id="ContactForm1_contact-form-email-message" name="email-message" rows="5"></textarea>
+                                    <p></p>
+                                    <input class="contact-form-button contact-form-button-submit" id="ContactForm1_contact-form-submit" value="Gửi" type="button">
+                                    <p></p>
+                                    <div style="text-align: center; max-width: 222px; width: 100%">
+                                        <p class="contact-form-error-message" id="ContactForm1_contact-form-error-message"></p>
+                                        <p class="contact-form-success-message" id="ContactForm1_contact-form-success-message"></p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="tl-footer-contact">
+                    <div class="tl-contact section" id="FooterContactPopup">
+                        <div class="widget HTML" data-version="1" id="HTML82">
+                            <div class="widget-content">
+                                <div class="tl-contactpop"><i class="fa fa-envelope-o"></i> Liên hệ
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tl-footer-wrap middle-footer main-footer">
+    <div class="inner container">
+        <div class="tl-footer-cols">
+            <div class="col3 pull-left">
+                <div class="footer-sec section" id="Footer1">
+                    <div class="widget HTML" data-version="1" id="HTML11">
+                        <h2 class="title"><span class="tl-wrapIn">Bài viết đặc sắc</span></h2>
+                        <div class="widget-content">
+                            <div class="tl-recentMag tl-recentPost" data-label="Gaming" data-results="5">
+                                <div class="tl-wspace">
+                                    <div class="simple-inner">
+                                        @{
+                                            var postFeatured = db.WA_Posts.OrderByDescending(x => x.Seen).Take(3).ToList();
+                                            foreach (var item in postFeatured)
+                                            {
+                                                <div class="container">
+                                                    <a class="featured-thumb" title="@item.Title" href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">
+                                                        <img src="@Url.Content(item.Picture ?? "#")">
+                                                    </a>
+                                                    <div class="recentcontent">
+                                                        <h3><a href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">@item.Title</a>
+                                                        </h3>
+                                                        <div class="metadata">
+                                                            <span class="recentdate"><i class="fa fa-calendar"></i> @item.Created.ToString("dd-MM-yyyy")</span>  - <span class="authorname"><i class="fa fa-user"></i> @(item.WA_Users == null ? "Người nặc danh" : item.WA_Users.DisplayName)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col3 pull-left">
+                <div class="footer-sec section" id="Footer2">
+                    <div class="widget HTML" data-version="1" id="HTML12">
+                        <h2 class="title"><span class="tl-wrapIn">Bài viết gần đây</span></h2>
+                        <div class="widget-content">
+                            <div class="tl-recentMag tl-recentSimple" data-results="5">
+                                <ul class="recent-post-item">
+                                    @{
+                                        var postRecent = db.WA_Posts.OrderByDescending(x => x.Created).Take(3).ToList();
+                                        foreach (var item in postRecent)
+                                        {
+                                            <li>
+                                                <a class="featured-thumb" title="@item.Title" href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">
+                                                    <img src="@Url.Content(item.Picture ?? "#")">
+                                                </a>
+                                                <h3><a href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">@item.Title</a>
+                                                </h3>
+                                                <div class="tl-recentSimple-meta">
+                                                    <span class="recentdate"><i class="fa fa-calendar"></i> @item.Created.ToString("dd-MM-yyyy")</span>  - <span class="authorname"><i class="fa fa-user"></i> @(item.WA_Users == null ? "Người nặc danh" : item.WA_Users.DisplayName)</span>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col3 last-child pull-left">
+                <div class="footer-sec section" id="Footer3">
+                    <div class="widget HTML" data-version="1" id="HTML21">
+                        <h2 class="title"><span class="tl-wrapIn">Bài viết ngẫu nhiên</span></h2>
+                        <div class="widget-content">
+                            <div class="tl-recentMag tl-randomSimple" data-results="5">
+                                <ul class="random-inner">
+                                    @{
+                                        var randomPost = new List<WA_Posts>();
+                                        var listAllPost = db.WA_Posts.ToList();
+
+                                        if (listAllPost.Count > 3)
+                                        {
+                                            Random rd = new Random();
+
+                                            do
+                                            {
+                                                randomPost.Add(listAllPost[rd.Next(listAllPost.Count)]);
+                                                randomPost.Distinct();
+                                            } while (randomPost.Count < 3);
+                                        }
+                                        else
+                                        {
+                                            randomPost = listAllPost;
+                                        }
+                                        foreach (var item in randomPost)
+                                        {
+                                            <li>
+                                                <a class="featured-thumb" title="@item.Title" href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">
+                                                    <img src="@Url.Content(item.Picture ?? "#")">
+                                                </a>
+                                                <h3><a href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">@item.Title</a>
+                                                </h3>
+                                                <div class="tl-recentSimple-meta">
+                                                    <span class="recentdate"><i class="fa fa-calendar"></i> @item.Created.ToString("dd-MM-yyyy")</span>  - <span class="authorname"><i class="fa fa-user"></i> @(item.WA_Users == null ? "Người nặc danh" : item.WA_Users.DisplayName)</span>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</div>
+<div class="tl-footer-branding branding-wrap">
+    <div class="inner container">
+        <div class="branding-content">
+            <div class="colc pull-left">
+                <div class="tl-brand">
+                    <div class="tl-brand section" id="Branding">
+                        <div class="widget Image" data-version="1" id="Image3">
+                            <h2>Thông tin</h2>
+                            <div class="widget-content">
+                                <a href="@Url.Action("Index", "Home")">
+                                    <img alt="Thông tin" id="Image3_img" src="@Url.Content("~/Public/footerlogo.jpg")" width="242" height="73">
+                                </a>
+                                <br>
+                                <span class="caption">Đây là bài tập nhóm môn lập trình web nâng cao của nhóm 8
+                                        <br/>
+                                        CTK37 - Khoa Công Nghệ Thông Tin - Đại học Đà Lạt.</span>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="colc2 pull-right">
+            </div>
+        </div>
+    </div>
+</div>
+<!--copy Rights -->
+<div class="tl-copyright-wrap tl-fnavs">
+    <div class="inner container">
+        <div class="copyright-n-nav">
+            <div class="tl-copyright pull-left">
+                <div class="tl-bloglink" data-url="http://magpress1-themelet.blogspot.com/"></div>
+                <a href="http://magpress1-themelet.blogspot.com/">Magpress Blogger Template Light</a> © 2016-2017. All Rights Reserved.
+            </div>
+            
+            <div style="clear: both"></div>
+        </div>
+    </div>
+</div>
+
+</footer>
+

@@ -31,6 +31,7 @@ namespace WA_Blogers_MVC.Controllers
         /// <param name="sortactive">sắp xếp theo hoạt động</param>
         /// <param name="sortauthor">sắp xếp theo tác giả</param>
         /// <returns></returns>
+        [AdminFilter]
         public ActionResult Index(string searchString, 
             string numDisplay, int? page, 
             string sorttitle = "", string sortcreate = "", 
@@ -145,6 +146,7 @@ namespace WA_Blogers_MVC.Controllers
         /// </summary>
         /// <param name="PostID"></param>
         /// <returns></returns>
+        [AdminFilter]
         public ActionResult QuickEdit(int PostID)
         {
             ViewBag.ListBlogs = db.WA_Blogs.Where(x=>x.Parent==null && x.Active).ToList();
@@ -152,7 +154,8 @@ namespace WA_Blogers_MVC.Controllers
             return View(post);
         }
         [HttpPost]
-        public ActionResult QuickEdit([Bind(Include="PostID,Title,Description,ContentPost,Active")] WA_Posts wa_posts,int[] Blogs,HttpPostedFileBase filebase)
+        [AdminFilter]
+        public ActionResult QuickEdit([Bind(Include = "PostID,Title,Description,ContentPost,Active")] WA_Posts wa_posts, int[] Blogs, HttpPostedFileBase filebase)
         {
             
             if (ModelState.IsValid)
@@ -189,7 +192,8 @@ namespace WA_Blogers_MVC.Controllers
             return View("Edit", wa_posts);
         }
         [HttpPost]
-       
+
+        [AdminFilter]
         public string SaveQuickEdit(int? PostID, string title, string description, string active, string content)
         {
             bool Active = !String.IsNullOrEmpty(active);
@@ -210,6 +214,7 @@ namespace WA_Blogers_MVC.Controllers
             return "Lỗi";
         }
         // GET: /Posts/Details/5
+        [AdminFilter]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -223,6 +228,7 @@ namespace WA_Blogers_MVC.Controllers
             }
             return View(wa_posts);
         }
+        [AdminFilter]
         public ActionResult DetailsAjax(int? id)
         {
             if (id == null)
@@ -236,6 +242,7 @@ namespace WA_Blogers_MVC.Controllers
             }
             return View(wa_posts);
         }
+        [AdminFilter]
         public ActionResult DeleteAjax(int? id)
         {
             if (id == null)
@@ -251,6 +258,7 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Posts/Create
+        [AdminFilter]
         public ActionResult Create()
         {
             ViewBag.ListBlogs = db.WA_Blogs.Where(x => x.Parent == null).ToList();
@@ -264,7 +272,8 @@ namespace WA_Blogers_MVC.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PostID,Title,Description,ContentPost,Author,Picture,UseDescription,Active")] WA_Posts wa_posts, int[] Blogs,HttpPostedFileBase filebase)
+        [AdminFilter]
+        public ActionResult Create([Bind(Include = "PostID,Title,Description,ContentPost,Author,Picture,UseDescription,Active")] WA_Posts wa_posts, int[] Blogs, HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
             {
@@ -299,7 +308,8 @@ namespace WA_Blogers_MVC.Controllers
         }
 
         // GET: /Posts/Edit/5
-        public ActionResult Edit(int? id,string title)
+        [AdminFilter]
+        public ActionResult Edit(int? id, string title)
         {
             if (id == null)
             {
@@ -321,6 +331,7 @@ namespace WA_Blogers_MVC.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
+        [AdminFilter]
         public ActionResult Edit([Bind(Include = "PostID,Title,Description,ContentPost,Picture,UseDescription,Active")] WA_Posts wa_posts, HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
@@ -378,7 +389,8 @@ namespace WA_Blogers_MVC.Controllers
         
         // POST: /Posts/Delete/5
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id,string title)
+        [AdminFilter]
+        public ActionResult DeleteConfirmed(int id, string title)
         {
             WA_Posts wa_posts = db.WA_Posts.Single(n=>n.PostID==id);
             if (wa_posts != null)

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using PagedList.Mvc;
+using WA_Blogers_MVC.Filter;
 
 namespace WA_Blogers_MVC.Controllers
 {
@@ -13,6 +14,7 @@ namespace WA_Blogers_MVC.Controllers
     {
         //
         // GET: /Images/
+        [AdminFilter]
         public ActionResult Index(string path)
         {
             var pathP = path ?? "~/Content/images/thuvien";
@@ -30,11 +32,13 @@ namespace WA_Blogers_MVC.Controllers
             return View(listImage);
         }
         [HttpGet]
+        [AdminFilter]
         public ActionResult UploadImages()
         {
             return View();
         }
         [HttpPost]
+        [AdminFilter]
         public ActionResult UploadImages(HttpPostedFileBase filebase, string path)
         {
             foreach (string upload in Request.Files)
@@ -47,10 +51,12 @@ namespace WA_Blogers_MVC.Controllers
             return View();
         }
         [HttpGet]
+        [AdminFilter]
         public ActionResult UpLoadImage()
         {
             return View();
         }
+        [AdminFilter]
         public ActionResult UpLoadImage(HttpPostedFileBase filebase, string path)
         {
             return View();

@@ -22,7 +22,7 @@
 }
 <div class="headline-tabs-top hot-news">
     <div class="recent-button tabs-button">
-        <div class="recent-head-title"><h3><i class="fa fa-book"></i> Bài viết hàng đầu</h3></div>
+        <div class="recent-head-title"><h3><i class="fa fa-book"></i> Bài viết mới</h3></div>
         @for (int i = 0; i < listBLNs.Count; i++)
         {
             if (listBLNs[i].WA_Posts.Count == 0)
@@ -76,7 +76,7 @@
                                             <div class="tl-headm">
                                                 @{
             DateTime date = DateTime.Now;
-            date = posts[0].Created ?? date;
+            date = posts[0].Created;
             string strUser = posts[0].WA_Users == null ? "Người nặc danh" : posts[0].WA_Users.DisplayName;
                                                 }
                                                 <span class="recentdate">
@@ -106,7 +106,7 @@
                                                         <div class="metadata">
                                                             @{
                                                 date = DateTime.Now;
-                                                date = posts[j].Created ?? date;
+                                                date = posts[j].Created;
                                                 strUser = posts[j].WA_Users == null ? "Người nặc danh" : posts[j].WA_Users.DisplayName;
                                                             }
                                                             <span class="recentdate">

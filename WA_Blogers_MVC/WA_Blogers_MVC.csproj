@@ -301,6 +301,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Public\footerlogo.jpg" />
     <Content Include="Public\Loading_icon.gif" />
     <Content Include="Public\Logo.jpg" />
     <Content Include="Scripts\AdminLTE\app.js" />
@@ -1292,6 +1293,8 @@
     <Content Include="Views\Posts\DeleteAjax.cshtml" />
     <Content Include="Views\Shared\RecentPopularPost.cshtml" />
     <Content Include="Views\Shared\Home\PostsPopular.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Home\IndexSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

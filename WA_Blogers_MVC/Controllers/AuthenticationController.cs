@@ -76,7 +76,9 @@ namespace WA_Blogers_MVC.Controllers
                     }
                     FormsAuthentication.SetAuthCookie(user_Login.UserName,false);
                     Session["IsAdmin"] = IsAdmin;
+                    Session["UserLogin"] = user_Login;
                     return RedirectToAction("Index", "Home");
+
                 }
             }
             
