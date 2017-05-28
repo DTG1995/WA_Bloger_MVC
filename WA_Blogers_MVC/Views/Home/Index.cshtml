@@ -13,11 +13,14 @@
             @Html.Partial("Home/NewsPost")
         }
         @Html.Partial("Home/Search")
-        @if(ViewBag.ListPostFeatured.Count>=4)
+        @if (ViewBag.ListPostFeatured.Count >= 4)
         {
             @Html.Partial("Home/FeaturedPost")
         }
+
+
     </div>
+    
 </div>
 <div class="content-wrapper main-content">
     <div class="inner container" style="max-width:100%;">
@@ -41,13 +44,22 @@
                                 }
 
                             </div>
+                            <div class="top-main-section mag-layout">
+                                @Html.Partial("Home/PostsPopular")
+                            </div>
                         </div>
                     </div>
                 </div>
                 <aside class="tl-sidebar sidebar" id="sidebar-wrapper" itemscope="" itemtype="http://schema.org/WPSideBar"></aside>
                 <div style="clear:both"></div>
             </div>
-            
+            <aside class="tl-sidebar sidebar" id="sidebar-wrapper" itemscope="" itemtype="http://schema.org/WPSideBar">
+                <div class="sidebar-inner">
+
+                    
+
+                </div>
+            </aside>
         </div>
     </div>
 </div>

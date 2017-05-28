@@ -11,6 +11,7 @@ namespace WA_Blogers_MVC.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class WA_Users
     {

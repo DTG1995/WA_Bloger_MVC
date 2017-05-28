@@ -1288,12 +1288,13 @@
     <Content Include="Views\Shared\Home\TopNewBlogs.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\TopHeader.cshtml" />
+    <Content Include="Views\Posts\DetailsAjax.cshtml" />
+    <Content Include="Views\Posts\DeleteAjax.cshtml" />
+    <Content Include="Views\Shared\Home\PostsPopular.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ImagePost\" />
-    <Folder Include="Content\images\thuvien\"/>
-    <Folder Include="Content\images\avatar\"/>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
