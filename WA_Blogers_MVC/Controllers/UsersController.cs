@@ -21,6 +21,7 @@ namespace WA_Blogers_MVC.Controllers
         // GET: /Users/
         public ActionResult Index(string q, int? numDisplay, string sort,int? page)
         {
+            
             var user = from u in db.WA_Users
                         select u;
             ViewBag.CurrentSort=sort;
@@ -132,19 +133,23 @@ namespace WA_Blogers_MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,UserName,Email,Password,DisplayName,Created,Modified,Avatar,LastLogin,IPLast,IPCreated")] WA_Users wa_users, HttpPostedFileBase filebase)
+        public ActionResult Edit([Bind(Include = "UserID,UserName,Email,DisplayName")] WA_Users wa_users, HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
             {
-                if (Request.Files.Count > 0 || !String.IsNullOrEmpty(Request.Files[0].FileName))
+                WA_Users change = db.WA_Users.Find(wa_users.UserID);
+                if (Request.Files.Count > 0 && !String.IsNullOrEmpty(Request.Files[0].FileName))
                 {
                     string path = "~/Content/images/avatar";
                     string pathToSave = Server.MapPath(path);
                     string filename = Path.GetFileName(Request.Files[0].FileName);
                     Request.Files[0].SaveAs(Path.Combine(pathToSave, filename));
-                    wa_users.Avatar = filename;
+                    change.Avatar = filename;
                 }
-                db.Entry(wa_users).State = EntityState.Modified;
+                change.UserName = wa_users.UserName;
+                change.Email = wa_users.Email;
+                change.DisplayName = wa_users.DisplayName;
+                db.Entry(change).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

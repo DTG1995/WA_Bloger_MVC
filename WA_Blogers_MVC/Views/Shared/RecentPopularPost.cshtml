@@ -1,0 +1,174 @@
+﻿@using WA_Blogers_MVC.Models;
+@{
+    WA_BlogerEntities db = new WA_BlogerEntities();
+}
+<script>
+    $(function(){
+    var sb = $('.tl-stab-buttons span'), sc = $('.tl-tab-content>div'); 
+    sb.first().addClass('active');
+    sc.hide(); 
+    sc.first().slideDown();
+    sb.click(function () { 
+        $('.tl-stab-buttons span').removeClass('active'); 
+        var thisclass = $(this).attr('class'); 
+        $(this).addClass('active'); 
+        $('.tl-tab-content>div').each(function () {
+            if ($(this).hasClass(thisclass)) { 
+                $(this).fadeIn(800);
+            } else { 
+                $(this).hide();
+           } 
+        }); 
+    });
+    });
+</script>
+<div class="row">
+    <div class=" main-inner">
+    </div>
+    <div class="sidebar-inner">
+
+        <div class="tl-stabs">
+            <div class="tl-stab-buttons">
+                <span class="tl-stabcontent1 active"><i class="fa fa-rss"></i> Bài mới</span>
+                <span class="tl-stabcontent2"><i class="fa fa-fire"></i> Phổ biến</span>
+                <span class="tl-stabcontent3 "><i class="fa fa-random"></i> Ngẫu nhiên</span>
+                <div style="clear:both"></div>
+            </div>
+            <div class="tl-tab-content">
+                <div class="tl-stabcontent1" style="display: block;">
+                    <div class="tl-stabc section" id="sidebarTab-1">
+                        <div class="widget HTML" data-version="1" id="HTML2">
+                            <h2 class="title">Các bài Posts mới</h2>
+                            <div class="widget-content">
+                                <div class="tl-recentMag tl-recentSimple" data-results="5">
+                                    <ul class="recent-post-item">
+                                        @{
+                                            List<WA_Posts> recentPost = db.WA_Posts.OrderByDescending(x=>x.Created).Take(5).ToList();
+                                            string img = "#";
+                                            foreach (var item in recentPost)
+                                            {
+                                                <li>
+                                                    <a class="featured-thumb" title="@item.Title" href="@Url.RouteUrl("ViewPost", new { id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">
+                                                        @{
+                                                            img = item.Picture ?? "#";
+                                                          }
+                                                        <img src="@Url.Content(img)" />
+                                                    </a>
+                                                    <h3><a href="@Url.RouteUrl("ViewPost", new { id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">@item.Title</a></h3>
+                                                    <div class="tl-recentSimple-meta">
+                                                        <span class="recentdate">
+                                                            @{
+                                                string author = "Người nặc danh";
+                                                author = item.WA_Users != null ? item.WA_Users.DisplayName : "Người nặc danh";
+                                                            }
+                                                            <i class="fa fa-calendar"></i> @item.Created.ToString("dd-MM-yyyy")
+                                                        </span>  - <span class="authorname"><i class="fa fa-user"></i> @author</span>
+                                                    </div>
+                                                </li>
+                                            }
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tl-stabcontent2" style="display: none;">
+                    <div class="tl-stabc section" id="sidebarTab-2">
+                        <div class="widget PopularPosts" data-version="1" id="PopularPosts1">
+                            <h2>Các bài Post phổ biến</h2>
+                            <div class="widget-content popular-posts">
+                                <ul >
+                                    @{
+                                        List<WA_Posts> popularPost = db.WA_Posts.OrderByDescending(x => x.Seen).Take(5).ToList();
+                                        foreach (var item in popularPost)
+                                        {
+                                            
+                                            <li>
+                                            <div class="item-content">
+                                            <div class="item-thumbnail">
+                                                <a href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">
+                                                    @{
+                                                    img = item.Picture ?? "#";
+                                                    }
+                                                    <img alt="" src="@Url.Content(img)" height="72" border="0" width="72">
+                                                </a>
+                                            </div>
+                                            <div class="item-title"><a href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">@item.Title</a></div>
+                                            <div class="item-snippet">@(item.Description.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)</div>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                            </li>
+                                        
+                                        }
+                                    }
+
+
+                                </ul>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tl-stabcontent3" style="display: none;">
+                    <div class="tl-stabc section" id="sidebarTab-3">
+                        <div class="widget HTML" data-version="1" id="HTML5">
+                            <h2 class="title">Các bài Post ngẫu nhiên</h2>
+                            <div class="widget-content random-posts">
+                                <ul class="recent-post-item">
+                                    @{
+                                        List<WA_Posts> randomPost = new List<WA_Posts>();
+                                        if (db.WA_Posts.Count() > 5)
+                                        {
+                                            Random rd = new Random();
+                                            do
+                                            {
+                                                randomPost.Add(db.WA_Posts.ElementAt(rd.Next(db.WA_Blogs.Count())));
+                                                randomPost.Distinct();
+                                            } while (randomPost.Count < 5);
+                                        }
+                                        else
+                                        {
+                                            randomPost = db.WA_Posts.ToList();
+                                        }
+
+
+
+                                        foreach (var item in randomPost)
+                                        {
+
+                                            <li>
+                                                <div class="item-content">
+                                                    <div class="item-thumbnail">
+                                                        <a href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">
+                                                            @{
+                                            img = item.Picture ?? "#";
+                                                            }
+                                                            <img alt="" src="@Url.Content(img)" height="72" border="0" width="72">
+                                                        </a>
+                                                    </div>
+                                                    <div class="item-title"><a href="@Url.RouteUrl("ViewPost", new {id = item.PostID, title = UrlEncode.ToFriendlyUrl(item.Title)})">@item.Title</a></div>
+                                                    <div class="item-snippet">@(item.Description.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)</div>
+                                                </div>
+                                                <div style="clear: both;"></div>
+                                            </li>
+
+                                        }
+                                    }
+
+
+                                </ul>
+
+                                <div class="clear"></div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
