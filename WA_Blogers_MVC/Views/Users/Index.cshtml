@@ -47,13 +47,20 @@
     <table class="table table-hover">
         <tr>
             <th>
-                @Html.ActionLink("UserName", "Index", new { sort = ViewBag.NameSort, q = ViewBag.SearchName })
+                @{
+                    var username = Html.DisplayNameFor(model => model.SingleOrDefault().UserName).ToString();
+                }
+                @Html.ActionLink(HttpUtility.HtmlDecode(username), "Index", new { sort = ViewBag.NameSort, q = ViewBag.SearchName })
             </th>
             <th>
                 @Html.ActionLink("Email", "Index", new { sort = ViewBag.EmailSort, q = ViewBag.SearchName })
             </th>
             <th>
-                @Html.ActionLink("DisplayName", "Index", new { sort = ViewBag.DisplaySort, q = ViewBag.SearchName })
+               
+                @{
+                    var displayName = Html.DisplayNameFor(model=>model.SingleOrDefault().DisplayName).ToString();
+                }
+                @Html.ActionLink(HttpUtility.HtmlDecode(displayName), "Index", new { sort = ViewBag.DisplaySort, q = ViewBag.SearchName })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SingleOrDefault().Avatar)
@@ -65,7 +72,8 @@
         {
         <tr>
             <td>
-                @Html.ActionLink(item.UserName, "Edit", new { id = item.UserID })
+                <a href="@Url.RouteUrl("SuaNguoiDung", new {id=item.UserID })">@item.UserName</a>
+                @*@Html.ActionLink(item.UserName, "Edit", new { id = item.UserID })*@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
@@ -77,7 +85,7 @@
                 <img width="100" height="100" src="@Url.Content("~/Content/images/avatar/" + item.Avatar)" />
             </td>
             <td>
-                <a href="#" title="Sửa người dùng" onclick="Edit(@item.UserID)" @*data-toggle="modal" data-target="#modalEdit" *@><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
+                <a href="#" title="Sửa người dùng" onclick="Edit(@item.UserID)"><i class="fa fa-pencil" aria-hidden="true"></i> </a> |
                 <a href="#" title="Chi tiết người dùng" data-toggle="modal" data-target="#modalDetails_@item.UserID"><i class="fa fa-info-circle" aria-hidden="true"></i> </a> |
                 <a href="#" title="Xoá người dùng" data-toggle="modal" data-target="#modalDelete_@item.UserID"><i class="fa fa-trash" aria-hidden="true"></i> </a> | 
                 <a href="#" title="Reset password" data-toggle="modal" data-target="#modalReset_@item.UserID"><i class="fa fa-refresh" aria-hidden="true"></i> </a>

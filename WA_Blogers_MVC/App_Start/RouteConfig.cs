@@ -50,7 +50,17 @@ namespace WA_Blogers_MVC
                 url: "Admin/Xoa-post/{title}-{id}",
                 defaults: new { controller = "Posts", action = "Delete", id = UrlParameter.Optional, title = UrlParameter.Optional }
                 );
-
+            routes.MapRoute(
+                name: "SuaNguoiDung",
+                url: "nguoi-dung/sua-nguoi-dung-{id}",
+                defaults: new { controller = "Users", action = "Edit", id = UrlParameter.Optional }
+                );
+            
+            routes.MapRoute(
+                name: "TrangChuNguoiDung",
+                url: "nguoi-dung",
+                defaults: new { controller = "Users", action = "Index" }
+                );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
