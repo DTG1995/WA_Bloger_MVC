@@ -50,19 +50,24 @@ namespace WA_Blogers_MVC.Controllers
         public ActionResult Login([Bind(Include = "UserName,Password")] WA_Users wa_User)
         {
             if (ModelState.IsValid)
-            {WA_BlogerEntities db = new WA_BlogerEntities();
+            {
+                if (Session["UserLogin"]!=null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                WA_BlogerEntities db = new WA_BlogerEntities();
                 MD5 md5 = MD5.Create();
                 string passHash = GetMd5Hash(md5, wa_User.Password);
-            if (db.WA_Users.Count() == 0)
-            {
-                wa_User.Password = passHash;
-                wa_User.DisplayName = "Quản trị viên";
-                wa_User.Created = DateTime.Now;
-                wa_User.IsAdmin = true;
-                wa_User.Email = "default@example.com";
-                db.WA_Users.Add(wa_User);
-                db.SaveChanges();
-            }
+                if (db.WA_Users.Count() == 0)
+                {
+                    wa_User.Password = passHash;
+                    wa_User.DisplayName = "Quản trị viên";
+                    wa_User.Created = DateTime.Now;
+                    wa_User.IsAdmin = true;
+                    wa_User.Email = "default@example.com";
+                    db.WA_Users.Add(wa_User);
+                    db.SaveChanges();
+                }
                 
                 WA_Users user_Login = db.WA_Users.Where(x => x.UserName == wa_User.UserName &&
                     x.Password == passHash).FirstOrDefault();

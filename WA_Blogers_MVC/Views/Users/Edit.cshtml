@@ -76,6 +76,19 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IsAdmin, new { @class = "control-label col-md-2" })
+                        <fieldset>
+                            <div class="col-md-10">
+                                @Html.CheckBoxFor(model => model.IsAdmin, new { @class = "form-control", data_toggle = "toggle" })
+@Html.ValidationMessageFor(model => model.IsAdmin)
+                            </div>
+                        </fieldset>
+                    </div>
+                </td>
+            </tr>
         </table>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

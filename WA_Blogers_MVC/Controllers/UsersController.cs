@@ -98,7 +98,7 @@ namespace WA_Blogers_MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdminFilter]
-        public ActionResult Create([Bind(Include = "UserID,UserName,Email,Password,DisplayName,Created,Modified,Avatar,LastLogin,IPLast,IPCreated")] WA_Users wa_users, HttpPostedFileBase filebase)
+        public ActionResult Create([Bind(Include = "UserID,UserName,Email,Password,DisplayName,Avatar")] WA_Users wa_users, HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
             {
@@ -110,6 +110,7 @@ namespace WA_Blogers_MVC.Controllers
                     Request.Files[0].SaveAs(Path.Combine(pathToSave, filename));
                     wa_users.Avatar = filename;
                 }
+                wa_users.Created = DateTime.Now;
                 db.WA_Users.Add(wa_users);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -140,7 +141,7 @@ namespace WA_Blogers_MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdminFilter]
-        public ActionResult Edit([Bind(Include = "UserID,UserName,Email,DisplayName")] WA_Users wa_users, HttpPostedFileBase filebase)
+        public ActionResult Edit([Bind(Include = "UserID,UserName,Email,DisplayName,IsAdmin")] WA_Users wa_users, HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
             {
@@ -156,6 +157,7 @@ namespace WA_Blogers_MVC.Controllers
                 change.UserName = wa_users.UserName;
                 change.Email = wa_users.Email;
                 change.DisplayName = wa_users.DisplayName;
+                change.IsAdmin = wa_users.IsAdmin;
                 db.Entry(change).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
