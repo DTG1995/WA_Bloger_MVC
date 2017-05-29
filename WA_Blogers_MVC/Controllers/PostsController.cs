@@ -273,7 +273,7 @@ namespace WA_Blogers_MVC.Controllers
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
         [AdminFilter]
-        public ActionResult Create([Bind(Include = "PostID,Title,Description,ContentPost,Author,Picture,UseDescription,Active")] WA_Posts wa_posts, int[] Blogs, HttpPostedFileBase filebase)
+        public ActionResult Create([Bind(Include = "PostID,Title,Description,ContentPost,Picture,UseDescription,Active")] WA_Posts wa_posts, int[] Blogs, HttpPostedFileBase filebase)
         {
             if (ModelState.IsValid)
             {
@@ -284,7 +284,7 @@ namespace WA_Blogers_MVC.Controllers
                 wa_posts.Created = DateTime.Now;
                 wa_posts.Active = false;
                 wa_posts.Seen = 0;
-                
+                wa_posts.Author = ((WA_Users)Session["UserLogin"]).UserID;
                 for (int i = 0; i < Blogs.Count(); i++)
                 {
                     wa_posts.WA_Blogs.Add(db.WA_Blogs.Find(Blogs[i]));

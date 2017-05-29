@@ -510,7 +510,7 @@
                         }
                         @Html.Label("Tiêu đề", new {@for = "txtTitleTopNew", @class = "control-label col-md-2"})
                         <div class="col-md-10">
-                            <input class="form-control" id="txtTitleTopNew" name="txtTitleTopNew" value="@title.Value"/>
+                            <input class="form-control" id="txtTitleTopNew" name="txtTitleTopNew" value="@(title==null?"":title.Value   )"/>
 
                         </div>
                     </div>

@@ -208,8 +208,8 @@
             
         }
         <li class="submenu choose-cat " style="display: @display">
-            
-            <a href="#" itemprop="url"><span itemprop="name" id="hotNewsTitle">@title.Value</span></a>
+            @if(title!=null)
+            {<a href="#" itemprop="url"><span itemprop="name" id="hotNewsTitle">@title.Value</span></a>
             <ul>
                 @{
                     if (strblogsID != null)
@@ -229,6 +229,7 @@
                 }
                 
             </ul>
+            }
         </li>
         <!-- Hot News Right Menu End -->
 

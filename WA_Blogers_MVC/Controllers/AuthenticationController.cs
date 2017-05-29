@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -49,10 +50,20 @@ namespace WA_Blogers_MVC.Controllers
         public ActionResult Login([Bind(Include = "UserName,Password")] WA_Users wa_User)
         {
             if (ModelState.IsValid)
-            {
+            {WA_BlogerEntities db = new WA_BlogerEntities();
                 MD5 md5 = MD5.Create();
                 string passHash = GetMd5Hash(md5, wa_User.Password);
-                WA_BlogerEntities db = new WA_BlogerEntities();
+            if (db.WA_Users.Count() == 0)
+            {
+                wa_User.Password = passHash;
+                wa_User.DisplayName = "Quản trị viên";
+                wa_User.Created = DateTime.Now;
+                wa_User.IsAdmin = true;
+                wa_User.Email = "default@example.com";
+                db.WA_Users.Add(wa_User);
+                db.SaveChanges();
+            }
+                
                 WA_Users user_Login = db.WA_Users.Where(x => x.UserName == wa_User.UserName &&
                     x.Password == passHash).FirstOrDefault();
                 if (user_Login == null)
@@ -75,9 +86,12 @@ namespace WA_Blogers_MVC.Controllers
                         break;
                     }
                     FormsAuthentication.SetAuthCookie(user_Login.UserName,false);
+                    user_Login.LastLogin = DateTime.Now;
+                    db.Entry(user_Login).State = EntityState.Modified;
+                    db.SaveChanges();
                     Session["IsAdmin"] = IsAdmin;
                     Session["UserLogin"] = user_Login;
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Admin");
 
                 }
             }
